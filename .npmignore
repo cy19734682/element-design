@@ -1,0 +1,15 @@
+examples/
+public/
+dist/
+.idea/
+.git/
+
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+vue.config.js
+babel.config.js
+postcss.config.js
+gulpfile.js
+.browserslistrc
+*.map
