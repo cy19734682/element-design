@@ -1,9 +1,5 @@
 'use strict'
-const path = require('path')
 const compressionPlugin = require("compression-webpack-plugin")
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
 const port = process.env.port || process.env.npm_config_port || 9527 // dev port
 module.exports = {
   publicPath: '/',
@@ -34,6 +30,15 @@ module.exports = {
       entry: 'examples/main.js',
       template: 'public/index.html',
       filename: 'index.html'
+    }
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true
+        }
+      }
     }
   },
   configureWebpack: config => {

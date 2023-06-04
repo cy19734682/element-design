@@ -284,16 +284,4 @@
     }
   }
 </script>
-<style lang="scss">
-  .em-upload{
-    .el-upload-list__item{
-      transition:none !important;
-      -webkit-transition:nonne !important;
-    }
-    .el-upload-list__item-name{
-      transition:none !important;
-      -webkit-transition:nonne !important;
-    }
-  }
-</style>
 

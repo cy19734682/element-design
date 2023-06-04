@@ -1,0 +1,9 @@
+.em-editor {
+  border: 1px solid #ccc;
+  .editor-pro-toolbar {
+    border-bottom: 1px solid #ccc;
+  }
+}
+.el-form-item__content .em-editor.w-e-full-screen-container {
+  z-index: 1; /*修复弹框表单中全屏编辑时编辑器被其他元素穿透的问题*/
+}

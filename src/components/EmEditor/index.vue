@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-pro-root">
+  <div class="em-editor">
     <Toolbar
         class="editor-pro-toolbar" :editor="editor" :defaultConfig="toolbarConfigT" :mode="mode" v-show="!disabled"
     />
@@ -123,14 +123,3 @@
     }
   }
 </script>
-<style scoped lang="scss">
-  .editor-pro-root {
-    border: 1px solid #ccc;
-    .editor-pro-toolbar {
-      border-bottom: 1px solid #ccc;
-    }
-  }
-  .ivu-form-item-content .editor-pro-root.w-e-full-screen-container {
-    z-index: 1; /*修复弹框表单中全屏编辑时编辑器被其他元素穿透的问题*/
-  }
-</style>

@@ -12,21 +12,8 @@ function build(cb) {
     .pipe(less({style: 'expanded'}))
     .pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9'))
     .pipe(cleanCSS())
-    .pipe(rename('plugRQw.min.css'))
+    .pipe(rename('elmDesign.min.css'))
     .pipe(dest('./lib'))
-  cb()
-}
-
-
-// 拷贝字体文件
-function fonts(cb) {
-  src([
-    './src/style/iconfont/*.svg',
-    './src/style/iconfont/*.ttf',
-    './src/style/iconfont/*.woff',
-    './src/style/iconfont/*.woff2'
-  ])
-    .pipe(dest('./lib/iconfont'))
   cb()
 }
 
@@ -41,11 +28,10 @@ function langs(cb) {
 
 function clean(cb) {
   del([
-    'plugRQw.min.css',
-    './lab/iconfont/'
+    'elmDesign.min.css'
   ])
   cb()
 }
 
 
-exports.default = series(clean, build, fonts, langs)
+exports.default = series(clean, build, langs)

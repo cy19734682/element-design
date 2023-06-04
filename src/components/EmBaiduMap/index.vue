@@ -162,25 +162,3 @@
     }
   }
 </script>
-<style scoped>
-  .em-map {
-    position: relative;
-  }
-
-  /*去除百度地图角标*/
-  ::v-deep .anchorBL {
-    display: none !important;
-  }
-
-  .searchInput {
-    position: absolute;
-    z-index: 10;
-    width: 250px;
-    inset: 10px auto auto 10px;
-  }
-
-  .searchInput input {
-    width: 100%;
-    height: 25px;
-  }
-</style>

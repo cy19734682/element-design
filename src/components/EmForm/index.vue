@@ -1046,25 +1046,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-  .em-form {
-    overflow: hidden;
-
-    .el-form-item {
-      .el-input-number {
-        .el-input__inner {
-          text-align: left;
-        }
-      }
-
-      .el-input-number,
-      .el-select,
-      .el-cascader,
-      .el-date-editor.el-input,
-      .el-range-editor.el-input__inner {
-        width: 100% !important;
-      }
-    }
-  }
-</style>

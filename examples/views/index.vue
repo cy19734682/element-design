@@ -4,7 +4,7 @@
       <el-col :span="8" v-for="(item,index) of routeArr" :key="'menu'+index">
         <el-card shadow="hover">
           <router-link
-              class="li"
+              class="linkA"
               :to="item.path"
               :key="'item'+index"
               :title="item.meta.title"
@@ -41,8 +41,18 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .home {
   padding: 50px;
+  .el-col{
+    margin-bottom: 20px;
+  }
+  .linkA{
+    color: #409EFF;
+    cursor: pointer;
+    &:hover{
+      opacity: .85;
+    }
+  }
 }
 </style>

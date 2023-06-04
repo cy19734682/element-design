@@ -131,12 +131,3 @@
     }
   }
 </script>
-<style lang="scss">
-  .em-form-modal{
-    .el-dialog__body{
-      padding-right: 100px;
-      max-height: calc(100vh - 240px);
-      overflow-y: auto;
-    }
-  }
-</style>
