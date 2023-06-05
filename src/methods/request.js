@@ -155,7 +155,7 @@ export default {
    */
   get(url, data = {}, config = {}) {
     return new Promise((s, j) => {
-      checkRequest(get, url, data, config).then(r => {
+      checkRequest('get', url, data, config).then(r => {
         s(r)
       }).catch(e => {
         j(e)
