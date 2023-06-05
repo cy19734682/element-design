@@ -286,7 +286,7 @@
       getTableData() {
         return new Promise(resolve => {
           if (this.url && this.url !== '') {
-            this.$request.post(this.url, this.queryData,{isShowLoading: this.loading}).then(d => {
+            this.$request.get(this.url, this.queryData,{isShowLoading: this.loading}).then(d => {
               if (d && d.code === 0 && d.data) {
                 this.dataT = d.data.data || []
                 this.total = d.data[this.totalKey] || 0

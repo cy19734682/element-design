@@ -4,6 +4,7 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css' //加载element-ui样式
 import 'normalize.css/normalize.css' // 标准化样式（消除浏览器差异）
 import '../src/style/index.scss'
+import './style/index.scss'
 
 import App from './App' // 入口页面
 import router from './router.js' //路由

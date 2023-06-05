@@ -1,20 +1,21 @@
 <template>
-  <div class="app-container app-search-table">
-    <em-search-form ref="searchFormRef" :form-data="searchFormData" btnLoading @on-search="search">
-      <template slot="beginBtnGroup">
-        <el-button type="danger" :disabled="!(selectIds && selectIds.length > 0)">
-          删除
-        </el-button>
-      </template>
-    </em-search-form>
-    <em-table-page
-        url="/log/loginLog"
-        selection
-        :columns="columns"
-        :searchData="searchData"
-        @selection-change="selectionChange"
-        @on-data-change="onDataChange"
-    />
+  <div class="app-container">
+    <div class="app-search-table">
+      <em-search-form ref="searchFormRef" :form-data="searchFormData" btnLoading @on-search="search">
+        <template slot="beginBtnGroup">
+          <el-button type="danger" :disabled="!(selectIds && selectIds.length > 0)">
+            删除
+          </el-button>
+        </template>
+      </em-search-form>
+      <em-table-page
+          selection
+          :columns="columns"
+          :searchData="searchData"
+          @selection-change="selectionChange"
+          @on-data-change="onDataChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -96,6 +97,9 @@
 </script>
 <style scoped lang="scss">
   .app-container{
-    padding: 20px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
   }
 </style>
