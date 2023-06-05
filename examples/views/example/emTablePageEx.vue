@@ -94,3 +94,8 @@
     }
   }
 </script>
+<style scoped lang="scss">
+  .app-container{
+    padding: 20px;
+  }
+</style>

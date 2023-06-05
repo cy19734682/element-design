@@ -17,8 +17,12 @@
 </template>
 
 <script>
+  import EmForm from "../EmForm"
   export default {
     name: 'EmFormGroup',
+    components:{
+      EmForm
+    },
     props: {
       formData: {
         /*搜索表单结构数据*/

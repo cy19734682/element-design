@@ -21,9 +21,13 @@
 </template>
 
 <script>
-  import {t} from '@/locale'
+  import {t} from '../../locale'
+  import EmForm from "../EmForm"
   export default {
     name: 'EmSearchForm',
+    components:{
+      EmForm
+    },
     props: {
       formData: {
         /*搜索表单结构数据*/

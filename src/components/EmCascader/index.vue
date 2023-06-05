@@ -19,7 +19,7 @@
 </template>
 <script>
   import _ from 'lodash'
-  import { t } from '@/locale'
+  import { t } from '../../locale'
 
   export default {
     name: 'EmCascader',

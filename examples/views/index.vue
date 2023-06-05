@@ -41,7 +41,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .home {
   padding: 50px;
   .el-col{

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {MessageBox, Message, Loading} from 'element-ui'
+
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 let loading = null
 /**
@@ -14,11 +15,8 @@ const service = axios.create({
  * axios接口请求拦截，设置headers['x-oauth-token']，并增加接口请求loading效果
  */
 service.interceptors.request.use(config => {
-  if (config["isShowLoading"]) {
-    loading = Loading.service({
-      lock: true,
-      background: 'rgba(0, 0, 0, 0.3)'
-    });
+  if (service.store && service.store.getters.token) {
+    config.headers['x-oauth-token'] = service.store.getters.token
   }
   return config
 }, error => {
@@ -28,18 +26,22 @@ service.interceptors.request.use(config => {
  * axios接口响应处理，增加未登录判断
  */
 service.interceptors.response.use(({data}) => {
-  loading && loading.close();
-  const {code, msg} = data
+  loading && loading.close()
+  const {
+    code,
+    msg
+  } = data
   if (code === 0) {
     return data
-  }else if (code === -999) {
+  }
+  else if (code === -999) {
     MessageBox.confirm('当前页面已失效，请重新登录', '确认退出', {
       confirmButtonText: '重新登录',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
       logoutHandle()
-    }).catch(e=>{
+    }).catch(e => {
       console.log(e)
     })
     return Promise.reject(new Error(msg || 'Error'))
@@ -52,7 +54,7 @@ service.interceptors.response.use(({data}) => {
     return Promise.reject(new Error(msg || 'Error'))
   }
 }, error => {
-  loading && loading.close();
+  loading && loading.close()
   const {msg} = error.response.data
   Message({
     message: msg || '系统出错',
@@ -67,12 +69,13 @@ service.interceptors.response.use(({data}) => {
  */
 function logoutHandle() {
   if (service.store) {
-    if(typeof service.store === "function"){
+    if (typeof service.store === "function") {
       const store = service.store()
-      if(store.logout){
+      if (store.logout) {
         store.logout()
       }
-    }else {
+    }
+    else {
       service.store.dispatch("logout")
     }
   }
@@ -81,6 +84,38 @@ function logoutHandle() {
   }
 }
 
+/**
+ * 检查入参
+ * @param method
+ * @param url
+ * @param data
+ * @param config
+ */
+function checkRequest(method, url, data, config) {
+  return new Promise((s, j) => {
+    if (url) {
+      if (config["isShowLoading"]) {
+        loading = Loading.service({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.3)'
+        })
+      }
+      let reqData = data
+      if(method === 'get'){
+        reqData = {params: data}
+      }
+      service[method](url, reqData).then(r => {
+        s(r)
+      }).catch(e => {
+        j(e)
+      })
+    }
+    else {
+      j("请求地址为空")
+      console.warn("请求地址为空")
+    }
+  })
+}
 
 export default {
   /**
@@ -96,7 +131,7 @@ export default {
    */
   post(url, data = {}, config = {}) {
     return new Promise((s, j) => {
-      service.post(url, {data: data, ...config}).then(r => {
+      checkRequest('post', url, data, config).then(r => {
         s(r)
       }).catch(e => {
         j(e)
@@ -108,7 +143,7 @@ export default {
    */
   put(url, data = {}, config = {}) {
     return new Promise((s, j) => {
-      service.put(url, {data: data, ...config}).then(r => {
+      checkRequest('put', url, data, config).then(r => {
         s(r)
       }).catch(e => {
         j(e)
@@ -120,7 +155,7 @@ export default {
    */
   get(url, data = {}, config = {}) {
     return new Promise((s, j) => {
-      service.get(url, {params: data, ...config}).then(r => {
+      checkRequest(get, url, data, config).then(r => {
         s(r)
       }).catch(e => {
         j(e)
@@ -132,7 +167,7 @@ export default {
    */
   delete(url, data = {}, config = {}) {
     return new Promise((s, j) => {
-      service.post(url, {data: data, ...config}).then(r => {
+      checkRequest('delete', url, data, config).then(r => {
         s(r)
       }).catch(e => {
         j(e)

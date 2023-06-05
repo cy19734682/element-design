@@ -15,7 +15,7 @@
 </template>
 <script>
   import _ from 'lodash'
-  import { t } from '@/locale'
+  import { t } from '../../locale'
   import {
     provinceAndCityData, regionData, CodeToText
   } from 'element-china-area-data'

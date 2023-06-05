@@ -55,9 +55,8 @@
 </template>
 
 <script>
-import {scrollTo} from '@/methods/scroll-to'
-
-export default {
+  import {scrollTo} from '../../methods/scroll-to'
+  export default {
     name: 'EmTablePage',
     components:{
       /**自定义render组件**/
@@ -287,7 +286,7 @@ export default {
       getTableData() {
         return new Promise(resolve => {
           if (this.url && this.url !== '') {
-            this.$request.get(this.url, this.queryData,{isShowLoading: this.loading}).then(d => {
+            this.$request.post(this.url, this.queryData,{isShowLoading: this.loading}).then(d => {
               if (d && d.code === 0 && d.data) {
                 this.dataT = d.data.data || []
                 this.total = d.data[this.totalKey] || 0

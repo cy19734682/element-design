@@ -265,10 +265,22 @@
 <script>
   import moment from 'moment'
   import _ from 'lodash'
-  import Locale from '@/mixins/locale'
+  import Locale from '../../mixins/locale'
+  import EmBaiduMap from "../EmBaiduMap"
+  import EmCascader from "../EmCascader"
+  import EmCascaderArea from "../EmCascaderArea"
+  import EmEditor from "../EmEditor"
+  import EmUpload from "../EmUpload"
   export default {
     name: "EmForm",
     mixins: [Locale],
+    components:{
+      EmBaiduMap,
+      EmCascader,
+      EmCascaderArea,
+      EmEditor,
+      EmUpload
+    },
     props: {
       formData: {
         /*表单结构数据*/

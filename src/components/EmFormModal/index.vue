@@ -28,10 +28,14 @@
 </template>
 
 <script>
-  import Locale from '@/mixins/locale'
+  import Locale from '../../mixins/locale'
+  import EmForm from "../EmForm"
 
   export default {
     name: 'EmFormModal',
+    components:{
+      EmForm
+    },
     mixins: [Locale],
     props: {
       title: {

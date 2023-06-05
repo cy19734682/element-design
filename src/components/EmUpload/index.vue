@@ -30,7 +30,7 @@
 </template>
 <script>
 
-  import Locale from '@/mixins/locale'
+  import Locale from '../../mixins/locale'
   export default {
     name: 'EmUpload',
     mixins: [Locale],
@@ -67,8 +67,8 @@
         type: Object,
         default() {
           let header = {}
-          if(this.$request.config && this.$request.config.store){
-            header = {"x-oauth-token": this.$request.config.store.token}
+          if(this.$request.config && this.$request.config.store && this.$request.config.store.getters.token){
+            header = {"x-oauth-token": this.$request.config.store.getters.token}
           }
           return header
         }

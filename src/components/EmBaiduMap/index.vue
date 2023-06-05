@@ -24,7 +24,7 @@
 
 <script>
   import _ from 'lodash'
-  import {t} from '@/locale'
+  import { t } from '../../locale'
   import {BaiduMap, BmNavigation, BmView, BmGeolocation, BmLocalSearch} from 'vue-baidu-map'
 
   export default {
