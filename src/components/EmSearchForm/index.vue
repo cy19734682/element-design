@@ -119,7 +119,7 @@
       clear() {/*私有，可使用resetForm代替*/
         this.$refs.searchFormRef.clearForm()
       },
-      updateValGroup(data, notClearOthers) { /*更新表单项的值（只能更新已有字段），公开*/
+      updateDataGroup(data, notClearOthers) { /*更新表单项的值（只能更新已有字段），公开*/
         this.$refs.searchFormRef.updateDataGroup(data, notClearOthers)
       },
       updateFormDataT(data) { /*更新表单结构，例如设置或取消禁用，公开*/

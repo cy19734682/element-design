@@ -1,7 +1,7 @@
 <template>
   <div class="em-map">
     <div class="searchInput">
-      <el-input suffix-icon="el-icon-search" v-model="keyword" :placeholder="placeholder" :disabled="disabled" />
+      <el-input suffix-icon="el-icon-search" v-model="keyword" :placeholder="placeholder || t('em.button.search')" :disabled="disabled" />
     </div>
     <baidu-map
         class="map" :center="valueT" :zoom="zoom" @ready="readyHandler"
@@ -24,7 +24,7 @@
 
 <script>
   import _ from 'lodash'
-  import { t } from '../../locale'
+  import Locale from '../../mixins/locale'
   import {BaiduMap, BmNavigation, BmView, BmGeolocation, BmLocalSearch} from 'vue-baidu-map'
 
   export default {
@@ -40,6 +40,7 @@
       prop: 'value',
       event: 'on-val-change'
     },
+    mixins: [Locale],
     props: {
       value: {
         type: Object,
@@ -61,7 +62,7 @@
       },
       placeholder: {
         type: String,
-        default: t('em.button.search')
+        default: ''
       },
       ak: {
         type: String,

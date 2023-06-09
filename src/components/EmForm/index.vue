@@ -9,9 +9,9 @@
       <!--解决form只有一个input时enter触发页面刷新的问题-->
       <el-form-item style="display: none"><input type="text" /></el-form-item>
       <el-form-item
-          v-for="(item,index) in formDataT" :key="item.key + index" :prop="item.key" :label="item.label"
-          :label-width="item.labelWidth || labelWidth" :disabled="item.disabled || disabled"
-          :show-message="item.showMessage || showMessage"
+          v-for="(item,index) in formDataT" :key="item.key + index" v-if="getFormItemIfVal(item)"
+          :prop="item.key" :label="item.label" :label-width="item.labelWidth || labelWidth"
+          :disabled="item.disabled || disabled" :show-message="item.showMessage || showMessage"
       >
         <!--纯文本,也可以不传label和val,单纯用来布局占位-->
         <div v-if="item.type === 'txt'" style="display: inline-block;color: #606266;">{{ item.val }}</div>
@@ -263,8 +263,8 @@
   </div>
 </template>
 <script>
-  import moment from 'moment'
   import _ from 'lodash'
+  import {initFormItems, getTempKeyDefaultVal, updateTempKeys, initClearFormData} from './hooks'
   import Locale from '../../mixins/locale'
   import EmBaiduMap from "../EmBaiduMap"
   import EmCascader from "../EmCascader"
@@ -457,7 +457,7 @@
        */
       initFormDataT() {
         let t = _.cloneDeep(this.formData)
-        this.initFormItems(t)
+        initFormItems(t, this.tempKeys, this.dataGroup, this.watchGroup, this)
         this.formDataT = t
       },
       /**
@@ -488,18 +488,72 @@
        * 清空表单值
        */
       clearForm() {
-        let defaultV = this.getDefaultValues()
+        let defaultV = this.getDefaultValues() //获取表单默认值
         for (let k in this.dataGroup) {
-          if (this.dataGroup.hasOwnProperty(k)) {
-            if (this.isValidValue(defaultV[k])) {
-              this.$set(this.dataGroup, k, defaultV[k])
+          if (defaultV.hasOwnProperty(k) && this.isValidValue(defaultV[k])) {
+            this.$set(this.dataGroup, k, defaultV[k])
+          }
+          else {
+            initClearFormData(this.formDataT, 'key', this.dataGroup, k)
+          }
+        }
+        this.clearTempKeys(defaultV) //清理临时keys
+      },
+      /**
+       * 判断是否展示表单项（私有，高频被调用方法，每次表单中有任何值更改，都会被调用formDataT的长度<formDataT.length>次，而且还可能触发连锁反应）
+       * @param root 表单项结构数据
+       */
+      getFormItemIfVal(root) {
+        let showing = true
+        if (root.show) {
+          if (this.myTypeof(root.show) === 'Object') {
+            showing = this.dealIfItem(root.show)
+          }
+          else if (Array.isArray(root.show)) {
+            if (root.showOr) {
+              showing = false
+              for (let x of root.show) {
+                if (this.dealIfItem(x) === true) {//只要满足一个条件即可
+                  showing = true
+                  break
+                }
+              }
             }
             else {
-              this.initClearDataGroup(this.dataGroup, k)
+              for (let x of root.show) {
+                if (this.dealIfItem(x) === false) {
+                  showing = false
+                  break
+                }
+              }
+            }
+          }
+          else if (this.myTypeof(root.show) === 'Function') {
+            showing = root.show(this.dataGroup)
+          }
+        }
+        this.$set(root, 'showing', showing)
+        return showing
+      },
+      /**
+       * 判断表单项是否展示（私有）
+       * @param show 表单项的展示配置数据
+       * @returns {boolean}
+       */
+      dealIfItem(show) {
+        let isShow = false
+        if (Array.isArray(show.val)) {
+          for (let v of show.val) {
+            if (this.dataGroup[show.key] === v) {
+              isShow = true
+              break
             }
           }
         }
-        this.clearTempKeys(defaultV)
+        else {
+          isShow = this.dataGroup[show.key] === show.val
+        }
+        return isShow
       },
       /**
        * 更新表单项的值（只能更新已有字段，公开）
@@ -507,13 +561,13 @@
        * @param notClearOthers 是否清空其他表单项，默认清空
        */
       updateDataGroup(data, notClearOthers = false) {
-        this.updateTempKeys(data, notClearOthers)
+        updateTempKeys(this.formDataT, this.tempKeys, data, notClearOthers)
         for (let k in this.dataGroup) {
           if (data[k] !== undefined) {
             this.$set(this.dataGroup, k, data[k])
           }
           else if (!notClearOthers) {
-            this.initClearDataGroup(this.dataGroup, k)
+            initClearFormData(this.formDataT, 'key', this.dataGroup, k)
           }
         }
       },
@@ -532,45 +586,17 @@
         else if (this.myTypeof(d) === 'Object') {
           this.changeDataHandle(d)
         }
-      }, /**
-       * 重置表单，会清空表单值并刷新表单dom
-       * @returns {Promise<unknown>}
-       */
+      },
       /**
        * 清空缓存表单值
        * @param defaultV
        */
       clearTempKeys(defaultV) {
         for (let k in this.tempKeys) {
-          if (this.tempKeys.hasOwnProperty(k)) {
-            if (this.isValidValue(defaultV[k])) {
-              this.$set(this.tempKeys, k, defaultV[k])
-            }
-            else {
-              this.initClearDataGroup(this.tempKeys, k)
-            }
-          }
-        }
-      },
-      /**
-       * 初始化表单默认值
-       * @param d 初始化对象
-       * @param k key值
-       */
-      initClearDataGroup(d, k) {
-        if (Array.isArray(d[k])) {
-          this.$set(d, k, [])
-        }
-        else {
-          const formItem = this.formDataT.find(e => (e.tempKey || e.key) === k)
-          if (formItem && (formItem.type === 'editor')) {
-            this.$set(d, k, '')
-          }
-          else if (formItem && (formItem.type === 'inputNumber')) {
-            this.$set(d, k, undefined)
-          }
-          else {
-            this.$set(d, k, null)
+          if (defaultV.hasOwnProperty(k) && this.isValidValue(defaultV[k])) {
+            this.$set(this.tempKeys, k, defaultV[k])
+          }else {
+            initClearFormData(this.formDataT, 'tempKey', this.tempKeys, k)
           }
         }
       },
@@ -583,7 +609,7 @@
         for (let root of this.formDataT) {
           if (root.tempKey && this.isValidValue(root.defaultVal)) {
             /*将默认值转换为表单项绑定值对应的格式*/
-            this.getTempKeyDefaultVal(root, t)
+            getTempKeyDefaultVal(root, t)
           }
           if (root.key && this.isValidValue(root.defaultVal)) {
             t[root.key] = root.defaultVal
@@ -591,355 +617,11 @@
           if (root.key2 && this.isValidValue(root.defaultVal2)) {
             t[root.key2] = root.defaultVal2
           }
+          if (root.key3 && this.isValidValue(root.defaultVal3)) {
+            t[root.key3] = root.defaultVal3
+          }
         }
         return t
-      },
-      /**
-       * 初始化表单项tempKeys值
-       * @param d
-       */
-      initFormItems(d) {
-        for (let root of d) {
-          switch (root.type) {
-            case 'bdMap':
-              const tempKeyE = 'inputMap' + Math.floor(Math.random() * 100000000)
-              if (root.key) {
-                root.tempKey = tempKeyE
-                this.$set(this.tempKeys, tempKeyE, root.defaultVal !== undefined && root.defaultVal2 !== undefined ? {
-                  lng: root.defaultVal,
-                  lat: root.defaultVal2,
-                  name: root.defaultVal3 || ''
-                } : {
-                  lng: null,
-                  lat: null,
-                  name: null
-                })
-                this.watchGroup.push(this.$watch(() => this.tempKeys[tempKeyE], after => {
-                  this.tempKeysWatchHandle(after, root)
-                }, {immediate: true}))
-              }
-              break
-            case 'input':
-            case 'inputNumber':
-            case 'textarea':
-              const tempKeyD = 'inputT' + Math.floor(Math.random() * 100000000)
-              if (root.key) {
-                root.tempKey = tempKeyD
-                if (root.type === 'inputNumber') {
-                  this.$set(this.tempKeys, tempKeyD, root.defaultVal !== undefined ? root.defaultVal : undefined)
-                }
-                else {
-                  this.$set(this.tempKeys, tempKeyD, root.defaultVal !== undefined ? root.defaultVal : null)
-                }
-                this.watchGroup.push(this.$watch(() => this.tempKeys[tempKeyD], after => {
-                  this.tempKeysWatchHandle(after, root)
-                }, {immediate: true}))
-              }
-              break
-            case 'select':
-            case 'radio':
-            case 'checkbox':
-              if (!root.options) {
-                root.options = []
-              }
-              const tempKeyC = 'opEle' + Math.floor(Math.random() * 100000000)
-              if (root.key) {
-                root.tempKey = tempKeyC
-                if (root.type === 'select' && root.multiple || root.type === 'checkbox') {
-                  this.$set(this.tempKeys, tempKeyC, root.defaultVal !== undefined ? root.defaultVal : [])
-                }
-                else if (root.booleanVal) {
-                  this.$set(this.tempKeys, tempKeyC,
-                      root.defaultVal !== undefined ? (Boolean(root.defaultVal) ? 1 : 0) : null)
-                }
-                else {
-                  this.$set(this.tempKeys, tempKeyC, root.defaultVal !== undefined ? root.defaultVal : null)
-                }
-                this.watchGroup.push(this.$watch(() => this.tempKeys[tempKeyC], after => {
-                  this.tempKeysWatchHandle(after, root)
-                }, {
-                  immediate: true
-                }))
-              }
-              break
-            case 'date':
-            case 'time':
-              const tempKeyB = 'date' + Math.floor(Math.random() * 100000000)
-              root.tempKey = tempKeyB
-              if (root.dateType === 'daterange' || root.dateType === 'datetimerange' || root.dateType ===
-                  'monthrange') {
-                this.$set(this.tempKeys, tempKeyB, root.defaultVal && root.defaultVal2 && [
-                  root.defaultVal, root.defaultVal2
-                ] || [])
-              }
-              else if (root.type === 'time') {
-                let constTime = '1970-01-01 ' //时间类型的不能直接赋值，需要拼接年月日
-                if (root.isRange) {
-                  this.$set(this.tempKeys, tempKeyB, root.defaultVal && root.defaultVal2 && [
-                    constTime + root.defaultVal, constTime + root.defaultVal2
-                  ] || null)
-                }
-                else {
-                  this.$set(this.tempKeys, tempKeyB, constTime + root.defaultVal || null)
-                }
-              }
-              else {
-                this.$set(this.tempKeys, tempKeyB, root.defaultVal || null)
-              }
-              this.watchGroup.push(this.$watch(() => this.tempKeys[tempKeyB], after => {
-                this.tempKeysWatchHandle(after, root)
-              }))
-              break
-          }
-        }
-      },
-      /**
-       * 监听tempKeys项的值，然后赋值给dataGroup
-       * @param after
-       * @param root
-       */
-      tempKeysWatchHandle(after, root) {
-        switch (root.type) {
-          case 'bdMap':
-            if (after) {
-              this.dataGroup[root.key] = after.lng
-              this.dataGroup[root.key2] = after.lat
-              if (root.key3) {
-                this.dataGroup[root.key3] = after.name
-              }
-            }
-            else {
-              this.dataGroup[root.key] = null
-              this.dataGroup[root.key2] = null
-              if (root.key3) {
-                this.dataGroup[root.key3] = null
-              }
-            }
-            break
-          case 'input':
-          case 'inputNumber':
-          case 'textarea':
-            if (after || after === 0) {
-              this.dataGroup[root.key] = after
-            }
-            else {
-              if (root.type === 'inputNumber') {
-                this.dataGroup[root.key] = undefined
-              }
-              else {
-                this.dataGroup[root.key] = null
-              }
-            }
-            break
-          case 'select':
-          case 'radio':
-          case 'checkbox':
-            if (root.booleanVal && (!root.multiple)) {
-              this.dataGroup[root.key] =
-                  ((after === undefined || after === '' || after === null) ? null : Boolean(after))
-            }
-            else if (root.multiple || root.type === 'checkbox') {
-              this.dataGroup[root.key] = Object.assign([], after)
-            }
-            else {
-              this.dataGroup[root.key] = after
-            }
-            break
-          case 'date':
-          case 'time':
-            let tp = root.dateType || 'date'
-            const fm = {
-              year: 'YYYY',
-              month: 'MM',
-              date: 'YYYY-MM-DD',
-              time: 'HH:mm:ss',
-              datetime: 'YYYY-MM-DD HH:mm:ss',
-              daterange: 'YYYY-MM-DD',
-              monthrange: 'YYYY-MM',
-              datetimerange: 'YYYY-MM-DD HH:mm:ss',
-            }
-            if (tp === 'daterange' || tp === 'datetimerange' || tp === 'monthrange' ||
-                (root.type === 'time' && root.isRange)) {
-              if (after && after[0] && after[1]) {
-                if ((root.type === 'time' && root.isRange)) {
-                  this.dataGroup[root.key] = moment(after[0]).format(root.format || fm[root.type])
-                  this.dataGroup[root.key2] = moment(after[1]).format(root.format || fm[root.type])
-                }
-                else {
-                  this.dataGroup[root.key] = moment(after[0]).format(root.format || fm[tp])
-                  this.dataGroup[root.key2] = moment(after[1]).format(root.format || fm[tp])
-                }
-                if (tp === 'daterange' && root.addTime) {
-                  this.dataGroup[root.key] += ' 00:00:00'
-                  this.dataGroup[root.key2] += ' 23:59:59'
-                }
-              }
-              else {
-                this.dataGroup[root.key] = null
-                this.dataGroup[root.key2] = null
-              }
-            }
-            else {
-              if (after) {
-                if (root.type === 'time') {
-                  this.dataGroup[root.key] = moment(after).format(root.format || fm[root.type])
-                }
-                else {
-                  this.dataGroup[root.key] = moment(after).format(root.format || fm[tp])
-                }
-                if (tp === 'date' && root.addTime) {
-                  this.dataGroup[root.key] += ' 00:00:00'
-                }
-              }
-              else {
-                this.dataGroup[root.key] = null
-              }
-            }
-            break
-        }
-      },
-      /**
-       * 将使用tempKey的表单项的默认值赋转换成对应格式并储存(私有)
-       * @param root 表单项结构数据
-       * @param a 储存默认值的容器
-       */
-      getTempKeyDefaultVal(root, a) {
-        switch (root.type) {
-          case 'bdMap':
-            a[root.tempKey] = {
-              lng: root.defaultVal || 0,
-              lat: root.defaultVal2 || 0
-            }
-            if (root.key3) {
-              a[root.tempKey]['name'] = root.defaultVal3 || ''
-            }
-            break
-          case 'input':
-          case 'inputNumber':
-          case 'textarea':
-            a[root.tempKey] = root.defaultVal
-            break
-          case 'radio':
-          case 'select':
-          case 'checkbox':
-            if (root.booleanVal) {
-              a[root.tempKey] = Boolean(root.defaultVal) ? 1 : 0
-            }
-            else {
-              a[root.tempKey] = root.defaultVal
-            }
-            break
-          case 'date':
-          case 'time':
-            const tempKeyB = 'date' + Math.floor(Math.random() * 100000000)
-            root.tempKey = tempKeyB
-            if (root.dateType === 'daterange' || root.dateType === 'datetimerange' || root.dateType === 'monthrange') {
-              a[root.tempKey] = root.defaultVal && root.defaultVal2 && [
-                root.defaultVal, root.defaultVal2
-              ] || []
-            }
-            else if (root.type === 'time' && root.isRange) {
-              a[root.tempKey] = root.defaultVal && root.defaultVal2 && [
-                root.defaultVal, root.defaultVal2
-              ] || null
-            }
-            else {
-              a[root.tempKey] = root.defaultVal
-            }
-            break
-        }
-      },
-      /**
-       * 更新tampKey
-       * @param d 新数据
-       * @param notClearOthers 是否清空其他表单项，默认清空
-       */
-      updateTempKeys(d, notClearOthers = false) {
-        for (let root of this.formDataT) {
-          if ((notClearOthers && (d[root.key] !== undefined || d[root.key2] !== undefined) || !notClearOthers) &&
-              root.tempKey) {
-            switch (root.type) {
-              case 'bdMap':
-                if (this.myTypeof(d[root.key]) === 'Number' && this.myTypeof(d[root.key2] === 'Number')) {
-                  this.tempKeys[root.tempKey] = {
-                    lng: d[root.key],
-                    lat: d[root.key2]
-                  }
-                  if (root.key3) {
-                    this.tempKeys[root.tempKey]['name'] = d[root.key3] || ''
-                  }
-                }
-                else {
-                  this.tempKeys[root.tempKey] = {
-                    lng: null,
-                    lat: null
-                  }
-                  if (root.key3) {
-                    this.tempKeys[root.tempKey]['name'] =  ''
-                  }
-                }
-                break
-              case 'input':
-              case 'inputNumber':
-              case 'textarea':
-                if (d[root.key] || d[root.key] === 0) {
-                  this.tempKeys[root.tempKey] = d[root.key]
-                }
-                else {
-                  if (root.type === 'inputNumber') {
-                    this.tempKeys[root.key] = undefined
-                  }
-                  else {
-                    this.tempKeys[root.key] = null
-                  }
-                }
-                break
-              case 'select':
-              case 'radio':
-              case 'checkbox':
-                if (d[root.key] || d[root.key] === 0 || d[root.key] === false) {
-                  if (root.multiple || root.type === 'checkbox') {
-                    this.$set(this.tempKeys, root.tempKey, [...d[root.key]])
-                  }
-                  else if (root.booleanVal) {
-                    this.$set(this.tempKeys, root.tempKey, Boolean(d[root.key]) ? 1 : 0)
-                  }
-                  else {
-                    this.$set(this.tempKeys, root.tempKey, d[root.key])
-                  }
-                }
-                else {
-                  if (root.multiple || root.type === 'checkbox') {/*当notClearOthers为false时用来清空*/
-                    this.$set(this.tempKeys, root.tempKey, [])
-                  }
-                  else {
-                    this.$set(this.tempKeys, root.tempKey, null)
-                  }
-                }
-                break
-              case 'date':
-              case 'time':
-                if (root.dateType === 'daterange' || root.dateType === 'datetimerange' || root.dateType ===
-                    'monthrange') {
-                  this.tempKeys[root.tempKey] = d[root.key] && d[root.key2] && [d[root.key], d[root.key2]] || []
-                }
-                else if (root.type === 'time') {
-                  let constTime = '1970-01-01 ' //时间类型的不能直接赋值，需要拼接年月日
-                  if (root.isRange) {
-                    this.tempKeys[root.tempKey] =
-                        d[root.key] && d[root.key2] && [constTime + d[root.key], constTime + d[root.key2]] || null
-                  }
-                  else {
-                    this.tempKeys[root.tempKey] = constTime + d[root.key] || null
-                  }
-                }
-                else {
-                  this.tempKeys[root.tempKey] = d[root.key] || null
-                }
-                break
-            }
-          }
-        }
       },
       /**
        * 改变表单结构（私有）
@@ -1028,8 +710,54 @@
           if (root.key3) {
             d[root.key3] = this.dataGroup[root.key3]
           }
+          if (root.collectLabel && root.collectLabel.key) {
+            d[root.collectLabel.key] = this.dataGroup[root.collectLabel.key]
+          }
+          else if (Array.isArray(root.collectLabel)) {
+            for (let l of root.collectLabel) {
+              d[l.key] = this.dataGroup[l.key]
+            }
+          }
           this.$emit('on-item-change', d)
         }, 200)
+      },
+      /**
+       * 获取需要提交的数据(私有)
+       * @return {{}}submit的值
+       */
+      getDataGroup() {
+        let keys = []
+        for (let e of this.formDataT) {
+          if(e['showing'] === true && e.key){
+            keys.push(e.key)
+            if (e.key2) {
+              keys.push(e.key2)
+            }
+            if (e.key3) {
+              keys.push(e.key3)
+            }
+            if (e.collectLabel) {
+              if (this.myTypeof(e.collectLabel) === 'Object' && e.collectLabel.key) {
+                keys.push(e.collectLabel.key)
+              }
+              else if (Array.isArray(e.collectLabel)) {
+                for (let l of e.collectLabel) {
+                  if (l.key) {
+                    keys.push(l.key)
+                  }
+                }
+              }
+            }
+          }
+        }
+        let t = {}
+        for (let e of keys) {
+          t[e] = this.dataGroup[e]
+        }
+        if (this.trim) {
+          t = this.trimObj(t)
+        }
+        return t
       },
       /**
        * 提交事件
@@ -1038,16 +766,12 @@
         if (this.disabled) {
           return
         }
-        let t = this.dataGroup
-        if (this.trim) {
-          t = this.trimObj(t)
-        }
         this.$refs.elFormRef.validate(valid => {
           if (!this.debounceCount) {
             this.debounceCount = true
             if (valid) {
               this.showLoading = true
-              this.$emit('on-submit', t)
+              this.$emit('on-submit', this.getDataGroup())
             }
             setTimeout(() => {
               this.debounceCount = false

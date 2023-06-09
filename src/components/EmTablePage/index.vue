@@ -156,17 +156,17 @@
       currentPageKey: {
         /*分页当前页码key*/
         type: String,
-        default: "page"
+        default: "current"
       },
       pageSizeKey: {
         /*每页显示条目个数key*/
         type: String,
-        default: "limit"
+        default: "size"
       },
       totalKey: {
         /*总条目数key*/
         type: String,
-        default: "count"
+        default: "total"
       },
       pageSizes: {
         /*每页显示个数选择器的选项设置*/
@@ -207,8 +207,9 @@
        * @returns {*[]}
        */
       columnsT() {
-        return this.columns.filter(item => {
-          return item.type !== 'selection'
+        return this.columns.map(item => {
+          item['key'] = item['key'] || ''
+          return item
         })
       },
       /**

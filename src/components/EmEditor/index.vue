@@ -57,7 +57,7 @@
       placeholder: {
         /*占位符*/
         type: String,
-        default: t('em.pInput')
+        default: ''
       },
       disabled: {
         /*是否禁用编辑功能*/
@@ -89,7 +89,7 @@
       editorConfigT() {
         return Object.assign({
           autoFocus: false,
-          placeholder: this.placeholder,
+          placeholder: this.placeholder || t('em.pInput'),
           insertKeys: {
             index: 31,
             keys: ['previewX']

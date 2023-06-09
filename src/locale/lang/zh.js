@@ -4,6 +4,8 @@ export default {
     pInput: '请输入',
     title: '标题',
     required: '该项为必填',
+    dragExcel: '将excel文件拖到这里或',
+    sysError: '系统出错',
     button: {
       search: '搜索',
       reset: '重置',
@@ -22,5 +24,10 @@ export default {
       save: '保存',
       clear: '清空',
     },
+    loginTips:{
+      title:'确认退出',
+      content:'当前页面已失效，请重新登录',
+      okTxt:'重新登录',
+    }
   }
 }

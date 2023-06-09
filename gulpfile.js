@@ -8,7 +8,7 @@ const {src, dest, series} = gulp
 
 //编译 less
 function build(cb) {
-  src('./src/style/index.less')
+  src('./src/style/index.scss')
     .pipe(less({style: 'expanded'}))
     .pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9'))
     .pipe(cleanCSS())

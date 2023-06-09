@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import appMain from './components/appMain'
 
 Vue.use(Router)
 
@@ -11,95 +12,131 @@ Vue.use(Router)
 const constantRoutes = [
   {
     path: '/',
-    redirect: 'index'
+    redirect: '/index'
   },
   {
     path: '/index',
     component: () => import('./views/index'),
     name: 'index',
+  },
+  {
+    path: '/login',
+    component: () => import('./views/login'),
+    name: 'login',
     meta: {
-      title: '首页'
+      title: '登录'
     }
   },
   {
-    path: '/uploadExcelEx',
-    component: () => import('./views/example/uploadExcelEx'),
-    name: 'uploadExcelEx',
-    meta: {
-      title: 'excel上传解析'
-    }
-  },
-  {
-    path: '/emFormEx',
-    component: () => import('./views/example/emFormEx'),
-    name: 'emFormEx',
-    meta: {
-      title: 'emForm表单'
-    }
-  },
-  {
-    path: '/emSearchFormEx',
-    component: () => import('./views/example/emSearchFormEx'),
-    name: 'emSearchFormEx',
-    meta: {
-      title: 'SearchForm表单'
-    }
-  },
-  {
-    path: '/emFormGroupEx',
-    component: () => import('./views/example/emFormGroupEx'),
-    name: 'emFormGroupEx',
-    meta: {
-      title: 'formGroup表单'
-    }
-  },
-  {
-    path: '/emFormModalEx',
-    component: () => import('./views/example/emFormModalEx'),
-    name: 'emFormModalEx',
-    meta: {
-      title: 'formModal表单'
-    }
-  },
-  {
-    path: '/emTablePageEx',
-    component: () => import('./views/example/emTablePageEx'),
-    name: 'emTablePageEx',
-    meta: {
-      title: 'emTablePageEx列表'
-    }
-  },
-  {
-    path: '/emUploadEx',
-    component: () => import('./views/example/emUploadEx'),
-    name: 'emUploadEx',
-    meta: {
-      title: 'emUploadEx文件上传'
-    }
-  },
-  {
-    path: '/emCascaderAreaEx',
-    component: () => import('./views/example/emCascaderAreaEx'),
-    name: 'emCascaderAreaEx',
-    meta: {
-      title: 'emCascaderAreaEx省市区选择'
-    }
-  },
-  {
-    path: '/emCascaderEx',
-    component: () => import('./views/example/emCascaderEx'),
-    name: 'emCascaderEx',
-    meta: {
-      title: 'emCascaderEx自定义级联'
-    }
-  },
-  {
-    path: '/emMapEx',
-    component: () => import('./views/example/emMapEx'),
-    name: 'emMapEx',
-    meta: {
-      title: 'emMapEx地图组件'
-    }
+    path: '/home',
+    component: appMain,
+    name: 'home',
+    children: [
+      {
+        path: 'uploadExcelEx',
+        component: () => import('./views/example/uploadExcelEx'),
+        name: 'uploadExcelEx',
+        meta: {
+          title: 'excel上传解析'
+        },
+      },
+      {
+        path: 'emFormEx',
+        component: () => import('./views/example/emFormEx'),
+        name: 'emFormEx',
+        meta: {
+          title: 'emForm表单'
+        },
+      },
+      {
+        path: 'emSearchFormEx',
+        component: () => import('./views/example/emSearchFormEx'),
+        name: 'emSearchFormEx',
+        meta: {
+          title: 'SearchForm表单'
+        },
+      },
+      {
+        path: 'emFormGroupEx',
+        component: () => import('./views/example/emFormGroupEx'),
+        name: 'emFormGroupEx',
+        meta: {
+          title: 'formGroup表单'
+        },
+      },
+      {
+        path: 'emFormModalEx',
+        component: () => import('./views/example/emFormModalEx'),
+        name: 'emFormModalEx',
+        meta: {
+          title: 'formModal表单'
+        }
+      },
+      {
+        path: 'emTablePageEx',
+        component: () => import('./views/example/emTablePageEx'),
+        name: 'emTablePageEx',
+        meta: {
+          title: 'emTablePageEx列表'
+        }
+      },
+      {
+        path: 'emUploadEx',
+        component: () => import('./views/example/emUploadEx'),
+        name: 'emUploadEx',
+        meta: {
+          title: 'emUploadEx文件上传'
+        }
+      },
+      {
+        path: 'emCascaderAreaEx',
+        component: () => import('./views/example/emCascaderAreaEx'),
+        name: 'emCascaderAreaEx',
+        meta: {
+          title: 'emCascaderAreaEx省市区选择'
+        }
+      },
+      {
+        path: 'emCascaderEx',
+        component: () => import('./views/example/emCascaderEx'),
+        name: 'emCascaderEx',
+        meta: {
+          title: 'emCascaderEx自定义级联'
+        }
+      },
+      {
+        path: 'emMapEx',
+        component: () => import('./views/example/emMapEx'),
+        name: 'emMapEx',
+        meta: {
+          title: 'emMapEx地图组件'
+        }
+      },
+      {
+        path: 'emChartsEx',
+        component: () => import('./views/example/emChartsEx'),
+        name: 'emChartsEx',
+        meta: {
+          title: 'emChartsEx图表组件'
+        }
+      },
+      {
+        path: 'emIconEx',
+        component: () => import('./views/example/emIconEx'),
+        name: 'emIconEx',
+        meta: {
+          title: 'emIconEx图标组件'
+        }
+      },
+      {
+        path: 'emIconSelectEx',
+        component: () => import('./views/example/emIconSelectEx'),
+        name: 'emIconSelectEx',
+        meta: {
+          title: 'emIconEx图标选择组件'
+        }
+      }
+    ]
   },
 ]
 /**

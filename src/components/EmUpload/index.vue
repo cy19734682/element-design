@@ -23,7 +23,7 @@
       <i slot="default" class="el-icon-plus" v-if="listType === 'picture-card'"></i>
       <el-button size="small" type="primary" v-else>{{t('em.button.clickUpload')}}</el-button>
     </el-upload>
-    <el-dialog :visible.sync="dialogVisible" style="z-index: 999">
+    <el-dialog :visible.sync="dialogVisible" style="z-index: 999" append-to-body>
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
   </div>

@@ -4,6 +4,8 @@ export default {
     pInput: 'Enter here',
     title: 'Title',
     required: 'Required',
+    dragExcel: 'Drag the Excel file here or',
+    sysError: 'system error',
     button: {
       search: 'Search',
       reset: 'Reset',
@@ -22,5 +24,10 @@ export default {
       save: 'Save',
       clear: 'Clear',
     },
+    loginTips:{
+      title:'Confirm exit',
+      content:'The current page has expired, please log in again',
+      okTxt:'Log in again',
+    }
   }
 }

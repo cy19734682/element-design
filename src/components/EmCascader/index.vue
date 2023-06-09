@@ -12,14 +12,14 @@
       :show-all-levels="showAllLevels"
       :size="size"
       :disabled="disabled"
-      :placeholder="placeholder"
+      :placeholder="placeholder || t('em.pInput')"
       :filterable="filterable"
       clearable
   />
 </template>
 <script>
   import _ from 'lodash'
-  import { t } from '../../locale'
+  import Locale from '../../mixins/locale'
 
   export default {
     name: 'EmCascader',
@@ -27,6 +27,7 @@
       prop: 'value',
       event: 'on-val-change'
     },
+    mixins: [Locale],
     props: {
       url: {
         /*文件上传的地址*/
@@ -99,7 +100,7 @@
       placeholder: {
         /*占位符*/
         type: String,
-        default: t('em.pInput')
+        default: ""
       }
     },
     computed: {

@@ -2,9 +2,9 @@
   <div class="em_upload_excel">
     <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
     <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
-      Drop excel file here or
-      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
-        Browse
+      {{t('em.dragExcel')}}
+      <el-button :loading="loading" style="margin-left:16px;" type="primary" @click="handleUpload">
+        {{t('em.button.clickUpload')}}
       </el-button>
     </div>
   </div>
@@ -12,9 +12,11 @@
 
 <script>
   import XLSX from 'xlsx'
+  import Locale from '../../mixins/locale'
 
   export default {
     name:"EmUploadExcel",
+    mixins: [Locale],
     props: {
       beforeUpload: Function, // eslint-disable-line
       onSuccess: Function// eslint-disable-line

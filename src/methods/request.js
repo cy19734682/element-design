@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {MessageBox, Message, Loading} from 'element-ui'
+import { t } from '../locale'
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 let loading = null
@@ -35,9 +36,9 @@ service.interceptors.response.use(({data}) => {
     return data
   }
   else if (code === -999) {
-    MessageBox.confirm('当前页面已失效，请重新登录', '确认退出', {
-      confirmButtonText: '重新登录',
-      cancelButtonText: '取消',
+    MessageBox.confirm(t('em.loginTips.content'), t("em.loginTips.title"), {
+      confirmButtonText: t("em.loginTips.okTxt"),
+      cancelButtonText: t("em.button.cancel"),
       type: 'warning'
     }).then(() => {
       logoutHandle()
@@ -48,7 +49,7 @@ service.interceptors.response.use(({data}) => {
   }
   else {
     Message({
-      message: msg || '系统出错',
+      message: msg || t("em.sysError"),
       type: 'error'
     })
     return Promise.reject(new Error(msg || 'Error'))
@@ -57,7 +58,7 @@ service.interceptors.response.use(({data}) => {
   loading && loading.close()
   const {msg} = error.response.data
   Message({
-    message: msg || '系统出错',
+    message: msg || t("em.sysError"),
     type: 'error'
   })
   return Promise.reject(new Error(msg || 'Error'))
@@ -76,7 +77,13 @@ function logoutHandle() {
       }
     }
     else {
-      service.store.dispatch("logout")
+      service.store.dispatch("user/logout").then(()=>{
+        if(service.router){
+          service.router.push(`/login?redirect=${service.router.history.current.path}`)
+        }else {
+          console.warn('router为空，请在安装插件时传入router实例：Vue.use(elmDesign,{router:router})')
+        }
+      })
     }
   }
   else {
@@ -103,6 +110,8 @@ function checkRequest(method, url, data, config) {
       let reqData = data
       if(method === 'get'){
         reqData = {params: data}
+      }else if(method === 'delete'){
+        reqData = {data: data}
       }
       service[method](url, reqData).then(r => {
         s(r)
@@ -122,9 +131,11 @@ export default {
    * @description 初始化该请求插件
    * @function
    * @param {object} store 项目中vuex的store
+   * @param {object} router 项目中路由管理
    */
-  init(store) {
+  init({store, router}) {
     service.store = store
+    service.router = router
   },
   /**
    * post 请求

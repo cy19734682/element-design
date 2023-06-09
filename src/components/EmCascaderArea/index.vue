@@ -8,14 +8,14 @@
       :show-all-levels="showAllLevels"
       :size="size"
       :disabled="disabled"
-      :placeholder="placeholder"
+      :placeholder="placeholder || t('em.pInput')"
       :filterable="filterable"
       clearable
   />
 </template>
 <script>
   import _ from 'lodash'
-  import { t } from '../../locale'
+  import Locale from '../../mixins/locale'
   import {
     provinceAndCityData, regionData, CodeToText
   } from 'element-china-area-data'
@@ -26,6 +26,7 @@
       prop: 'value',
       event: 'on-val-change'
     },
+    mixins: [Locale],
     props: {
       value: {
         /*组件绑定的值（v-model）*/
@@ -74,7 +75,7 @@
       placeholder: {
         /*占位符*/
         type: String,
-        default: t('em.pInput')
+        default: ''
       }
     },
     computed: {

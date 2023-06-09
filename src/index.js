@@ -9,6 +9,9 @@ import EmSearchForm from './components/EmSearchForm'
 import EmTablePage from './components/EmTablePage'
 import EmUpload from './components/EmUpload'
 import EmUploadExcel from './components/EmUploadExcel'
+import EmCharts from './components/EmCharts'
+import EmIcons from './components/EmIcons'
+import EmIconSelect from './components/EmIconSelect'
 
 import {
   formatTime,
@@ -43,7 +46,10 @@ const components = {
   EmSearchForm,
   EmTablePage,
   EmUpload,
-  EmUploadExcel
+  EmUploadExcel,
+  EmCharts,
+  EmIcons,
+  EmIconSelect
 }
 
 /*需要从插件中单独引入的方法（使用频率低）*/
@@ -76,9 +82,10 @@ const install = function (Vue, opts = {}) {
   if (install.installed) {
     return
   }
-
-  $request.init(opts.store)
+  $request.init({store: opts.store, router: opts.router})
   locale.i18n(opts.i18n)
+  require("./style/index.scss")
+  require("./style/iconfont/iconfont.js")
 
   if (!Vue) {
     console.error('组件库安装失败，未获取到Vue对象')

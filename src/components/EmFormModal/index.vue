@@ -4,7 +4,8 @@
       :title="title|| t('em.button.title')"
       :visible.sync="openModal"
       :close-on-click-modal="false"
-      @close="close"
+      append-to-body
+      @close="closeCb"
       top="5vh"
       :width="width"
       custom-class="em-form-modal"
@@ -102,7 +103,7 @@
       clear() {/*私有，可使用resetForm代替*/
         this.$refs.formGroupRef.clearForm()
       },
-      updateValGroup(data, notClearOthers) { /*更新表单项的值（只能更新已有字段），公开*/
+      updateDataGroup(data, notClearOthers) { /*更新表单项的值（只能更新已有字段），公开*/
         this.$refs.formGroupRef.updateDataGroup(data, notClearOthers)
       },
       updateFormDataT(data) { /*更新表单结构，例如设置或取消禁用，公开*/
@@ -123,10 +124,12 @@
       },
       close() { /*触发关闭弹框事件，公开*/
         this.openModal = false
+      },
+      closeCb(){/*弹框关闭的回调事件*/
         this.$emit('on-close')
         setTimeout(() => {
           this.showLoading = false
-          this.$refs.formGroupRef.changeLoading(false)
+          this.$refs.formGroupRef && this.$refs.formGroupRef.changeLoading(false)
         }, 800)
       },
       submit() {/*触发提交事件，公开*/

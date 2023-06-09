@@ -159,7 +159,7 @@ export function toggleClass(element, className) {
  * @param {boolean} immediate
  * @return {*}
  */
-export function debounce(func, wait, immediate) {
+export function debounce(func, wait, immediate = false) {
   let timeout, args, context, timestamp, result
   
   const later = function () {

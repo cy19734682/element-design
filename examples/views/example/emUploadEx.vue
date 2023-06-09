@@ -3,6 +3,7 @@
     <h2>文件上传</h2>
     <em-upload
         v-model="id"
+        fileName="files"
         multiple
         :length="5"
         :format="['jpg','xlsx']"

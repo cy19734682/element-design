@@ -9,10 +9,10 @@
         :form-data="formData"
         :form-rules="formRules"
         btnLoading
+        @on-item-change="onItemChange"
         @on-submit="onSubmit"
         @on-close="onClose"
-    >
-    </em-form-modal>
+    />
   </div>
 </template>
 
@@ -53,6 +53,52 @@
                 val: 5,
                 disabled: true
               }
+            ]
+          }, {
+            type: "select",
+            label: "借用数据",
+            key: "wbId",
+            borrowOption: "education",
+            optionLabel: "name",
+            optionVal: "id",
+            collectLabel: {
+              valKey: 'mimeType',
+              key: 'mine2'
+            }
+          }, {
+            type: "select",
+            label: "远程数据",
+            key: "devId",
+            asyncOption: true,
+            optionUrl: "/bt-table-page",
+            optionLabel: "name",
+            optionVal: "id",
+            collectLabel: {
+              valKey: 'mimeType',
+              key: 'mine'
+            },
+            changeOption: [
+              {
+                valKey: 'wbId',
+                key: 'wbId'
+              },
+              {
+                valKey: 'education',
+                key: 'education',
+                notRequired: true
+              }
+            ],
+            localOption: [
+              {
+                id: 998,
+                name: "test1",
+                mimeType: "t1"
+              },
+              {
+                id: 999,
+                name: "test2",
+                mimeType: "t2"
+              },
             ]
           }, {
             type: "date",
@@ -128,13 +174,22 @@
       },
       editData() {
         this.$refs.formModalRef.updateFormDataT([
-          {index:0,key:"label",val:"姓名1"},
-          {index:1,key:"label",val:"单价"}
+          {
+            index: 0,
+            key: "label",
+            val: "姓名1"
+          }, {
+            index: 1,
+            key: "label",
+            val: "单价"
+          }
         ])
-        this.$refs.formModalRef.updateValGroup({
+        this.$refs.formModalRef.updateDataGroup({
           name: "小王",
           price: 2690,
-          education: 4,
+          education: 3,
+          wbId: 2,
+          devId: 81,
           date: '2023-05-01',
           time: '14:29:10',
           datetime: "2023-01-05 11:12:52",
@@ -145,13 +200,17 @@
         })
         this.$refs.formModalRef.open()
       },
+      onItemChange(d) {
+        console.log(d)
+      },
       onSubmit(data) {
         console.log(data)
         setTimeout(() => {
           this.$refs.formModalRef.changeLoading(false)
         }, 500)
       },
-      onClose(){
+      onClose() {
+        console.log('关闭')
         setTimeout(() => {
           this.$refs.formModalRef.resetForm()
         }, 200)

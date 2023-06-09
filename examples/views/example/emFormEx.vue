@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2>自定义表单</h2>
-    <div style="width: 750px;">
+    <div class="form-box">
       <em-form :form-data="formData" :formRules="formRules" show-inline-ok-bt show-inline-clear-bt @on-submit="onSubmit" @on-item-change="onItemChange">
         <template #sgInput="{dataGroup}">
           <el-input v-model="dataGroup.sgInput" />
@@ -95,7 +95,11 @@ export default {
               val: 'C1',
               disabled: true
             }
-          ]
+          ],
+          show:{
+            key: 'education',
+            val: [3,4,5],
+          }
         },
         {
           type: "upload",
@@ -111,10 +115,11 @@ export default {
         {
           type: "cascader",
           label: "自定义级联",
-          url: "/dept",
           key: "deptId",
           key2: "deptName",
-          checkStrictly: true
+          data:[
+            {id:1,name:"集团",children:[{id:2,name:'总裁办'},{id:3,name:'财务部'}]}
+          ]
         },
         {
           type: "bdMap",
@@ -209,5 +214,10 @@ export default {
 <style lang="scss" scoped>
 .container {
   padding: 40px;
+  overflow-y: auto;
+  height: 100%;
+  .form-box{
+    width: 750px;
+  }
 }
 </style>

@@ -19,7 +19,7 @@ module.exports = {
         target: `http://localhost:8360`,
         changeOrigin: true,
         pathRewrite: {
-          ['^/admin']: ["/admin"]
+          ['^/admin']: [""]
         },
         secure:true
       }
