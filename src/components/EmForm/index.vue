@@ -235,6 +235,15 @@
             :height="item.height"
             @on-val-change="reValidateAndChangeHandle($event,item)"
         />
+        <!--图标选择-->
+        <em-icon-select
+            v-else-if="item.type === 'selectIcon'"
+            v-model="dataGroup[item.key]"
+            :disabled="Boolean(item.disabled) || disabled"
+            :width="item.width"
+            :trigger="item.trigger"
+            @on-val-change="itemChange($event,item)"
+        />
         <!--自定义组件-->
         <div v-else-if="item.type === 'custom'" class="inlineBlock">
           <slot :name="item.slotName" :data-group="dataGroup" />
@@ -265,12 +274,14 @@
 <script>
   import _ from 'lodash'
   import {initFormItems, getTempKeyDefaultVal, updateTempKeys, initClearFormData} from './hooks'
+  import { trimObj, myTypeof, isValidValue } from '../../methods'
   import Locale from '../../mixins/locale'
   import EmBaiduMap from "../EmBaiduMap"
   import EmCascader from "../EmCascader"
   import EmCascaderArea from "../EmCascaderArea"
   import EmEditor from "../EmEditor"
   import EmUpload from "../EmUpload"
+  import EmIconSelect from "../EmIconSelect"
   export default {
     name: "EmForm",
     mixins: [Locale],
@@ -279,7 +290,8 @@
       EmCascader,
       EmCascaderArea,
       EmEditor,
-      EmUpload
+      EmUpload,
+      EmIconSelect
     },
     props: {
       formData: {
@@ -406,7 +418,7 @@
                 }
               }
             }
-            else if (this.myTypeof(t[k]) === 'Object') {
+            else if (myTypeof(t[k]) === 'Object') {
               if (!(t[k].message || t[k].validator)) {
                 t[k].message = '该项为必填'
               }
@@ -490,7 +502,7 @@
       clearForm() {
         let defaultV = this.getDefaultValues() //获取表单默认值
         for (let k in this.dataGroup) {
-          if (defaultV.hasOwnProperty(k) && this.isValidValue(defaultV[k])) {
+          if (defaultV.hasOwnProperty(k) && isValidValue(defaultV[k])) {
             this.$set(this.dataGroup, k, defaultV[k])
           }
           else {
@@ -506,7 +518,7 @@
       getFormItemIfVal(root) {
         let showing = true
         if (root.show) {
-          if (this.myTypeof(root.show) === 'Object') {
+          if (myTypeof(root.show) === 'Object') {
             showing = this.dealIfItem(root.show)
           }
           else if (Array.isArray(root.show)) {
@@ -528,7 +540,7 @@
               }
             }
           }
-          else if (this.myTypeof(root.show) === 'Function') {
+          else if (myTypeof(root.show) === 'Function') {
             showing = root.show(this.dataGroup)
           }
         }
@@ -583,7 +595,7 @@
             this.changeDataHandle(e)
           }
         }
-        else if (this.myTypeof(d) === 'Object') {
+        else if (myTypeof(d) === 'Object') {
           this.changeDataHandle(d)
         }
       },
@@ -593,7 +605,7 @@
        */
       clearTempKeys(defaultV) {
         for (let k in this.tempKeys) {
-          if (defaultV.hasOwnProperty(k) && this.isValidValue(defaultV[k])) {
+          if (defaultV.hasOwnProperty(k) && isValidValue(defaultV[k])) {
             this.$set(this.tempKeys, k, defaultV[k])
           }else {
             initClearFormData(this.formDataT, 'tempKey', this.tempKeys, k)
@@ -607,17 +619,17 @@
       getDefaultValues() {
         let t = {}
         for (let root of this.formDataT) {
-          if (root.tempKey && this.isValidValue(root.defaultVal)) {
+          if (root.tempKey && isValidValue(root.defaultVal)) {
             /*将默认值转换为表单项绑定值对应的格式*/
             getTempKeyDefaultVal(root, t)
           }
-          if (root.key && this.isValidValue(root.defaultVal)) {
+          if (root.key && isValidValue(root.defaultVal)) {
             t[root.key] = root.defaultVal
           }
-          if (root.key2 && this.isValidValue(root.defaultVal2)) {
+          if (root.key2 && isValidValue(root.defaultVal2)) {
             t[root.key2] = root.defaultVal2
           }
-          if (root.key3 && this.isValidValue(root.defaultVal3)) {
+          if (root.key3 && isValidValue(root.defaultVal3)) {
             t[root.key3] = root.defaultVal3
           }
         }
@@ -663,7 +675,7 @@
        */
       clearValidateHandle(root) {
         this.$nextTick(() => {
-          if (this.isValidValue(root.target.value)) {
+          if (isValidValue(root.target.value)) {
             this.$refs.elFormRef.clearValidate(root.key)
           }
         })
@@ -737,7 +749,7 @@
               keys.push(e.key3)
             }
             if (e.collectLabel) {
-              if (this.myTypeof(e.collectLabel) === 'Object' && e.collectLabel.key) {
+              if (myTypeof(e.collectLabel) === 'Object' && e.collectLabel.key) {
                 keys.push(e.collectLabel.key)
               }
               else if (Array.isArray(e.collectLabel)) {
@@ -755,7 +767,7 @@
           t[e] = this.dataGroup[e]
         }
         if (this.trim) {
-          t = this.trimObj(t)
+          t = trimObj(t)
         }
         return t
       },

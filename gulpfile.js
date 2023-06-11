@@ -17,6 +17,17 @@ function build(cb) {
   cb()
 }
 
+// 拷贝字体文件
+function fonts(cb) {
+  src([
+    './src/style/iconfont/*.ttf',
+    './src/style/iconfont/*.woff',
+    './src/style/iconfont/*.woff2'
+  ])
+      .pipe(dest('./lib/iconfont'))
+  cb()
+}
+
 //拷贝国际化文件
 function langs(cb) {
   src([
@@ -34,4 +45,4 @@ function clean(cb) {
 }
 
 
-exports.default = series(clean, build, langs)
+exports.default = series(clean, build, fonts, langs)

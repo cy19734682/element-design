@@ -3,10 +3,12 @@
       placement="bottom-start"
       :width="width"
       :trigger="trigger"
+      :disabled="disabled"
+      @hide="reset"
   >
-    <div class="icon-body">
+    <div class="em-icon-body">
       <el-input
-          v-model="searchName" style="position: relative;" clearable placeholder="请输入图标名称" @clear="filterIcons"
+          v-model="searchName" style="position: relative;" clearable :placeholder="t('em.pInputIcon')" @clear="filterIcons"
           @input.native="filterIcons"
       >
         <i slot="suffix" class="el-icon-search el-input__icon" />
@@ -18,7 +20,7 @@
         </div>
       </div>
     </div>
-    <el-input slot="reference" v-model="valueT" placeholder="点击选择图标">
+    <el-input slot="reference" v-model="valueT" :placeholder="t('em.cSelectIcon')" clearable :disabled="disabled">
       <em-icons
           v-if="valueT"
           slot="prefix"
@@ -32,6 +34,7 @@
 </template>
 
 <script>
+  import Locale from '../../mixins/locale'
   import icons from '../../style/iconfont/iconfont.json'
   let iconList = []
   if (icons && icons.glyphs) {
@@ -43,9 +46,10 @@
       prop: 'value',
       event: 'on-val-change'
     },
+    mixins: [Locale],
     props: {
       value: {
-        /*文件上传的地址*/
+        /*绑定值*/
         type: String,
         default: ""
       },
@@ -58,6 +62,11 @@
         /*文件上传的地址*/
         type: String,
         default: "click"
+      },
+      disabled: {
+        /*是否禁用*/
+        type: Boolean,
+        default: false
       },
     },
     computed: {
@@ -77,48 +86,30 @@
       }
     },
     methods: {
+      /**
+       * 搜索过滤图标列表
+       */
       filterIcons() {
         this.iconList = iconList
         if (this.searchName) {
           this.iconList = this.iconList.filter(item => item.includes(this.searchName))
         }
       },
+      /**
+       * 选择图标
+       * @param name
+       */
       selectedIcon(name) {
         this.valueT = name
         document.body.click()
       },
+      /**
+       * 关闭时重置搜索框
+       */
       reset() {
         this.searchName = ''
-        this.iconList = icons
+        this.iconList = iconList
       }
     }
   }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .icon-body {
-    width: 100%;
-    padding: 10px;
-
-    .icon-list {
-      height: 200px;
-      overflow-y: scroll;
-
-      div {
-        height: 30px;
-        line-height: 30px;
-        margin-bottom: -5px;
-        cursor: pointer;
-        width: 33%;
-        float: left;
-      }
-
-      span {
-        display: inline-block;
-        vertical-align: -0.15em;
-        fill: currentColor;
-        overflow: hidden;
-      }
-    }
-  }
-</style>

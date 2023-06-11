@@ -31,6 +31,8 @@
 <script>
 
   import Locale from '../../mixins/locale'
+  import request from '../../methods/request'
+  import { imageSplicing } from '../../methods'
   export default {
     name: 'EmUpload',
     mixins: [Locale],
@@ -67,8 +69,8 @@
         type: Object,
         default() {
           let header = {}
-          if(this.$request.config && this.$request.config.store && this.$request.config.store.getters.token){
-            header = {"x-oauth-token": this.$request.config.store.getters.token}
+          if(request.config && request.config.store && request.config.store.getters.token){
+            header = {"x-oauth-token": request.config.store.getters.token}
           }
           return header
         }
@@ -130,13 +132,13 @@
               if (Array.isArray(after)) {
                 for (let i = 0; i < after.length; i++) {
                   fileList.push({
-                    url: this.imageSplicing(after[i])
+                    url: imageSplicing(after[i])
                   })
                 }
               }
               else {
                 fileList.push({
-                  url: this.imageSplicing(after)
+                  url: imageSplicing(after)
                 })
               }
             }

@@ -38,6 +38,24 @@ exports._delete = function (table, condition) {
   _data[table] = _data[table].filter(e => !condition(e))
   return true
 }
+
+/**
+ * 查单条数据
+ * @param table [String] 目标table名字
+ * @param condition [Function] 条件
+ * @returns {*}
+ * @private
+ */
+exports._getOne = function (table, condition) {
+  if (!_data[table]) {
+    return []
+  }
+  let b = _data[table]
+  if (condition) {
+    b = b.filter(condition)
+  }
+  return b
+}
 /**
  * 查
  * @param table [String] 目标table名字

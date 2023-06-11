@@ -5,7 +5,11 @@
 const {_save} = require('./database')
 
 const btTablePageData = require('../data/tablePage')
+const cascaderData = require('../data/cascaderData')
+const selectData = require('../data/selectData')
 
 module.exports = function () {
-  _save('bt-table-page', btTablePageData.data)
+  _save('bt-table', btTablePageData.data)
+  _save('dept', cascaderData.data)
+  _save('brand', selectData.data)
 }

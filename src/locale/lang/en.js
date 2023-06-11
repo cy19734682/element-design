@@ -6,6 +6,8 @@ export default {
     required: 'Required',
     dragExcel: 'Drag the Excel file here or',
     sysError: 'system error',
+    pInputIcon: 'Please enter an icon name',
+    cSelectIcon: 'Click on the selection icon',
     button: {
       search: 'Search',
       reset: 'Reset',

@@ -20,6 +20,8 @@
 <script>
   import _ from 'lodash'
   import Locale from '../../mixins/locale'
+  import { myTypeof, findPath } from '../../methods'
+  import request from '../../methods/request'
 
   export default {
     name: 'EmCascader',
@@ -111,7 +113,7 @@
             return [].concat(valProp)
           }
           else if (_.isNumber(valProp)) {
-            return this.findPath({
+            return findPath({
               group: this.options,
               condition: item => item.value === valProp,
               pathKey: 'value'
@@ -125,7 +127,7 @@
           }
         },
         set(val) {
-          let labels = this.findPath({
+          let labels = findPath({
             group: this.options,
             condition: item => item.value === val[val.length - 1],
             pathKey: 'label'
@@ -170,10 +172,10 @@
        */
       getData() {
         if (this.url && this.url !== '') {
-          this.$request.get(this.url).then(d => {
+          request.get(this.url).then(d => {
             if (d && d.code === 0) {
               let data = d.data || []
-              if (this.myTypeof(this.optionFilter) === 'Function') {
+              if (myTypeof(this.optionFilter) === 'Function') {
                 data = this.optionFilter(data)
               }
               this.options = this.dataFilter(data)

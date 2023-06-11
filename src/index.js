@@ -31,8 +31,14 @@ import {
   imageSplicing
 } from './methods'
 
+import {exportTableToExcel, exportJsonToExcel} from "./methods/export2Excel.js"
+import {exportTxtToZip} from "./methods/export2Zip.js"
+
 import $request from "./methods/request.js"
 import locale from "./locale"
+import "./style/iconfont/iconfont.js"
+import * as filters from './filters'
+import Permission from './directive/permission'
 
 /*直接使用的组件（注册为全局Vue组件）*/
 const components = {
@@ -64,8 +70,10 @@ const plugMethods = {
   debounce,
   deepClone,
   uniqueArr,
+  exportTableToExcel,
+  exportJsonToExcel,
+  exportTxtToZip
 }
-
 
 /*挂在Vue原型对象上的方法*/
 const methodsR = {
@@ -84,17 +92,16 @@ const install = function (Vue, opts = {}) {
   }
   $request.init({store: opts.store, router: opts.router})
   locale.i18n(opts.i18n)
-  require("./style/index.scss")
-  require("./style/iconfont/iconfont.js")
 
   if (!Vue) {
     console.error('组件库安装失败，未获取到Vue对象')
     return
   }
+  /*挂载组件*/
   Object.keys(components).forEach(key => {
     Vue.component(key, components[key])
   })
-  
+  /*挂载公共方法*/
   Object.keys(methodsR).forEach(key => {
     if (!Vue.prototype.hasOwnProperty(key)) {
       Object.defineProperty(Vue.prototype, key, {
@@ -106,7 +113,15 @@ const install = function (Vue, opts = {}) {
       })
     }
   })
-  
+  /*挂载过滤器*/
+  Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+  })
+  /*挂载权限自定义指令*/
+  if (Vue.directive('has') === undefined) {
+    Vue.directive('has', Permission)
+  }
+
 }
 
 // auto install

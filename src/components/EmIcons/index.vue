@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <div v-if="isExternal" :style="styleExternalIcon" class="svg-external-icon svg-icon" v-on="$listeners"/>
-    <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">
-      <use :xlink:href="iconName"/>
-    </svg>
-    <span class="jumpIco">
-  </span>
-  </div>
+  <div v-if="isExternal" :style="styleExternalIcon" class="svg-external-icon svg-icon" v-on="$listeners"/>
+  <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">
+    <use :xlink:href="iconName"/>
+  </svg>
 </template>
 
 <script>
@@ -46,19 +42,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .em-icon {
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
-  }
-
-  .svg-external-icon {
-    background-color: currentColor;
-    mask-size: cover !important;
-    display: inline-block;
-  }
-</style>

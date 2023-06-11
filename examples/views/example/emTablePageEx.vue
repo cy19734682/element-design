@@ -9,9 +9,19 @@
           <el-button type="danger" :disabled="!(selectIds && selectIds.length > 0)" @click="delData()">
             删除
           </el-button>
+          <el-button type="primary"  @click="exportTableExcel()">
+            TABLE导出
+          </el-button>
+          <el-button type="warning"  @click="exportJsonExcel()">
+            JSON导出
+          </el-button>
+          <el-button type="warning"  @click="exportJsonZip()">
+            zip导出
+          </el-button>
         </template>
       </em-search-form>
       <em-table-page
+          id="tablePage"
           ref="tableRef"
           selection
           url="/bt-table-page"
@@ -38,6 +48,8 @@
 <script>
   import EmTablePage from '../../../src/components/EmTablePage'
   import EmSearchForm from '../../../src/components/EmSearchForm'
+  import {exportTableToExcel,exportJsonToExcel} from '../../../src/methods/export2Excel'
+  import {exportTxtToZip} from '../../../src/methods/export2Zip'
   export default {
     name: "EmTablePageEx",
     components:{
@@ -252,6 +264,36 @@
         }).catch(e => {
           this.$refs.formModalRef.changeLoading(false)
         })
+      },
+      /**
+       * 导出Excel
+       */
+      exportJsonExcel(){
+        const dataT = this.$refs.tableRef.dataT || []
+        let columns = this.columns.filter(e => e.key)
+        let header = columns.map(e => e.label)
+        let headValue = columns.map(e => e.key)
+        let data = dataT.map((v) => headValue.map((j) => v[j]))
+        let filename = '表格数据'
+        exportJsonToExcel({header, data, filename})
+      },
+      /**
+       * 导出zip
+       */
+      exportJsonZip(){
+        const dataT = this.$refs.tableRef.dataT || []
+        let columns = this.columns.filter(e => e.key)
+        let header = columns.map(e => e.label)
+        let headValue = columns.map(e => e.key)
+        let data = dataT.map((v) => headValue.map((j) => v[j]))
+        let filename = '表格数据'
+        exportTxtToZip(header,data,filename,filename)
+      },
+      /**
+       * 导出Excel
+       */
+      exportTableExcel(){
+        exportTableToExcel('tablePage',1,4,'表格数据')
       }
     }
   }

@@ -3,7 +3,7 @@
  */
 const express = require('express')
 const init = require('./src/init')
-const router = require('./router')
+const router = require('./src/router')
 const uploadRouter = require('./src/upload')
 
 const app = express()

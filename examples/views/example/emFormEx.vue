@@ -107,6 +107,12 @@ export default {
           key: "imgUrl",
         },
         {
+          type: "selectIcon",
+          label: "图标",
+          key: "icon",
+          defaultVal: 'lock'
+        },
+        {
           type: "area",
           label: "行政区域",
           key: "areaCode",
@@ -114,12 +120,19 @@ export default {
         },
         {
           type: "cascader",
-          label: "自定义级联",
+          label: "部门",
+          url: '/dept',
           key: "deptId",
-          key2: "deptName",
-          data:[
-            {id:1,name:"集团",children:[{id:2,name:'总裁办'},{id:3,name:'财务部'}]}
-          ]
+          key2: "deptName"
+        },
+        {
+          type: "select",
+          label: "品牌",
+          key: "brandId",
+          asyncOption: true,
+          optionUrl: "/brand",
+          optionLabel: "name",
+          optionVal: "id",
         },
         {
           type: "bdMap",
@@ -194,6 +207,9 @@ export default {
           required: true
         },
         content: {
+          required: true
+        },
+        icon: {
           required: true
         }
       }

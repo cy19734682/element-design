@@ -33,13 +33,7 @@ module.exports = {
     }
   },
   css: {
-    loaderOptions: {
-      less: {
-        lessOptions: {
-          javascriptEnabled: true
-        }
-      }
-    }
+    extract: true //是否将组件中的样式提取到独立的css文件中
   },
   configureWebpack: config => {
     config.name = 'element-design组件'
