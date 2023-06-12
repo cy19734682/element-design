@@ -1,15 +1,15 @@
 const gulp = require("gulp")
 const cleanCSS = require('gulp-clean-css')
-const less = require("gulp-less")
+const sass = require('gulp-sass')(require('sass'));
 const rename = require('gulp-rename')
 const autoprefixer = require('gulp-autoprefixer')
 const del = require('del')
 const {src, dest, series} = gulp
 
-//编译 less
+//编译 sass
 function build(cb) {
   src('./src/style/index.scss')
-    .pipe(less({style: 'expanded'}))
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9'))
     .pipe(cleanCSS())
     .pipe(rename('elmDesign.min.css'))
@@ -39,7 +39,9 @@ function langs(cb) {
 
 function clean(cb) {
   del([
-    'elmDesign.min.css'
+    'elmDesign.min.css',
+    './lib/iconfont/',
+    './lib/lang/'
   ])
   cb()
 }
