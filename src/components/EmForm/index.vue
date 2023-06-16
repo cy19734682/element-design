@@ -244,6 +244,22 @@
             :trigger="item.trigger"
             @on-val-change="itemChange($event,item)"
         />
+        <!--表格选择-->
+        <em-table-select
+            v-else-if="item.type === 'tableSelect'"
+            v-model="dataGroup[item.key]"
+            :url="item.url"
+            :search-form="item.searchForm"
+            :columns="item.columns"
+            :page-size="item.pageSize"
+            :disabled="Boolean(item.disabled) || disabled"
+            :width="item.width"
+            :multiple="item.multiple"
+            :label-key="item.labelKey"
+            :placeholder="item.placeholder"
+            :placement="item.placement"
+            @on-val-change="reValidateAndChangeHandle($event,item)"
+        />
         <!--自定义组件-->
         <div v-else-if="item.type === 'custom'" class="inlineBlock">
           <slot :name="item.slotName" :data-group="dataGroup" />
@@ -282,6 +298,7 @@
   import EmEditor from "../EmEditor"
   import EmUpload from "../EmUpload"
   import EmIconSelect from "../EmIconSelect"
+  import EmTableSelect from "../EmTableSelect"
   export default {
     name: "EmForm",
     mixins: [Locale],
@@ -291,7 +308,8 @@
       EmCascaderArea,
       EmEditor,
       EmUpload,
-      EmIconSelect
+      EmIconSelect,
+      EmTableSelect
     },
     props: {
       formData: {
@@ -441,7 +459,7 @@
         this.dataGroup = {}
         for (let root of this.formData) {
           if (root.key) {
-            if (root.type === 'checkbox' || root.type === 'select' && root.multiple) {
+            if (root.type === 'checkbox' || ((root.type === 'select' || root.type === 'tableSelect') && root.multiple)) {
               this.$set(this.dataGroup, root.key,
                   root.defaultVal !== undefined && root.show === undefined ? root.defaultVal : [])
             }
@@ -686,9 +704,9 @@
        * @param root 表单项结构数据
        * @param item
        */
-      reValidateAndChangeHandle(root, item) {
+      reValidateAndChangeHandle(item,root) {
         this.$nextTick(() => {
-          this.$refs.elFormRef.validateField(item.key)
+          this.$refs.elFormRef.validateField(root.key)
           this.itemChange(item, root)
         })
       },

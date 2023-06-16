@@ -13,11 +13,9 @@
 </template>
 
 <script>
-  import EmCascaderArea from '../../../src/components/EmCascaderArea'
 
   export default {
     name: 'EmCascaderAreaEx',
-    components: {EmCascaderArea},
     data() {
       return {
         value: [ "150000", "150100", "150104" ],

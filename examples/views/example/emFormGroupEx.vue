@@ -15,11 +15,9 @@
 </template>
 
 <script>
-  import EmFormGroup from '../../../src/components/EmFormGroup'
 
   export default {
     name: 'EmFormGroupEx',
-    components: {EmFormGroup},
     data() {
       return {
         formData: [

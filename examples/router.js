@@ -135,6 +135,14 @@ const constantRoutes = [
         meta: {
           title: 'emIconEx图标选择组件'
         }
+      },
+      {
+        path: 'emTableSelectEx',
+        component: () => import('./views/example/emTableSelectEx'),
+        name: 'emTableSelectEx',
+        meta: {
+          title: 'emTableSelectEx表格选择组件'
+        }
       }
     ]
   },

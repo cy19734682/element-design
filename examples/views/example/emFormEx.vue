@@ -135,6 +135,35 @@ export default {
           optionVal: "id",
         },
         {
+          type: "tableSelect",
+          label: "文档类型",
+          key: "mimeType",
+          multiple: true,
+          url: "/bt-table-page",
+          searchForm: [
+            {
+              type: 'input',
+              key: 'name',
+              label: '商品名称',
+            }
+          ],
+          columns: [
+            {
+              key: "id",
+              label: "ID"
+            },{
+              key: "name",
+              label: "名称"
+            },{
+              key: "mimeType",
+              label: "类型"
+            },{
+              key: "extension",
+              label: "后缀"
+            }
+          ],
+        },
+        {
           type: "bdMap",
           label: "位置",
           key: "lng",
@@ -210,6 +239,9 @@ export default {
           required: true
         },
         icon: {
+          required: true
+        },
+        mimeType: {
           required: true
         }
       }

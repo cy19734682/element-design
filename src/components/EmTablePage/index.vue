@@ -8,12 +8,19 @@
           id="dataTable"
           ref="elTableRef"
           :data="dataS"
+          :reserve-selection="selection"
           @selection-change="handleSelectionChange"
           @row-click="handleRowClick"
           :header-cell-style="{backgroundColor: '#f1f1f1'}"
       >
         <!--多选框-->
         <el-table-column v-if="selection" type="selection" width="50" align="center"></el-table-column>
+        <!--单选框-->
+        <el-table-column v-if="radio" width="50" align="center">
+          <template slot-scope="scope">
+            <el-radio :label="scope.row.id" v-model="onlyId"><span></span></el-radio>
+          </template>
+        </el-table-column>
         <el-table-column
             v-for="(item,index) in columnsT"
             :key="item.key+index"
@@ -44,7 +51,7 @@
           :current-page.sync="currentPage"
           :page-size.sync="pageSizeT"
           :page-sizes="pageSizesT"
-          layout="total, sizes, prev, pager, next, jumper"
+          :layout="pageLayout"
           :total="total"
           v-bind="$attrs"
           @size-change="changePage"
@@ -129,6 +136,11 @@
         type: Boolean,
         default: false
       },
+      radio: {
+        /*是否展示每列开头单选框*/
+        type: Boolean,
+        default: false
+      },
       pageSize: {
         /*每页条数*/
         type: Number,
@@ -176,6 +188,10 @@
           return [10, 20, 30, 40, 50, 100]
         }
       },
+      pageLayout: {
+        type: String,
+        default: 'total, sizes, prev, pager, next, jumper'
+      }
     },
     data() {
       return {
@@ -185,6 +201,7 @@
         total: 0,
         dataT: this.data,
         selected: [],
+        onlyId: null
       }
     },
     computed: {
@@ -257,14 +274,27 @@
        * @param row
        */
       handleRowClick(row) {
-        this.$refs.elTableRef.toggleRowSelection(row)
+        if(this.radio){
+          this.onlyId = row.id
+        }
+        if(this.selection){
+          this.$refs.elTableRef.toggleRowSelection(row)
+        }
       },
       /**
-       * 列表复选框选择事件
+       * 清空多选(公开)
+       */
+      handleClearSelection() {
+        this.$refs.elTableRef.clearSelection()
+      },
+      /**
+       * 列表复选框选择事件,返回所有选中数据
        * @param selection
        */
       handleSelectionChange(selection) {
-        this.selected = selection
+        if(this.selection) {
+          this.selected = selection
+        }
       },
       /**
        * 切换分页
@@ -290,7 +320,7 @@
           if (this.url && this.url !== '') {
             request.get(this.url, this.queryData,{isShowLoading: this.loading}).then(d => {
               if (d && d.code === 0 && d.data) {
-                this.dataT = d.data.data || []
+                this.dataT = (d.data && d.data.data) || d.data || []
                 this.total = d.data[this.totalKey] || 0
               }
               else {

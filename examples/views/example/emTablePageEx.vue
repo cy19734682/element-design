@@ -23,11 +23,12 @@
       <em-table-page
           id="tablePage"
           ref="tableRef"
-          selection
+          radio
           url="/bt-table-page"
           :columns="columns"
           :searchData="searchData"
           orderKey=""
+          @row-click="rowClick"
           @selection-change="selectionChange"
           @on-data-change="onDataChange"
       />
@@ -46,16 +47,10 @@
 </template>
 
 <script>
-  import EmTablePage from '../../../src/components/EmTablePage'
-  import EmSearchForm from '../../../src/components/EmSearchForm'
   import {exportTableToExcel,exportJsonToExcel} from '../../../src/methods/export2Excel'
   import {exportTxtToZip} from '../../../src/methods/export2Zip'
   export default {
     name: "EmTablePageEx",
-    components:{
-      EmTablePage,
-      EmSearchForm
-    },
     data() {
       return {
         activeRow:{},
@@ -189,11 +184,15 @@
       search(data){
         this.searchData = window._.cloneDeep(data)
       },
+      rowClick(row){
+        console.log(row)
+      },
       /**
        * 复选框选择回调
        * @param selection
        */
       selectionChange(selection) {
+        console.log(selection)
         this.selectIds = selection.map(item => item.id)
       },
       /**
@@ -220,7 +219,7 @@
           ids = this.selectIds.join()
         }
         this.$msgbox.confirm('是否确认删除','提示').then(() => {
-          this.$request.delete('/bt-table-page',{ids}).then(e=>{
+          this.$request.delete('/bt-table',{ids}).then(e=>{
             if(e.code === 0){
               this.$message.success('删除成功')
               this.$refs.tableRef.getTableData()
@@ -250,7 +249,7 @@
           method = 'put'
           data['id'] = this.activeRow.id
         }
-        this.$request[method]('/bt-table-page',data , {isShowLoading: true}).then(e=>{
+        this.$request[method]('/bt-table',data , {isShowLoading: true}).then(e=>{
           if(e.code === 0){
             this.$message.success(method === 'post' ?'新增成功': '编辑成功')
             this.$refs.tableRef.getTableData()

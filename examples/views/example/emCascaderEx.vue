@@ -13,11 +13,9 @@
 </template>
 
 <script>
-  import EmCascader from '../../../src/components/EmCascader'
 
   export default {
     name: 'EmCascaderEx',
-    components: {EmCascader},
     data() {
       return {
         value: null,

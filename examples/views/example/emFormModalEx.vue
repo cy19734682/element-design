@@ -19,7 +19,7 @@
 <script>
 
   export default {
-    name: 'EmFormGroupEx',
+    name: 'EmFormModalEx',
     data() {
       return {
         formData: [
@@ -70,7 +70,7 @@
             label: "远程数据",
             key: "devId",
             asyncOption: true,
-            optionUrl: "/bt-table-page",
+            optionUrl: "/bt-table",
             optionLabel: "name",
             optionVal: "id",
             collectLabel: {

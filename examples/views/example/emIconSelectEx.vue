@@ -10,7 +10,7 @@
 <script>
 
 export default {
-  name: 'emIconSelectEx',
+  name: 'EmIconSelectEx',
   data() {
     return {
       icon: null

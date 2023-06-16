@@ -111,7 +111,7 @@
             this.loading = true
             this.$store.dispatch('user/login', this.loginForm)
                 .then(() => {
-                  this.$router.push({
+                  this.$router.replace({
                     path: this.redirect || '/',
                     query: this.otherQuery
                   })

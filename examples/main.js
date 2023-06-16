@@ -9,8 +9,8 @@ import App from './App' // 入口页面
 import store from './store' //Vuex
 import router from './router.js' //路由
 import i18n from './lang' //国际化
-import elmDesign from '../lib/elmDesign.umd.min.js'
-import '../lib/elmDesign.min.css'
+import elmDesign from '../src'
+import '../src/style/index.scss'
 
 Vue.use(Element,{
   size: Cookies.get('size') || 'medium', // 设置element-ui默认大小

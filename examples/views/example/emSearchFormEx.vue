@@ -13,11 +13,9 @@
 </template>
 
 <script>
-  import EmSearchForm from '../../../src/components/EmSearchForm'
 
   export default {
     name: 'EmSearchFormEx',
-    components: {EmSearchForm},
     data() {
       return {
         formData: [

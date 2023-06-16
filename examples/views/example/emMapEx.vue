@@ -11,10 +11,8 @@
 </template>
 
 <script>
-  import EmBaiduMap from '../../../src/components/EmBaiduMap'
   export default {
     name: 'EmMapEx',
-    components: {EmBaiduMap},
     data() {
       return {
         value: {
