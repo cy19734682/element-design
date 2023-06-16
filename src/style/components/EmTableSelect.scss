@@ -1,0 +1,115 @@
+
+.em-table-select {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+
+  :focus {
+    outline: 0;
+  }
+
+  .el-input {
+    display: block;
+
+    .el-input__inner {
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .el-select__caret {
+      color: #C0C4CC;
+      font-size: 14px;
+      transition: transform .3s;
+      transform: rotateZ(180deg);
+      cursor: pointer;
+    }
+
+    .el-select__caret.is-reverse {
+      transform: rotateZ(0);
+    }
+
+    &.is-focus .el-input__inner {
+      border-color: #409EFF;
+    }
+
+    .el-input__inner:focus {
+      border-color: #409EFF;
+    }
+  }
+
+  .cat-table-select__tags {
+    position: absolute;
+    line-height: normal;
+    white-space: normal;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .el-tag {
+    box-sizing: border-box;
+    border-color: transparent;
+    margin: 2px 0 2px 6px;
+    background-color: #f0f2f5;
+  }
+
+  .el-tag__close.el-icon-close {
+    background-color: #C0C4CC;
+    right: -7px;
+    top: 0;
+    color: #FFF;
+  }
+}
+
+.cat-table-popover {
+  width: 100%;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .em-table-page {
+    flex-grow: 1;
+    height: 100%;
+
+    .table-container {
+      height: 100%;
+      padding-bottom: 60px;
+
+      .el-table {
+        height: 100%;
+
+        &::before {
+          display: none;
+        }
+
+        .el-table__body-wrapper {
+          height: calc(100% - 60px) !important;
+          overflow-y: auto;
+          box-sizing: border-box;
+          /*修改滚动条样式*/
+          &::-webkit-scrollbar {
+            width: 10px;
+            height: 10px
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: #c1c1c1;
+            border-radius: 10px
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background-color: #b1afaf
+          }
+
+          &::-webkit-scrollbar-corner {
+            background-color: #c1c1c1
+          }
+        }
+      }
+    }
+  }
+}
