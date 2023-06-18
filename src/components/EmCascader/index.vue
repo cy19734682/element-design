@@ -32,7 +32,7 @@
     mixins: [Locale],
     props: {
       url: {
-        /*文件上传的地址*/
+        /*远程拉取数据的地址*/
         type: String,
         default: ""
       },

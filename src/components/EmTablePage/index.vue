@@ -108,7 +108,7 @@
         }
       },
       columns: {
-        /*表格表头结构数据，同iView*/
+        /*表格表头结构数据，同Element-ui*/
         type: Array,
         default() {
           return []
@@ -141,16 +141,6 @@
         type: Boolean,
         default: false
       },
-      pageSize: {
-        /*每页条数*/
-        type: Number,
-        default: 10
-      },
-      showPage: {
-        /*是否展示页签*/
-        type: Boolean,
-        default: true
-      },
       loading: {
         /*拉取表格数据时显示遮罩层*/
         type: Boolean,
@@ -165,6 +155,28 @@
         /*排序是升是降*/
         type: String,
         default: "desc"
+      },
+      showPage: {
+        /*是否展示页签*/
+        type: Boolean,
+        default: true
+      },
+      pageLayout: {
+        /*分页布局*/
+        type: String,
+        default: 'total, sizes, prev, pager, next, jumper'
+      },
+      pageSize: {
+        /*每页条数*/
+        type: Number,
+        default: 10
+      },
+      pageSizes: {
+        /*每页显示个数选择器的选项设置*/
+        type: Array,
+        default() {
+          return [10, 20, 30, 40, 50, 100]
+        }
       },
       currentPageKey: {
         /*分页当前页码key*/
@@ -181,17 +193,6 @@
         type: String,
         default: "total"
       },
-      pageSizes: {
-        /*每页显示个数选择器的选项设置*/
-        type: Array,
-        default() {
-          return [10, 20, 30, 40, 50, 100]
-        }
-      },
-      pageLayout: {
-        type: String,
-        default: 'total, sizes, prev, pager, next, jumper'
-      }
     },
     data() {
       return {

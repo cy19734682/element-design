@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <el-input slot="reference" v-model="valueT" :placeholder="t('em.cSelectIcon')" clearable :disabled="disabled">
+    <el-input slot="reference" v-model="valueT" :placeholder="placeholder || t('em.cSelectIcon')" clearable :disabled="disabled">
       <em-icons
           v-if="valueT"
           slot="prefix"
@@ -59,9 +59,14 @@
         default: "450"
       },
       trigger: {
-        /*文件上传的地址*/
+        /*弹出层触发方式*/
         type: String,
         default: "click"
+      },
+      placeholder: {
+        /*是否禁用*/
+        type: String,
+        default: ''
       },
       disabled: {
         /*是否禁用*/

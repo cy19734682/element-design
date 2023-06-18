@@ -30,6 +30,7 @@
 </template>
 <script>
 
+  import _ from 'lodash'
   import Locale from '../../mixins/locale'
   import request from '../../methods/request'
   import { imageSplicing } from '../../methods'
@@ -143,6 +144,12 @@
               }
             }
             this.fileData = fileList
+          }else {
+            if(_.isArray(after)){
+              this.fileData = after || []
+            }else {
+              this.fileData = after && [after] || []
+            }
           }
         },
         deep: true
@@ -179,7 +186,6 @@
           }
         }
         this.emitFileChange(fileList.map(e => e.raw))
-        this.fileData = fileList
       },
       /**
        * 自动上传
@@ -206,7 +212,7 @@
        * @param fileList
        */
       handleExceed(files, fileList) {
-        this.$message.warning('最多只能上传' + this.length + '张图片')
+        this.$message.warning('最多只能上传' + this.length + '个文件')
       },
       /**
        * 自动上传

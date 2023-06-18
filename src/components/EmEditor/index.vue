@@ -77,7 +77,7 @@
           return this.value
         },
         set(v) {
-          if(this.firstLoad){//由于初始化会给绑定的值赋值，然后会触发表单的校验，加个是否初始化的标识
+          if(this.firstLoad && v !== '<p><br></p>'){//由于初始化会给绑定的值赋值，然后会触发表单的校验，加个是否初始化的标识
             this.$emit('on-val-change', this.editor.isEmpty() ? '' : v)
           }
           this.firstLoad = true

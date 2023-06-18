@@ -105,6 +105,7 @@ export default {
           type: "upload",
           label: "文件上传",
           key: "imgUrl",
+          autoUpload:false
         },
         {
           type: "selectIcon",
@@ -242,7 +243,8 @@ export default {
           required: true
         },
         mimeType: {
-          required: true
+          required: true,
+          trigger: "blur",
         }
       }
     }
