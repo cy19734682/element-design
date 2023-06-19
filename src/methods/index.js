@@ -245,7 +245,7 @@ export function myTypeof(v) {
  * @param val 需要判断的值
  * @returns {boolean}
  */
-export function isValidValue(val) {
+export function isValidVal(val) {
   return val !== undefined && val !== null && val !== ''
 }
 

@@ -290,7 +290,7 @@
 <script>
   import _ from 'lodash'
   import {initFormItems, getTempKeyDefaultVal, updateTempKeys, initClearFormData} from './hooks'
-  import { trimObj, myTypeof, isValidValue } from '../../methods'
+  import { trimObj, myTypeof, isValidVal } from '../../methods'
   import Locale from '../../mixins/locale'
   import EmBaiduMap from "../EmBaiduMap"
   import EmCascader from "../EmCascader"
@@ -520,7 +520,7 @@
       clearForm() {
         let defaultV = this.getDefaultValues() //获取表单默认值
         for (let k in this.dataGroup) {
-          if (defaultV.hasOwnProperty(k) && isValidValue(defaultV[k])) {
+          if (defaultV.hasOwnProperty(k) && isValidVal(defaultV[k])) {
             this.$set(this.dataGroup, k, defaultV[k])
           }
           else {
@@ -623,7 +623,7 @@
        */
       clearTempKeys(defaultV) {
         for (let k in this.tempKeys) {
-          if (defaultV.hasOwnProperty(k) && isValidValue(defaultV[k])) {
+          if (defaultV.hasOwnProperty(k) && isValidVal(defaultV[k])) {
             this.$set(this.tempKeys, k, defaultV[k])
           }else {
             initClearFormData(this.formDataT, 'tempKey', this.tempKeys, k)
@@ -637,17 +637,17 @@
       getDefaultValues() {
         let t = {}
         for (let root of this.formDataT) {
-          if (root.tempKey && isValidValue(root.defaultVal)) {
+          if (root.tempKey && isValidVal(root.defaultVal)) {
             /*将默认值转换为表单项绑定值对应的格式*/
             getTempKeyDefaultVal(root, t)
           }
-          if (root.key && isValidValue(root.defaultVal)) {
+          if (root.key && isValidVal(root.defaultVal)) {
             t[root.key] = root.defaultVal
           }
-          if (root.key2 && isValidValue(root.defaultVal2)) {
+          if (root.key2 && isValidVal(root.defaultVal2)) {
             t[root.key2] = root.defaultVal2
           }
-          if (root.key3 && isValidValue(root.defaultVal3)) {
+          if (root.key3 && isValidVal(root.defaultVal3)) {
             t[root.key3] = root.defaultVal3
           }
         }
@@ -693,7 +693,7 @@
        */
       clearValidateHandle(root) {
         this.$nextTick(() => {
-          if (isValidValue(root.target.value)) {
+          if (isValidVal(root.target.value)) {
             this.$refs.elFormRef.clearValidate(root.key)
           }
         })

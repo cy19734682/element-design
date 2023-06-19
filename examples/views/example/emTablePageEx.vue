@@ -209,7 +209,7 @@
        */
       delData(id){
         let ids = ''
-        if (this.isValidValue(id)) {
+        if (this.isValidVal(id)) {
           ids = id
         } else {
           if (this.selectIds.length <= 0) {

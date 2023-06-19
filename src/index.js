@@ -26,7 +26,7 @@ import {
   deepClone,
   uniqueArr,
   myTypeof,
-  isValidValue,
+  isValidVal,
   findPath,
   trimObj,
   imageSplicing
@@ -81,7 +81,7 @@ const plugMethods = {
 const methodsR = {
   trimObj,
   myTypeof,
-  isValidValue,
+  isValidVal,
   findPath,
   imageSplicing,
   $request

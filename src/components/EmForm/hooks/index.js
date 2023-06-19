@@ -1,4 +1,4 @@
-import {isValidValue, myTypeof} from '../../../methods'
+import {isValidVal, myTypeof} from '../../../methods'
 import request from '../../../methods/request'
 import moment from "moment"
 import _ from "lodash"
@@ -70,7 +70,7 @@ export function initFormItems(f, t, d, w, $this) {
                   let tUrl = ''
                   for (let cc of cp) {
                     let vT = d[cc.valKey]
-                    if (isValidValue(vT)) {
+                    if (isValidVal(vT)) {
                       /*如果条件有有效值，则拉取待选项*/
                       tUrl += ('&' + cc.key + '=' + vT)
                     }
@@ -88,7 +88,7 @@ export function initFormItems(f, t, d, w, $this) {
                   if (root.tempKey) {//当触发changeOption时，将选项清空
                     t[root.tempKey] = null
                   }
-                  if (isValidValue(after)) {
+                  if (isValidVal(after)) {
                     initOption((urlT + after).replace(/\?&/, '?'), root , tV,  t)
                   }
                   else {
@@ -96,7 +96,7 @@ export function initFormItems(f, t, d, w, $this) {
                     if (root.localOption && root.optionLabel && root.optionVal) {
                       root.options = optionAssign(root.localOption, root)
                     }
-                    if (isValidValue(tV)) {
+                    if (isValidVal(tV)) {
                       recoverVal(tV, root, t)
                     }
                   }
@@ -247,7 +247,7 @@ function tempKeysWatchHandle(d, a, root, f, t, $this) {
               }
             }
             else {
-              if (targetOption && isValidValue(targetOption[it.valKey])) {
+              if (targetOption && isValidVal(targetOption[it.valKey])) {
                 td = targetOption[it.valKey]
               }
               $this.$set(d, it.key, td)
@@ -343,7 +343,7 @@ function initOption(url, root, itemVal, t) {
         if (root.optionLabel && root.optionVal) {
           root.options = optionAssign(tOption, root)
         }
-        if (isValidValue(itemVal)) {
+        if (isValidVal(itemVal)) {
           recoverVal(itemVal, root, t)
         }
       }
@@ -512,7 +512,7 @@ export function updateTempKeys(f, t, d, notClearOthers = false) {
         case 'select':
         case 'radio':
         case 'checkbox':
-          if (isValidValue(d[root.key])) {
+          if (isValidVal(d[root.key])) {
             if (root.multiple || root.type === 'checkbox') {
               t[root.tempKey] = [...d[root.key]]
             }
