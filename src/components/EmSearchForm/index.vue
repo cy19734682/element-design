@@ -6,15 +6,16 @@
         v-on="$listeners"
         :form-data="formDataT"
         inline
-        :show-inline-ok-bt="showInlineOkBt"
-        :show-inline-clear-bt="showInlineClearBt"
+        show-inline-ok-bt
+        show-inline-clear-bt
         :inline-ok-bt-txt="inlineOkBtTxt"
         :inline-clear-bt-txt="inlineClearBtTxt"
         :inline-ok-bt-icon="inlineOkBtIcon"
         :inline-clear-bt-icon="inlineClearBtIcon"
-        @on-submit="onSubmit">
+        @on-submit="onSubmit"
+    >
       <template :slot="item.slotName" v-for="item in formDataC" slot-scope="{dataGroup}">
-        <slot :name="item.slotName" :data-group="dataGroup"/>
+        <slot :name="item.slotName" :data-group="dataGroup" />
       </template>
     </em-form>
   </div>
@@ -23,9 +24,10 @@
 <script>
   import {t} from '../../locale'
   import EmForm from "../EmForm"
+
   export default {
     name: 'EmSearchForm',
-    components:{
+    components: {
       EmForm
     },
     props: {
@@ -35,16 +37,6 @@
         default() {
           return []
         }
-      },
-      showInlineOkBt: {
-        /*显示搜索按钮*/
-        type: Boolean,
-        default: true
-      },
-      showInlineClearBt: {
-        /*显示清空按钮*/
-        type: Boolean,
-        default: true
       },
       inlineOkBtTxt: {
         /*显示清空按钮*/
@@ -77,7 +69,7 @@
         return this.formDataT.filter(e => e.type === 'custom')
       }
     },
-    data(){
+    data() {
       return {
         formDataT: []
       }
@@ -116,17 +108,11 @@
               })
         })
       },
-      clear() {/*私有，可使用resetForm代替*/
-        this.$refs.searchFormRef.clearForm()
-      },
       updateDataGroup(data, notClearOthers) { /*更新表单项的值（只能更新已有字段），公开*/
         this.$refs.searchFormRef.updateDataGroup(data, notClearOthers)
       },
       updateFormDataT(data) { /*更新表单结构，例如设置或取消禁用，公开*/
         this.$refs.searchFormRef.updateFormDataT(data)
-      },
-      validate() {/*验证表单，公开*/
-        this.$refs.searchFormRef.validate()
       },
       changeLoading(val) {/*改变弹框loading状态，私有*/
         this.$refs.searchFormRef.changeLoading(val === undefined ? false : val)

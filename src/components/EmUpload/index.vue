@@ -2,9 +2,9 @@
   <div class="em-upload">
     <el-upload
         class="elm-uploader"
-        :headers="headers"
+        :headers="headersT"
         :action="url"
-        :data="data"
+        :data="paramData"
         :name="fileName"
         :list-type="listType"
         :file-list="fileData"
@@ -21,7 +21,7 @@
         :disabled="disabled"
     >
       <i slot="default" class="el-icon-plus" v-if="listType === 'picture-card'"></i>
-      <el-button size="small" type="primary" v-else>{{t('em.button.clickUpload')}}</el-button>
+      <el-button size="small" type="primary" v-else>{{ t('em.button.clickUpload') }}</el-button>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible" style="z-index: 999" append-to-body>
       <img width="100%" :src="dialogImageUrl" alt="">
@@ -33,7 +33,8 @@
   import _ from 'lodash'
   import Locale from '../../mixins/locale'
   import request from '../../methods/request'
-  import { imageSplicing } from '../../methods'
+  import {imageSplicing} from '../../methods'
+
   export default {
     name: 'EmUpload',
     mixins: [Locale],
@@ -58,22 +59,18 @@
           return window.global && (window.global.server + '/upload') || '/upload'
         }
       },
-      data: {
+      paramData: {
         /*文件上传接口其他参数*/
         type: Object,
         default() {
           return {}
         }
       },
-      headers:{
+      headers: {
         /*请求头额外参数*/
         type: Object,
         default() {
-          let header = {}
-          if(request.config && request.config.store && request.config.store.getters.token){
-            header = {"x-oauth-token": request.config.store.getters.token}
-          }
-          return header
+          return {}
         }
       },
       fileName: {
@@ -99,7 +96,7 @@
         }
       },
       maxSize: {
-        /*文件大小限制*/
+        /*单个文件大小限制*/
         type: Number,
         default: 0
       },
@@ -124,10 +121,10 @@
         default: false
       }
     },
-    watch:{
+    watch: {
       fileValue: {
         handler(after) {
-          if(this.autoUpload){//自动上传才需要处理数据
+          if (this.autoUpload) {//自动上传才需要处理数据
             let fileList = []
             if (after) {
               if (Array.isArray(after)) {
@@ -144,15 +141,29 @@
               }
             }
             this.fileData = fileList
-          }else {
-            if(_.isArray(after)){
+          }
+          else {
+            if (_.isArray(after)) {
               this.fileData = after || []
-            }else {
+            }
+            else {
               this.fileData = after && [after] || []
             }
           }
         },
         deep: true
+      }
+    },
+    computed: {
+      headersT() {
+        let header = {}
+        if (request.config && request.config.store && request.config.store.getters.token) {
+          header = {"x-oauth-token": request.config.store.getters.token}
+        }
+        for (const key in this.headers) {
+          header[key] = this.headers[key]
+        }
+        return header
       }
     },
     data() {
@@ -251,18 +262,19 @@
        * @param file
        */
       handlePreview(file) {
-        if(/\.(gif|jpg|jpeg|png)$/i.test(file.url)){//图片预览
+        if (/\.(gif|jpg|jpeg|png)$/i.test(file.url)) {//图片预览
           this.dialogVisible = true
           this.dialogImageUrl = file.url
-        }else { //其它文件下载
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.setAttribute('target', '_blank');
-          file.name && a.setAttribute('download', file.name);
-          a.href = file.url;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+        }
+        else { //其它文件下载
+          const a = document.createElement('a')
+          a.style.display = 'none'
+          a.setAttribute('target', '_blank')
+          file.name && a.setAttribute('download', file.name)
+          a.href = file.url
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
         }
       },
       /**

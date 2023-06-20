@@ -89,7 +89,7 @@ export function initFormItems(f, t, d, w, $this) {
                     t[root.tempKey] = null
                   }
                   if (isValidVal(after)) {
-                    initOption((urlT + after).replace(/\?&/, '?'), root , tV,  t)
+                    initOption((urlT + after).replace(/\?&/, '?'), root, tV, t)
                   }
                   else {
                     root.options = []
@@ -447,11 +447,12 @@ export function getTempKeyDefaultVal(root, a) {
       }
       else if (root.type === 'time') {
         let constTime = '1970-01-01 ' //时间类型的不能直接赋值，需要拼接年月日
-        if(root.isRange){
+        if (root.isRange) {
           a[root.tempKey] = root.defaultVal && root.defaultVal2 && [
             constTime + root.defaultVal, constTime + root.defaultVal2
           ] || null
-        }else {
+        }
+        else {
           a[root.tempKey] = root.defaultVal && (constTime + root.defaultVal) || null
         }
       }

@@ -92,9 +92,12 @@ const install = function (Vue, opts = {}) {
   if (install.installed) {
     return
   }
-  $request.init({store: opts.store, router: opts.router})
+  $request.init({
+    store: opts.store,
+    router: opts.router
+  })
   locale.i18n(opts.i18n)
-
+  
   if (!Vue) {
     console.error('组件库安装失败，未获取到Vue对象')
     return
@@ -123,7 +126,7 @@ const install = function (Vue, opts = {}) {
   if (Vue.directive('has') === undefined) {
     Vue.directive('has', Permission)
   }
-
+  
 }
 
 // auto install

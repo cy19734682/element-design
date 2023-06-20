@@ -1,9 +1,11 @@
 import axios from 'axios'
 import {MessageBox, Message, Loading} from 'element-ui'
-import { t } from '../locale'
+import {t} from '../locale'
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 let loading = null
+let message = null
+let messageBox = null
 /**
  * axios接口请求设置公共参数
  */
@@ -28,6 +30,8 @@ service.interceptors.request.use(config => {
  */
 service.interceptors.response.use(({data}) => {
   loading && loading.close()
+  message && message.close()
+  messageBox && MessageBox.close()
   const {
     code,
     msg
@@ -36,7 +40,7 @@ service.interceptors.response.use(({data}) => {
     return data
   }
   else if (code === -999) {
-    MessageBox.confirm(t('em.loginTips.content'), t("em.loginTips.title"), {
+    messageBox = MessageBox.confirm(t('em.loginTips.content'), t("em.loginTips.title"), {
       confirmButtonText: t("em.loginTips.okTxt"),
       cancelButtonText: t("em.button.cancel"),
       type: 'warning'
@@ -48,7 +52,7 @@ service.interceptors.response.use(({data}) => {
     return Promise.reject(new Error(msg || 'Error'))
   }
   else {
-    Message({
+    message = Message({
       message: msg || t("em.sysError"),
       type: 'error'
     })
@@ -56,8 +60,9 @@ service.interceptors.response.use(({data}) => {
   }
 }, error => {
   loading && loading.close()
+  message && message.close()
   const {msg} = error.response.data
-  Message({
+  message = Message({
     message: msg || t("em.sysError"),
     type: 'error'
   })
@@ -77,10 +82,11 @@ function logoutHandle() {
       }
     }
     else {
-      service.store.dispatch("user/logout").then(()=>{
-        if(service.router){
+      service.store.dispatch("user/logout").then(() => {
+        if (service.router) {
           service.router.push(`/login?redirect=${service.router.history.current.path}`)
-        }else {
+        }
+        else {
           console.warn('router为空，请在安装插件时传入router实例：Vue.use(elmDesign,{router:router})')
         }
       })
@@ -108,9 +114,10 @@ function checkRequest(method, url, data, config) {
         })
       }
       let reqData = data
-      if(method === 'get'){
+      if (method === 'get') {
         reqData = {params: data}
-      }else if(method === 'delete'){
+      }
+      else if (method === 'delete') {
         reqData = {data: data}
       }
       service[method](url, reqData).then(r => {
@@ -133,7 +140,10 @@ export default {
    * @param {object} store 项目中vuex的store
    * @param {object} router 项目中路由管理
    */
-  init({store, router}) {
+  init({
+    store,
+    router
+  }) {
     service.store = store
     service.router = router
   },

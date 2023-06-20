@@ -11,9 +11,10 @@
 </template>
 
 <script>
-  import { t } from '../../locale'
+  import {t} from '../../locale'
   import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
   import '@wangeditor/editor/dist/css/style.css'
+
   export default {
     name: "EmEditor",
     components: {
@@ -67,7 +68,7 @@
     },
     data() {
       return {
-        firstLoad:false,
+        firstLoad: false,
         editor: null,
       }
     },
@@ -77,7 +78,7 @@
           return this.value
         },
         set(v) {
-          if(this.firstLoad && v !== '<p><br></p>'){//由于初始化会给绑定的值赋值，然后会触发表单的校验，加个是否初始化的标识
+          if (this.firstLoad && v !== '<p><br></p>') {//由于初始化会给绑定的值赋值，然后会触发表单的校验，加个是否初始化的标识
             this.$emit('on-val-change', this.editor.isEmpty() ? '' : v)
           }
           this.firstLoad = true

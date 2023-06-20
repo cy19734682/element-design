@@ -8,7 +8,8 @@
   >
     <div class="em-icon-body">
       <el-input
-          v-model="searchName" style="position: relative;" clearable :placeholder="t('em.pInputIcon')" @clear="filterIcons"
+          v-model="searchName" style="position: relative;" clearable :placeholder="t('em.pInputIcon')"
+          @clear="filterIcons"
           @input.native="filterIcons"
       >
         <i slot="suffix" class="el-icon-search el-input__icon" />
@@ -20,7 +21,10 @@
         </div>
       </div>
     </div>
-    <el-input slot="reference" v-model="valueT" :placeholder="placeholder || t('em.cSelectIcon')" clearable :disabled="disabled">
+    <el-input
+        slot="reference" v-model="valueT" :placeholder="placeholder || t('em.cSelectIcon')" clearable
+        :disabled="disabled"
+    >
       <em-icons
           v-if="valueT"
           slot="prefix"
@@ -36,6 +40,7 @@
 <script>
   import Locale from '../../mixins/locale'
   import icons from '../../style/iconfont/iconfont.json'
+
   let iconList = []
   if (icons && icons.glyphs) {
     iconList = icons.glyphs.map(e => e.font_class)

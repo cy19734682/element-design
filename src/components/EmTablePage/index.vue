@@ -39,7 +39,9 @@
             <span>{{ item.label }}</span>
           </template>
           <template slot-scope="scope">
-            <render-dom v-if="item.render" :render="item.render" :row="scope.row" :index="scope.$index" :column="item"></render-dom>
+            <render-dom
+                v-if="item.render" :render="item.render" :row="scope.row" :index="scope.$index" :column="item"
+            ></render-dom>
             <span v-else>{{ scope.row[item.key] }}</span>
           </template>
         </el-table-column>
@@ -64,9 +66,10 @@
 <script>
   import {scrollTo} from '../../methods/scroll-to'
   import request from '../../methods/request'
+
   export default {
     name: 'EmTablePage',
-    components:{
+    components: {
       /**自定义render组件**/
       renderDom: {
         functional: true,
@@ -83,9 +86,11 @@
           const params = {
             row: context.props.row,
             index: context.props.index,
-          };
-          if (context.props.column) params.column = context.props.column;
-          return context.props.render(h, params);
+          }
+          if (context.props.column) {
+            params.column = context.props.column
+          }
+          return context.props.render(h, params)
         },
       }
     },
@@ -238,8 +243,7 @@
         get() {
           return this.dataT.map((e, i) => {
             return {
-              rowKey: 'bt-' + i,
-               ...e
+              rowKey: 'bt-' + i, ...e
             }
           })
         },
@@ -265,7 +269,7 @@
       }
     },
     created() {
-      if(this.initData){
+      if (this.initData) {
         this.getTableData()
       }
     },
@@ -275,10 +279,10 @@
        * @param row
        */
       handleRowClick(row) {
-        if(this.radio){
+        if (this.radio) {
           this.onlyId = row.id
         }
-        if(this.selection){
+        if (this.selection) {
           this.$refs.elTableRef.toggleRowSelection(row)
         }
       },
@@ -293,7 +297,7 @@
        * @param selection
        */
       handleSelectionChange(selection) {
-        if(this.selection) {
+        if (this.selection) {
           this.selected = selection
         }
       },
@@ -319,7 +323,7 @@
       getTableData() {
         return new Promise(resolve => {
           if (this.url && this.url !== '') {
-            request.get(this.url, this.queryData,{isShowLoading: this.loading}).then(d => {
+            request.get(this.url, this.queryData, {isShowLoading: this.loading}).then(d => {
               if (d && d.code === 0 && d.data) {
                 this.dataT = (d.data && d.data.data) || d.data || []
                 this.total = d.data[this.totalKey] || 0

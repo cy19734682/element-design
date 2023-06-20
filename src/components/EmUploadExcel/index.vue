@@ -2,9 +2,9 @@
   <div class="em_upload_excel">
     <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
     <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
-      {{t('em.dragExcel')}}
+      {{ t('em.dragExcel') }}
       <el-button :loading="loading" style="margin-left:16px;" type="primary" @click="handleUpload">
-        {{t('em.button.clickUpload')}}
+        {{ t('em.button.clickUpload') }}
       </el-button>
     </div>
   </div>
@@ -15,7 +15,7 @@
   import Locale from '../../mixins/locale'
 
   export default {
-    name:"EmUploadExcel",
+    name: "EmUploadExcel",
     mixins: [Locale],
     props: {
       beforeUpload: Function, // eslint-disable-line
@@ -31,7 +31,10 @@
       }
     },
     methods: {
-      generateData({header, results}) {
+      generateData({
+        header,
+        results
+      }) {
         this.excelData.header = header
         this.excelData.results = results
         this.onSuccess && this.onSuccess(this.excelData)

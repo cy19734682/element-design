@@ -8,6 +8,14 @@
           <el-button type="danger">删除</el-button>
         </template>
       </em-search-form>
+
+      <el-date-picker
+          v-model="dates"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+      </el-date-picker>
     </div>
   </div>
 </template>
@@ -18,6 +26,7 @@
     name: 'EmSearchFormEx',
     data() {
       return {
+        dates: [],
         formData: [
           {
             type: "input",

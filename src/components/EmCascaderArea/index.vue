@@ -87,7 +87,7 @@
             if (regP.test(temp)) {
               let lv1 = temp.substr(0, 2) + '0000'
               let lv2 = temp.substr(0, 4) + '00'
-              if(this.level === 1){
+              if (this.level === 1) {
                 return [lv1, lv2]
               }
               return [lv1, lv2, temp]
@@ -118,7 +118,8 @@
             name = val.map(item => {
               return CodeToText[item]
             })
-          }else {
+          }
+          else {
             code = _.last(val)
             name = CodeToText[code]
           }
@@ -146,8 +147,7 @@
         options: []
       }
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 

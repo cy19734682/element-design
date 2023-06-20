@@ -1,7 +1,10 @@
 <template>
   <div class="em-map">
     <div class="searchInput">
-      <el-input suffix-icon="el-icon-search" v-model="keyword" :placeholder="placeholder || t('em.button.search')" :disabled="disabled" />
+      <el-input
+          suffix-icon="el-icon-search" v-model="keyword" :placeholder="placeholder || t('em.button.search')"
+          :disabled="disabled"
+      />
     </div>
     <baidu-map
         class="map" :center="valueT" :zoom="zoom" @ready="readyHandler"
@@ -66,7 +69,7 @@
       },
       ak: {
         type: String,
-        default: 'ak'+Math.floor(Math.random() * 1000000000)
+        default: 'ak' + Math.floor(Math.random() * 1000000000)
       }
     },
     data() {

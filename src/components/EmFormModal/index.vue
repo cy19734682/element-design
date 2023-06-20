@@ -11,7 +11,7 @@
       custom-class="em-form-modal"
   >
     <em-form
-        ref="formGroupRef"
+        ref="formModalRef"
         v-bind="$attrs"
         v-on="$listeners"
         :form-data="formData"
@@ -22,8 +22,11 @@
       </template>
     </em-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit" :loading="btnLoading&&showLoading">{{ t("em.button.confirm") }}</el-button>
-      <el-button @click="close">{{ t("em.button.cancel") }}</el-button>
+      <el-button type="primary" @click="submit" :loading="btnLoading&&showLoading">{{
+          okBtTxt || t("em.button.confirm")
+        }}
+      </el-button>
+      <el-button @click="close">{{ cancelBtTxt || t("em.button.cancel") }}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -34,7 +37,7 @@
 
   export default {
     name: 'EmFormModal',
-    components:{
+    components: {
       EmForm
     },
     mixins: [Locale],
@@ -59,7 +62,15 @@
         /*提交按钮显示loading*/
         type: Boolean,
         default: false
-      }
+      },
+      okBtTxt: {
+        /*确定按钮内容*/
+        type: String
+      },
+      cancelBtTxt: {
+        /*取消按钮内容*/
+        type: String
+      },
     },
     computed: {
       formDataC() {
@@ -73,7 +84,7 @@
       }
     },
     mounted() {
-      this.$refs.dialogRef.rendered = true
+      this.$refs.dialogRef.rendered = true // 防止dialog未显示时组件内的内容不加载
     },
     methods: {
       /**
@@ -82,7 +93,7 @@
        */
       resetForm() {
         return new Promise(resolve => {
-          this.$refs.formGroupRef.resetForm()
+          this.$refs.formModalRef.resetForm()
               .then(() => {
                 resolve()
               })
@@ -94,27 +105,21 @@
        */
       reRenderForm() {
         return new Promise(resolve => {
-          this.$refs.formGroupRef.reRenderForm()
+          this.$refs.formModalRef.reRenderForm()
               .then(() => {
                 resolve()
               })
         })
       },
-      clear() {/*私有，可使用resetForm代替*/
-        this.$refs.formGroupRef.clearForm()
-      },
       updateDataGroup(data, notClearOthers) { /*更新表单项的值（只能更新已有字段），公开*/
-        this.$refs.formGroupRef.updateDataGroup(data, notClearOthers)
+        this.$refs.formModalRef.updateDataGroup(data, notClearOthers)
       },
       updateFormDataT(data) { /*更新表单结构，例如设置或取消禁用，公开*/
-        this.$refs.formGroupRef.updateFormDataT(data)
-      },
-      validate() {/*验证表单，公开*/
-        this.$refs.formGroupRef.validate()
+        this.$refs.formModalRef.updateFormDataT(data)
       },
       changeLoading(val) {/*改变弹框loading状态，私有*/
         this.showLoading = Boolean(val)
-        this.$refs.formGroupRef.changeLoading(val === undefined ? false : val)
+        this.$refs.formModalRef.changeLoading(val === undefined ? false : val)
       },
       onSubmit() { /*响应提交事件提交数据，私有*/
         this.showLoading = true
@@ -125,15 +130,15 @@
       close() { /*触发关闭弹框事件，公开*/
         this.openModal = false
       },
-      closeCb(){/*弹框关闭的回调事件*/
+      closeCb() {/*弹框关闭的回调事件*/
         this.$emit('on-close')
         setTimeout(() => {
           this.showLoading = false
-          this.$refs.formGroupRef && this.$refs.formGroupRef.changeLoading(false)
+          this.$refs.formModalRef && this.$refs.formModalRef.changeLoading(false)
         }, 800)
       },
       submit() {/*触发提交事件，公开*/
-        this.$refs.formGroupRef.submit()
+        this.$refs.formModalRef.submit()
       }
     }
   }

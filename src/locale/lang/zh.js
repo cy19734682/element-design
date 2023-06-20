@@ -26,10 +26,10 @@ export default {
       save: '保存',
       clear: '清空',
     },
-    loginTips:{
-      title:'确认退出',
-      content:'当前页面已失效，请重新登录',
-      okTxt:'重新登录',
+    loginTips: {
+      title: '确认退出',
+      content: '当前页面已失效，请重新登录',
+      okTxt: '重新登录',
     }
   }
 }

@@ -2,6 +2,7 @@
  * 常用公共方法
  */
 import _ from 'lodash'
+
 /**
  * @param {number} time
  * @param {string} option
@@ -299,7 +300,13 @@ export function trimObj(obj) {
  *
  *          返回：['爸爸','二儿子']
  */
-export function findPath({group, condition, pathKey, childKey = 'children', path = []}) {
+export function findPath({
+  group,
+  condition,
+  pathKey,
+  childKey = 'children',
+  path = []
+}) {
   if (group && _.isObject(group)) {
     if (_.isFunction(condition)) {
       if (_.isPlainObject(group)) {
@@ -378,9 +385,10 @@ export function findPath({group, condition, pathKey, childKey = 'children', path
  * 图片拼接
  */
 export function imageSplicing(path) {
-  if(path && path.indexOf("http") < 0){
-    return  (window.global && window.global.serverImg + path) || path
-  }else{
+  if (path && path.indexOf("http") < 0) {
+    return (window.global && window.global.serverImg + path) || path
+  }
+  else {
     return path || ""
   }
 }

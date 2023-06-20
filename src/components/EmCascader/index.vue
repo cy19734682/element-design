@@ -20,7 +20,7 @@
 <script>
   import _ from 'lodash'
   import Locale from '../../mixins/locale'
-  import { myTypeof, findPath } from '../../methods'
+  import {myTypeof, findPath} from '../../methods'
   import request from '../../methods/request'
 
   export default {

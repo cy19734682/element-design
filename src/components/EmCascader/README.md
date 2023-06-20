@@ -1,42 +1,67 @@
 ## EmCascader
+
 可以远程拉取数据的自定义级联组件
-###基本使用
+
+### 基本使用
+
 静态数据
+
 ````javascript
 <em-cascader
   v-model="value"
-  :data="data"
-  @on-val-change="onValChange"
-  @on-name-change="onNameChange"
-  />
-
-  data() {
-      return {
-        value: null,
-        data:[
-          {id:1,name:"爷爷",children:[{id:2,name:'父亲'},{id:3,name:'叔叔'}]}
+  :data = "data"
+@on
+-val - change = "onValChange"
+@on
+-name - change = "onNameChange" / >
+  
+  data()
+{
+  return {
+    value: null,
+    data: [
+      {
+        id: 1,
+        name: "爷爷",
+        children: [
+          {
+            id: 2,
+            name: '父亲'
+          },
+          {
+            id: 3,
+            name: '叔叔'
+          }
         ]
       }
-    }
-  
+    ]
+  }
+}
+
 ````
+
 远程数据
+
 ````javascript
 <em-cascader
   v-model="value"
-  :url:='/dept'
-  @on-val-change="onValChange"
-  @on-name-change="onNameChange"
-  />
-
-  data() {
-      return {
-        value: null
-      }
-    }
+  :url:= '/dept'
+@on
+-val - change = "onValChange"
+@on
+-name - change = "onNameChange" / >
   
+  data()
+{
+  return {
+    value: null
+  }
+}
+
 ````
+
 ### 组件属性
+
 |       参数        |       说明       |          类型           |          可选值          |  默认值   |
 |:---------------:|:--------------:|:---------------------:|:---------------------:|:------:|
 | value / v-model |      绑定值       | String, Number, Array |           —           |   —    |
@@ -53,7 +78,9 @@
 |    multiple     |      是否多选      |        Boolean        |           —           | false  |
 |    disabled     |      是否禁用      |        Boolean        |           —           | false  |
 |   placeholder   |      占位符       |        string         |           —           |  请输入   |
+
 ### 组件事件
+
 |      事件类型      |     说明     |  回调参数  |
 |:--------------:|:----------:|:------:|
 | on-val-change  | 返回绑定值的变化响应 |  绑定的值  |

@@ -1,6 +1,9 @@
 ## EmCascaderArea
+
 省市区级联选择
-###基本使用
+
+### 基本使用
+
 ````javascript
 <em-cascader-area
   v-model="value"
@@ -16,7 +19,9 @@
     }
   
 ````
+
 ### 组件属性
+
 |       参数        |    说明     |          类型           |          可选值          |  默认值   |
 |:---------------:|:---------:|:---------------------:|:---------------------:|:------:|
 | value / v-model |    绑定值    | String, Number, Array |           —           |   —    |
@@ -27,7 +32,9 @@
 |   filterable    |   是否可搜索   |        Boolean        |           —           |  true  |
 |    disabled     |   是否禁用    |        Boolean        |           —           | false  |
 |   placeholder   |    占位符    |        string         |           —           |  请输入   |
+
 ### 组件事件
+
 |      事件类型      |     说明     |  回调参数  |
 |:--------------:|:----------:|:------:|
 | on-val-change  | 返回绑定值的变化响应 |  绑定的值  |

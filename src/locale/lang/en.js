@@ -26,10 +26,10 @@ export default {
       save: 'Save',
       clear: 'Clear',
     },
-    loginTips:{
-      title:'Confirm exit',
-      content:'The current page has expired, please log in again',
-      okTxt:'Log in again',
+    loginTips: {
+      title: 'Confirm exit',
+      content: 'The current page has expired, please log in again',
+      okTxt: 'Log in again',
     }
   }
 }

@@ -49,6 +49,8 @@
       <!--表格-->
       <em-table-page
           ref="tableRef"
+          v-bind="$attrs"
+          v-on="$listeners"
           :selection="multiple"
           :radio="!multiple"
           :url="url"
@@ -96,7 +98,10 @@
         :disabled="disabled"
     >
       <template slot="suffix">
-        <i v-if="showClose && !disabled" class="el-select__caret el-input__icon el-icon-circle-close" @click="handleClearClick"></i>
+        <i
+            v-if="showClose && !disabled" class="el-select__caret el-input__icon el-icon-circle-close"
+            @click="handleClearClick"
+        ></i>
         <i :class="['el-select__caret', 'el-input__icon', 'el-icon-' + iconClass]"></i>
       </template>
     </el-input>
@@ -105,6 +110,7 @@
 
 <script>
   import _ from 'lodash'
+  import {t} from '../../locale'
 
   export default {
     name: 'EmTableSelect',
@@ -114,6 +120,9 @@
     },
     props: {
       value: {//绑定值
+        type: [
+          String, Number, Array
+        ],
         required: true,
       },
       url: {//接口请求地址
@@ -144,6 +153,10 @@
         type: Boolean,
         default: false
       },
+      valKey: { //绑定值的key
+        type: String,
+        default: 'id'
+      },
       labelKey: { //展示值的key
         type: String,
         default: 'name'
@@ -151,7 +164,7 @@
       placeholder: {//占位符
         type: String,
         default() {
-          return '请选择'
+          return t('em.pSelect')
         }
       },
       placement: {//从哪里弹出
@@ -179,7 +192,7 @@
         get() {
           if (this.multiple) {//多选
             if (this.value && this.dataList) {
-              return this.dataList.filter(e => this.value.filter(x => e.id === x).length > 0) || []
+              return this.dataList.filter(e => this.value.filter(x => e[this.valKey] === x).length > 0) || []
             }
             else {
               return []
@@ -187,7 +200,7 @@
           }
           else {
             if (this.value && this.dataList) {
-              return this.dataList.find(e => e.id === this.value) || {}
+              return this.dataList.find(e => e[this.valKey] === this.value) || {}
             }
             else {
               return {}
@@ -250,11 +263,12 @@
             this.rowSelectFlag = true
             this.$nextTick(() => {
               if (!this.visible && !this.delTagFlag) {
-                if(!_.isEmpty(after)){
+                if (!_.isEmpty(after)) {
                   after.forEach(item => {
                     this.$refs.tableRef.handleRowClick(item)
                   })
-                }else {
+                }
+                else {
                   this.$refs.tableRef.handleClearSelection()
                 }
               }
@@ -265,7 +279,7 @@
           }
           else {
             this.$nextTick(() => {
-              this.$refs.tableRef.onlyId = after.id
+              this.$refs.tableRef.onlyId = after[this.valKey]
             })
           }
         },
@@ -282,7 +296,7 @@
     methods: {
       handleRowClick(row) {
         if (!this.multiple) {//单选
-          this.valueT = row.id
+          this.valueT = row[this.valKey]
           this.visible = false
         }
       },
@@ -295,7 +309,7 @@
           if (this.rowSelectFlag) {
             return
           }
-          this.valueT = selection.map(e => e.id)
+          this.valueT = selection.map(e => e[this.valKey])
         }
       },
       /**

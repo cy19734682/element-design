@@ -171,13 +171,14 @@
             :auto-upload="item.autoUpload"
             :multiple="item.multiple"
             :format="item.format||[]"
-            :data="item.data"
+            :headers="item.headers"
+            :paramData="item.paramData"
             :fileName="item.fileName"
             :max-size="item.maxSize"
             :length="item.length"
             :list-type="item.listType"
             :disabled="item.disabled || disabled"
-            :with-credentials="item.withCredentials!==false"
+            :with-credentials="item.withCredentials"
             @on-file-change="reValidateAndChangeHandle($event,item)"
         />
         <!--行政区域级联-->
@@ -186,7 +187,7 @@
             v-model="dataGroup[item.key]"
             :level="item.level"
             :disabled="item.disabled || disabled"
-            :filterable="item.filterable!==false"
+            :filterable="item.filterable"
             :separator="item.separator"
             :size="item.size"
             :placeholder="item.placeholder"
@@ -198,7 +199,7 @@
             v-else-if="item.type === 'cascader'"
             v-model="dataGroup[item.key]"
             :disabled="item.disabled || disabled"
-            :filterable="item.filterable!==false"
+            :filterable="item.filterable"
             :url="item.url"
             :data="item.data"
             :check-strictly="item.checkStrictly"
@@ -220,6 +221,7 @@
             :disabled="item.disabled || disabled"
             :width="item.mapWidth"
             :height="item.mapHeight"
+            :ak="item.ak"
             @on-val-change="reValidateAndChangeHandle($event,item)"
         />
         <!--富文本框-->
@@ -256,11 +258,12 @@
             :width="item.width"
             :multiple="item.multiple"
             :label-key="item.labelKey"
+            :val-key="item.valKey"
             :placeholder="item.placeholder"
             :placement="item.placement"
             @on-val-change="reValidateAndChangeHandle($event,item)"
         />
-        <!--自定义组件-->
+        <!--自定义选项-->
         <div v-else-if="item.type === 'custom'" class="inlineBlock">
           <slot :name="item.slotName" :data-group="dataGroup" />
         </div>
@@ -290,7 +293,7 @@
 <script>
   import _ from 'lodash'
   import {initFormItems, getTempKeyDefaultVal, updateTempKeys, initClearFormData} from './hooks'
-  import { trimObj, myTypeof, isValidVal } from '../../methods'
+  import {trimObj, myTypeof, isValidVal} from '../../methods'
   import Locale from '../../mixins/locale'
   import EmBaiduMap from "../EmBaiduMap"
   import EmCascader from "../EmCascader"
@@ -299,10 +302,11 @@
   import EmUpload from "../EmUpload"
   import EmIconSelect from "../EmIconSelect"
   import EmTableSelect from "../EmTableSelect"
+
   export default {
     name: "EmForm",
     mixins: [Locale],
-    components:{
+    components: {
       EmBaiduMap,
       EmCascader,
       EmCascaderArea,
@@ -327,7 +331,7 @@
         }
       },
       showMessage: {
-        /*显示校验信息*/
+        /*是否显示校验信息*/
         type: Boolean,
         default: true
       },
@@ -345,11 +349,6 @@
         /*行内表单模式*/
         type: Boolean,
         default: false
-      },
-      itemWidth: {
-        /*表单项内容宽度,用于行内表单*/
-        type: Number,
-        default: 200
       },
       labelPosition: {
         /*表单域标签的位置*/
@@ -459,7 +458,8 @@
         this.dataGroup = {}
         for (let root of this.formData) {
           if (root.key) {
-            if (root.type === 'checkbox' || ((root.type === 'select' || root.type === 'tableSelect') && root.multiple)) {
+            if (root.type === 'checkbox' ||
+                ((root.type === 'select' || root.type === 'tableSelect') && root.multiple)) {
               this.$set(this.dataGroup, root.key,
                   root.defaultVal !== undefined && root.show === undefined ? root.defaultVal : [])
             }
@@ -604,7 +604,6 @@
       /**
        * 更新表单结构，例如设置或取消禁用,或者给type为txt的表单项（没有key）赋值（公开）；
        * @param {Object|Array} d 为对象（改变单个）或数组（改变多个），支持的属性：index（必填）-需要改变的formData项的索引值、
-       * indexB-当表单为`分组表单`时必填（表示表单项的二位数组索引第二位）、需要改变的属性，如要改变第二个表单组件的label和title,
        * 则为:{index:1,label:XXX,title:XXX}
        */
       updateFormDataT(d) {
@@ -625,7 +624,8 @@
         for (let k in this.tempKeys) {
           if (defaultV.hasOwnProperty(k) && isValidVal(defaultV[k])) {
             this.$set(this.tempKeys, k, defaultV[k])
-          }else {
+          }
+          else {
             initClearFormData(this.formDataT, 'tempKey', this.tempKeys, k)
           }
         }
@@ -704,7 +704,7 @@
        * @param root 表单项结构数据
        * @param item
        */
-      reValidateAndChangeHandle(item,root) {
+      reValidateAndChangeHandle(item, root) {
         this.$nextTick(() => {
           this.$refs.elFormRef.validateField(root.key)
           this.itemChange(item, root)
@@ -752,13 +752,13 @@
         }, 200)
       },
       /**
-       * 获取需要提交的数据(私有)
+       * 获取需要提交的数据
        * @return {{}}submit的值
        */
       getDataGroup() {
         let keys = []
         for (let e of this.formDataT) {
-          if(e['showing'] === true && e.key){
+          if (e['showing'] === true && e.key) {
             keys.push(e.key)
             if (e.key2) {
               keys.push(e.key2)

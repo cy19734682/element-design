@@ -1,4 +1,4 @@
-import { debounce } from '../../../methods'
+import {debounce} from '../../../methods'
 
 export default {
   data() {
@@ -15,7 +15,7 @@ export default {
       // avoid duplication init
       this.initListener()
     }
-
+    
     // when keep-alive chart activated, auto resize
     this.resize()
   },
@@ -38,14 +38,14 @@ export default {
         this.resize()
       }, 100)
       window.addEventListener('resize', this.$_resizeHandler)
-
+      
       this.$_sidebarElm = document.getElementsByClassName('sidebar-container')[0]
       this.$_sidebarElm && this.$_sidebarElm.addEventListener('transitionend', this.$_sidebarResizeHandler)
     },
     destroyListener() {
       window.removeEventListener('resize', this.$_resizeHandler)
       this.$_resizeHandler = null
-
+      
       this.$_sidebarElm && this.$_sidebarElm.removeEventListener('transitionend', this.$_sidebarResizeHandler)
     },
     resize() {
