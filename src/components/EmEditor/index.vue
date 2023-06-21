@@ -13,7 +13,6 @@
 <script>
   import {t} from '../../locale'
   import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
-  import '@wangeditor/editor/dist/css/style.css'
 
   export default {
     name: "EmEditor",

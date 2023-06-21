@@ -50,4 +50,4 @@ export default {
   use,
   t,
   i18n
-};
+}
