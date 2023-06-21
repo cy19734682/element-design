@@ -2,13 +2,14 @@ import request from '../methods/request'
 
 // 校验用户是否拥有按钮权限
 function hasPermission(el, binding) {
-  const roles = request.store && request.store.getters && request.store.getters.roles
+  const store = request.config && request.config.store || {}
+  const roles = store.getters && store.getters.roles || []
   // 超级管理员拥有所有的按钮权限
   if (roles.includes('ROOT')) {
     return true
   }
   const {value} = binding
-  const perms = request.store.getters && request.store.getters.perms
+  const perms = store.getters && store.getters.perms
   if (value && value instanceof Array) {
     if (value.length > 0) {
       const requiredPerms = value

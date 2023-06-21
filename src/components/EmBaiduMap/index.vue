@@ -101,6 +101,16 @@
         }
       },
     },
+    watch: {
+      value(val) {
+        if (this.Map && !(_.isEmpty(val)) && (val.lng || val.lng === 0) && (val.lat || val.lat === 0)) {
+          this.Map.clearOverlays() //清除标记点
+          const myMarker = new BMap.Marker(new BMap.Point(val.lng, val.lat))
+          this.Map.addOverlay(myMarker) //添加标记点
+          this.zoom = 15
+        }
+      }
+    },
     beforeDestroy() {
       if (!this.Map) {
         return
@@ -135,9 +145,6 @@
         if (this.disabled) {//如果禁用，则直接返回
           return
         }
-        this.Map.clearOverlays() //清除标记点
-        const myMarker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat))
-        this.Map.addOverlay(myMarker) //添加标记点
         //用所定位的经纬度查找所在地省市街道等信息
         const point = new BMap.Point(e.point.lng, e.point.lat)
         const gc = new BMap.Geocoder()
@@ -157,9 +164,6 @@
           lng: e.point.lng,
           lat: e.point.lat
         }
-        this.Map.clearOverlays() //清除标记点
-        const myMarker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat))
-        this.Map.addOverlay(myMarker) //添加标记点
         this.$emit("on-val-change", locMap)
         this.keyword = ""
       }
