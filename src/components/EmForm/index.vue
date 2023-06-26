@@ -11,7 +11,7 @@
       <el-form-item
           v-for="(item,index) in formDataT" :key="item.key + index" v-if="getFormItemIfVal(item)"
           :prop="item.key" :label="item.label" :label-width="item.labelWidth || labelWidth"
-          :disabled="item.disabled || disabled" :show-message="item.showMessage || showMessage"
+          :show-message="item.showMessage || showMessage"
       >
         <!--纯文本,也可以不传label和val,单纯用来布局占位-->
         <div v-if="item.type === 'txt'" style="display: inline-block;color: #606266;">{{ item.val }}</div>
@@ -19,7 +19,11 @@
         <el-input
             v-if="item.type === 'input'" v-model="tempKeys[item.tempKey]" :maxlength="item.maxLength || null"
             :minlength="item.minLength || null"
-            :placeholder="item.placeholder || t('em.pInput')" clearable :show-password="item.showPassword"
+            :placeholder="item.placeholder || t('em.pInput')"
+            clearable
+            :show-password="item.showPassword"
+            :disabled="item.disabled || disabled"
+            :readonly="item.readonly"
             @blur="itemChange($event,item)"
         >
           <template v-if="item.prepend" slot="prepend">
@@ -38,6 +42,8 @@
             :precision="item.precision" :placeholder="item.placeholder|| t('em.pInput')"
             :controls="item.controls || true"
             :controls-position="item.controlsPosition || 'right'"
+            :disabled="item.disabled || disabled"
+            :readonly="item.readonly"
             @blur="itemChange($event,item)"
             @input.native="clearValidateHandle"
         />
@@ -49,6 +55,7 @@
             :multiple="item.multiple || false"
             clearable
             :placeholder="item.placeholder|| t('em.pSelect')"
+            :disabled="item.disabled || disabled"
             @change="itemChange($event,item)"
         >
           <el-option
@@ -66,6 +73,7 @@
             :size="item.size || 'medium'"
             :text-color="item.textColor || '#ffffff'"
             :fill="item.fill || '#409EFF'"
+            :disabled="item.disabled || disabled"
             @input="itemChange($event,item)"
         >
           <template v-if="item.radioType === 'button'">
@@ -98,6 +106,7 @@
             :size="item.size || 'medium'"
             :text-color="item.textColor || '#ffffff'"
             :fill="item.fill || '#409EFF'"
+            :disabled="item.disabled || disabled"
             @input="itemChange($event,item)"
         >
           <template v-if="item.checkboxType === 'button'">
@@ -133,6 +142,7 @@
             :show-word-limit="item.showWordLimit || false"
             :placeholder="item.placeholder || t('em.pInput')"
             clearable
+            :disabled="item.disabled || disabled"
             @blur="itemChange($event,item)"
         />
         <!--日期组件-->
@@ -146,6 +156,7 @@
             :start-placeholder="item.startPlaceholder || t('el.datepicker.startDate')"
             :end-placeholder="item.endPlaceholder || t('el.datepicker.endDate')"
             :picker-options="item.pickerOptions"
+            :disabled="item.disabled || disabled"
             @change="itemChange($event,item)"
         >
         </el-date-picker>
@@ -160,6 +171,7 @@
             :start-placeholder="item.startPlaceholder || t('el.datepicker.startTime')"
             :end-placeholder="item.endPlaceholder || t('el.datepicker.endTime')"
             :picker-options="item.pickerOptions"
+            :disabled="item.disabled || disabled"
             @change="itemChange($event,item)"
         >
         </el-time-picker>
@@ -278,7 +290,7 @@
       <el-form-item v-if="showInlineOkBt || showInlineClearBt">
         <el-button
             v-if="showInlineOkBt" type="primary" :icon="inlineOkBtIcon" :loading="btnLoading&&showLoading"
-            @click="submit"
+            :disabled="disabled" @click="submit"
         >
           {{ inlineOkBtTxt || $t("em.button.confirm") }}
         </el-button>

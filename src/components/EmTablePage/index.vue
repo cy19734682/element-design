@@ -42,6 +42,7 @@
             <render-dom
                 v-if="item.render" :render="item.render" :row="scope.row" :index="scope.$index" :column="item"
             ></render-dom>
+            <span v-else-if="tableEmptyTdHandle && (scope.row[item.key] === '' || scope.row[item.key] === null || scope.row[item.key] === undefined)">--</span>
             <span v-else>{{ scope.row[item.key] }}</span>
           </template>
         </el-table-column>
@@ -133,6 +134,11 @@
       },
       showOverflowTooltip: {
         /*当内容过长被隐藏时显示 tooltip*/
+        type: Boolean,
+        default: true
+      },
+      tableEmptyTdHandle: {
+        /*表格内容为空时是否展示 --*/
         type: Boolean,
         default: true
       },
@@ -301,6 +307,14 @@
           this.selected = selection
         }
       },
+      clearSelect(){
+        if (this.radio) {
+          this.onlyId = null
+        }
+        if (this.selection) {
+          this.$refs.elTableRef.clearSelection()
+        }
+      },
       /**
        * 切换分页
        */
@@ -313,6 +327,7 @@
        */
       clearTableData() {
         this.$set(this, 'dataT', [])
+        this.clearSelect()
         this.currentPage = 1
         this.total = 0
       },
@@ -320,10 +335,13 @@
        * 拉取表格数据
        * @returns {Promise<unknown>}
        */
-      getTableData() {
+      getTableData(keepSelect) {
         return new Promise(resolve => {
           if (this.url && this.url !== '') {
             request.get(this.url, this.queryData, {isShowLoading: this.loading}).then(d => {
+              if (!keepSelect) {
+                this.clearSelect()
+              }
               if (d && d.code === 0 && d.data) {
                 this.dataT = (d.data && d.data.data) || d.data || []
                 this.total = d.data[this.totalKey] || 0
