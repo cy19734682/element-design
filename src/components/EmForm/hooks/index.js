@@ -14,6 +14,17 @@ import _ from "lodash"
 export function initFormItems(f, t, d, w, $this) {
   for (let root of f) {
     switch (root.type) {
+      case 'selectInput':
+        const tempKeyF = 'selectInput' + Math.floor(Math.random() * 100000000)
+        root.tempKey = tempKeyF
+        $this.$set(t, tempKeyF, {
+          key: root.defaultKey || null,
+          val: root.defaultVal || null
+        })
+        w.push($this.$watch(() => t[tempKeyF], after => {
+          tempKeysWatchHandle(d, after, root)
+        }, {immediate: true}))
+        break
       case 'bdMap':
         const tempKeyE = 'inputMap' + Math.floor(Math.random() * 100000000)
         if (root.key) {
@@ -183,6 +194,21 @@ export function initFormItems(f, t, d, w, $this) {
  */
 function tempKeysWatchHandle(d, a, root, f, t, $this) {
   switch (root.type) {
+    case 'selectInput':
+      if (a) {
+        if (a.beforeKey) {
+          delete d[a.beforeKey]
+        }
+        if(a.key){
+          d[a.key] = a.val
+          d[root.key] = a.key + ':' + a.val
+        }else {
+          d[root.key] = null
+        }
+      }else {
+        d[root.key] = null
+      }
+      break
     case 'bdMap':
       if (a) {
         d[root.key] = a.lng
@@ -414,6 +440,12 @@ function optionAssign(tOption = [], root) {
  */
 export function getTempKeyDefaultVal(root, a) {
   switch (root.type) {
+    case 'selectInput':
+      a[root.tempKey] = {
+        key: root.key,
+        val: root.defaultVal
+      }
+      break
     case 'bdMap':
       a[root.tempKey] = {
         lng: root.defaultVal || 0,

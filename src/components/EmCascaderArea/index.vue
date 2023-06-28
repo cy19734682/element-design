@@ -8,7 +8,7 @@
       :show-all-levels="showAllLevels"
       :size="size"
       :disabled="disabled"
-      :placeholder="placeholder || t('em.pInput')"
+      :placeholder="placeholder || t('em.pSelect')"
       :filterable="filterable"
       clearable
   />

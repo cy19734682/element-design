@@ -1,30 +1,35 @@
 <template>
-  <el-cascader
+  <el-input
       v-bind="$attrs"
       v-on="$listeners"
-      ref="areaRef"
-      v-model="valueT"
-      :options="options"
-      :props="{
-        checkStrictly: checkStrictly,
-        multiple: multiple
-      }"
-      :show-all-levels="showAllLevels"
-      :size="size"
-      :disabled="disabled"
-      :placeholder="placeholder || t('em.pSelect')"
-      :filterable="filterable"
+      v-model="inputVal"
+      class="em-input-with-select"
       clearable
-  />
+      :placeholder="inputPlaceholder || t('em.pInput')"
+      :disabled="disabled"
+      @change="inputChange"
+  >
+    <el-select
+        v-model="selectVal"
+        slot="prepend"
+        :placeholder="selectPlaceholder || t('em.pSelect')"
+        :style="{minWidth: selectWidth}"
+        clearable
+        :filterable="filterable"
+        :disabled="disabled"
+    >
+      <el-option v-for="(item,index) in options" :key="'selectInput'+index" :label="item.label" :value="item.value"/>
+    </el-select>
+  </el-input>
 </template>
 <script>
   import _ from 'lodash'
   import Locale from '../../mixins/locale'
-  import {myTypeof, findPath} from '../../methods'
+  import {myTypeof} from '../../methods'
   import request from '../../methods/request'
 
   export default {
-    name: 'EmCascader',
+    name: 'EmSelectInput',
     model: {
       prop: 'value',
       event: 'on-val-change'
@@ -37,12 +42,13 @@
         default: ""
       },
       value: {
-        /*组件绑定的值（v-model）*/
-        type: [
-          String, Number, Array
-        ],
+        /*组件的值，建议使用v-model绑定，key对应select值，val对应input值*/
+        type: Object,
         default() {
-          return null
+          return {
+            key: null,
+            val: null
+          }
         }
       },
       data: {
@@ -51,101 +57,75 @@
           return []
         }
       },
+      selectWidth: {
+        /*select选择框宽度*/
+        type: String,
+        default: '120px'
+      },
       optionVal: {
         /*v-model收集节点的哪些字段*/
         type: String,
-        default: 'id'
+        default: 'val'
       },
       optionLabel: {
         /*选项的标签对应接口字段*/
         type: String,
-        default: 'name'
+        default: 'label'
       },
       optionFilter: {
         /*筛选待选项的方法，入参是接口请求回来的待选项数据，返回处理后的待选项（仅进行筛选操作，不要做其它处理）*/
         type: Function
-      },
-      showAllLevels: {
-        /*是否显示完整路径*/
-        type: Boolean,
-        default: true
-      },
-      separator: {
-        /*地址名称分隔符*/
-        type: String,
-        default: '/'
-      },
-      size: {
-        type: String,
-        default: 'medium'
       },
       filterable: {
         /*是否可搜索*/
         type: Boolean,
         default: true
       },
-      checkStrictly: {
-        /*任意一级选项*/
-        type: Boolean,
-        default: false
-      },
-      multiple: {
-        /*是否多选*/
-        type: Boolean,
-        default: false
-      },
       disabled: {
         /*禁用组件*/
         type: Boolean,
         default: false
       },
-      placeholder: {
-        /*占位符*/
+      selectPlaceholder: {
+        /*选择框占位符*/
+        type: String,
+        default: ""
+      },
+      inputPlaceholder: {
+        /*输入框占位符*/
         type: String,
         default: ""
       }
     },
     computed: {
-      valueT: {
+      selectVal: {
         get() {
-          let valProp = this.value
-          if (Array.isArray(valProp)) {
-            return [].concat(valProp)
-          }
-          else if (_.isNumber(valProp)) {
-            return findPath({
-              group: this.options,
-              condition: item => item.value === valProp,
-              pathKey: 'value'
-            })
-          }
-          else if (_.isString(valProp)) {
-            return valProp.split(this.separator)
-          }
-          else if (valProp === null) {
-            return []
-          }
+          return this.value && this.value.key || null
         },
         set(val) {
-          let labels = findPath({
-            group: this.options,
-            condition: item => item.value === val[val.length - 1],
-            pathKey: 'label'
-          })
-          let v = null
-          let l = null
-          if (Array.isArray(this.value)) {
-            v = val
-            l = labels
+          let temp = {
+            key: val,
+            val: null
           }
-          else {
-            v = _.last(val)
-            l = labels[labels.length - 1]
+          if (this.selectVal && this.selectVal !== val) {
+            temp.beforeKey = this.selectVal
           }
-          this.$emit('on-val-change', v)
-          this.$emit('on-name-change', l)
+          this.$emit('on-val-change', temp)
+          this.$emit('on-change', temp)
         }
-      }
+      },
+      inputVal: {
+        get() {
+          return this.value && this.value.val || null
+        },
+        set(val) {
+          let temp = {
+            key: this.selectVal,
+            val: val
+          }
+          this.$emit('on-val-change', temp)
+        }
+      },
     },
     watch: {
       data: {
@@ -197,13 +177,19 @@
             value: item[this.optionVal],
             label: item[this.optionLabel]
           }
-          if (item.children && (!_.isEmpty(item.children))) {
-            tt.children = this.dataFilter(item.children)
-          }
           temp.push(tt)
         }
         return temp
       },
+      /**
+       * input输入响应
+       */
+      inputChange:_.debounce(function (e) {
+        this.$emit('on-change', {
+          key: this.selectVal,
+          val: e
+        })
+      }, 200),
     }
   }
 </script>

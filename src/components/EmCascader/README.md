@@ -77,7 +77,7 @@
 |  checkStrictly  |   是否可以选任意一级    |        Boolean        |           —           | false  |
 |    multiple     |      是否多选      |        Boolean        |           —           | false  |
 |    disabled     |      是否禁用      |        Boolean        |           —           | false  |
-|   placeholder   |      占位符       |        string         |           —           |  请输入   |
+|   placeholder   |      占位符       |        string         |           —           |  请选择   |
 
 ### 组件事件
 

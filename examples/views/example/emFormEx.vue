@@ -102,6 +102,19 @@ export default {
           }
         },
         {
+          type: 'selectInput',
+          label: '学校',
+          key: 'school',
+          defaultKey: 'gz',
+          defaultVal: '52',
+          data: [
+            {val:'xx',label:'小学'},
+            {val:'cz',label:'初中'},
+            {val:'gz',label:'高中'},
+            {val:'dx',label:'大学'},
+          ]
+        },
+        {
           type: "upload",
           label: "文件上传",
           key: "imgUrl",
@@ -245,6 +258,9 @@ export default {
         mimeType: {
           required: true,
           trigger: "blur",
+        },
+        school: {
+          required: true,
         }
       }
     }

@@ -13,6 +13,7 @@ import EmCharts from './components/EmCharts'
 import EmIcons from './components/EmIcons'
 import EmIconSelect from './components/EmIconSelect'
 import EmTableSelect from './components/EmTableSelect'
+import EmSelectInput from './components/EmSelectInput'
 
 import {
   formatTime,
@@ -57,7 +58,8 @@ const components = {
   EmCharts,
   EmIcons,
   EmIconSelect,
-  EmTableSelect
+  EmTableSelect,
+  EmSelectInput
 }
 
 /*需要从插件中单独引入的方法（使用频率低）*/

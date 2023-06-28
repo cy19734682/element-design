@@ -143,6 +143,14 @@ const constantRoutes = [
         meta: {
           title: 'emTableSelectEx表格选择组件'
         }
+      },
+      {
+        path: 'emSelectInputEx',
+        component: () => import('./views/example/emSelectInputEx'),
+        name: 'emSelectInputEx',
+        meta: {
+          title: 'emSelectInputEx下拉选择输入组件'
+        }
       }
     ]
   },

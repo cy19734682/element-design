@@ -47,7 +47,6 @@
             @blur="itemChange($event,item)"
             @input.native="clearValidateHandle"
         />
-
         <!-- Select 下拉框 -->
         <el-select
             v-else-if="item.type === 'select'" v-model="tempKeys[item.tempKey]"
@@ -66,6 +65,22 @@
               :disabled="!!optionItem.disabled"
           />
         </el-select>
+        <!-- SelectInput 下拉输入框 -->
+        <em-select-input
+            v-else-if="item.type === 'selectInput'"
+            v-model="tempKeys[item.tempKey]"
+            :url="item.url"
+            :data="item.data"
+            :select-width="item.selectWidth"
+            :filterable="item.filterable"
+            :option-filter="item.optionFilter"
+            :option-val="item.optionVal"
+            :option-label="item.optionLabel"
+            :disabled="item.disabled || disabled"
+            :select-placeholder="item.selectPlaceholder"
+            :input-placeholder="item.inputPlaceholder"
+            @on-change="onSelectInputChange"
+        />
         <!--单选组-->
         <el-radio-group
             v-else-if="item.type === 'radio'"
@@ -723,6 +738,15 @@
         })
       },
       /**
+       * 更新选择输入框值(私有)
+       * @param d
+       */
+      onSelectInputChange(d) {
+        if (d.key) {
+          this.itemChange('selectInput',  d)
+        }
+      },
+      /**
        * 更新级联组件名称（私有）
        * @param name 行政区域名称
        * @param root
@@ -761,7 +785,7 @@
             }
           }
           this.$emit('on-item-change', d)
-        }, 200)
+        }, 100)
       },
       /**
        * 获取需要提交的数据
@@ -771,21 +795,29 @@
         let keys = []
         for (let e of this.formDataT) {
           if (e['showing'] === true && e.key) {
-            keys.push(e.key)
-            if (e.key2) {
-              keys.push(e.key2)
-            }
-            if (e.key3) {
-              keys.push(e.key3)
-            }
-            if (e.collectLabel) {
-              if (myTypeof(e.collectLabel) === 'Object' && e.collectLabel.key) {
-                keys.push(e.collectLabel.key)
+            if(e.type === 'selectInput'){ //selectInput单独处理
+              let si = this.dataGroup[e.key] || ''
+              let siArr = si.split(':') || []
+              if(siArr.length > 0){
+                keys.push(siArr[0])
               }
-              else if (Array.isArray(e.collectLabel)) {
-                for (let l of e.collectLabel) {
-                  if (l.key) {
-                    keys.push(l.key)
+            }else {
+              keys.push(e.key)
+              if (e.key2) {
+                keys.push(e.key2)
+              }
+              if (e.key3) {
+                keys.push(e.key3)
+              }
+              if (e.collectLabel) {
+                if (myTypeof(e.collectLabel) === 'Object' && e.collectLabel.key) {
+                  keys.push(e.collectLabel.key)
+                }
+                else if (Array.isArray(e.collectLabel)) {
+                  for (let l of e.collectLabel) {
+                    if (l.key) {
+                      keys.push(l.key)
+                    }
                   }
                 }
               }

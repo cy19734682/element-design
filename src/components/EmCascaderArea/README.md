@@ -31,7 +31,7 @@
 |      size       |   组件大小    |        string         | medium / small / mini | medium |
 |   filterable    |   是否可搜索   |        Boolean        |           —           |  true  |
 |    disabled     |   是否禁用    |        Boolean        |           —           | false  |
-|   placeholder   |    占位符    |        string         |           —           |  请输入   |
+|   placeholder   |    占位符    |        string         |           —           |  请选择   |
 
 ### 组件事件
 
