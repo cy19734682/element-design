@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import {getToken, setToken, removeToken} from '../../utils/auth'
+import {$request} from '../../../src'
 
 const state = {
   token: getToken(),
@@ -41,7 +41,7 @@ const actions = {
         uuid: uuid,
         validateCode: validateCode
       }
-      Vue.prototype.$request.post('/login',loginData).then(response => {
+      $request.post('/login',loginData).then(response => {
         const {token,userInfo} = response.data
         commit('SET_TOKEN', token)
         commit('SET_NICKNAME', userInfo.username)
@@ -55,7 +55,7 @@ const actions = {
   },// get user info
   getUserInfo({commit, state}) {
     return new Promise((resolve, reject) => {
-      Vue.prototype.$request.get('/index').then(response => {
+      $request.get('/index').then(response => {
         const {data} = response
         if (!data) {
           reject('Verification failed, please Login again.')
@@ -81,7 +81,7 @@ const actions = {
   logout({commit, state, dispatch}) {
     return new Promise((resolve, reject) => {
   
-      Vue.prototype.$request.get('/logout').then(() => {
+      $request.get('/logout').then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         removeToken()

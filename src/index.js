@@ -62,23 +62,6 @@ const components = {
   EmSelectInput
 }
 
-/*需要从插件中单独引入的方法（使用频率低）*/
-const plugMethods = {
-  formatTime,
-  byteLength,
-  cleanArray,
-  param2Obj,
-  html2Text,
-  objectMerge,
-  toggleClass,
-  debounce,
-  deepClone,
-  uniqueArr,
-  exportTableToExcel,
-  exportJsonToExcel,
-  exportTxtToZip
-}
-
 /*挂在Vue原型对象上的方法*/
 const methodsR = {
   trimObj,
@@ -138,5 +121,27 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
   version: process.env.VERSION,
-  install: install, ...components, ...methodsR, ...plugMethods
+  install: install, ...components
+}
+
+export {
+  formatTime,
+  byteLength,
+  cleanArray,
+  param2Obj,
+  html2Text,
+  objectMerge,
+  toggleClass,
+  debounce,
+  deepClone,
+  uniqueArr,
+  exportTableToExcel,
+  exportJsonToExcel,
+  exportTxtToZip,
+  trimObj,
+  myTypeof,
+  isValidVal,
+  findPath,
+  imageSplicing,
+  $request
 }
