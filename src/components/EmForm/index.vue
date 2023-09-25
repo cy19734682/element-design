@@ -263,6 +263,18 @@
             :height="item.height"
             @on-val-change="reValidateAndChangeHandle($event,item)"
         />
+        <!--颜色选择-->
+        <el-color-picker
+            v-else-if="item.type === 'colorPicker'"
+            v-model="dataGroup[item.key]"
+            :disabled="item.disabled || disabled"
+            :size="item.size"
+            :show-alpha="item.showAlpha"
+            :color-format="item.colorFormat"
+            :popper-class="item.popperClass"
+            :predefine="item.predefine"
+            @on-val-change="itemChange($event,item)"
+        />
         <!--图标选择-->
         <em-icon-select
             v-else-if="item.type === 'selectIcon'"

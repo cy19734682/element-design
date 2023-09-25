@@ -1,30 +1,54 @@
 <template>
   <div class="em-upload">
+    <div v-if="uploadFetch">
+      <el-button size="small" type="primary" @click="openFetchModal">{{ t('em.button.clickUpload') }}</el-button>
+      <div class="fetch-box">
+        <div class="fetch-img" v-for="(item, index) in fileData"  :key="index">
+          <i class="el-icon-close" @click="removeFetchImg($event, index)"/>
+          <img :src="item" @click="handlePreview(item)"/>
+        </div>
+      </div>
+    </div>
     <el-upload
-        class="elm-uploader"
-        :headers="headersT"
-        :action="url"
-        :data="paramData"
-        :name="fileName"
-        :list-type="listType"
-        :file-list="fileData"
-        :before-upload="beforeUpload"
-        :on-change="handleChange"
-        :on-success="handleUploadSuccess"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :limit="length"
-        :on-exceed="handleExceed"
-        :auto-upload="autoUpload"
-        :multiple="multiple"
-        :with-credentials="withCredentials"
-        :disabled="disabled"
+      v-else
+      class="elm-uploader"
+      :headers="headersT"
+      :action="url"
+      :data="paramData"
+      :name="fileName"
+      :list-type="listType"
+      :file-list="fileData"
+      :before-upload="beforeUpload"
+      :on-change="handleChange"
+      :on-success="handleUploadSuccess"
+      :on-preview="handlePreview"
+      :on-remove="handleRemove"
+      :limit="length"
+      :on-exceed="handleExceed"
+      :auto-upload="autoUpload"
+      :multiple="multiple"
+      :with-credentials="withCredentials"
+      :disabled="disabled"
     >
       <i slot="default" class="el-icon-plus" v-if="listType === 'picture-card'"></i>
       <el-button size="small" type="primary" v-else>{{ t('em.button.clickUpload') }}</el-button>
     </el-upload>
+   <!-- 图片预览   -->
     <el-dialog :visible.sync="dialogVisible" style="z-index: 999" append-to-body>
       <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
+   <!--  网络图片抓取  -->
+    <el-dialog
+        width="520px"
+        :visible.sync="fetchModalVisible"
+        append-to-body
+        :show-close="false"
+    >
+      <el-input class="wd70" v-model="fetchUrl" :placeholder='t("em.pInputFetchUrl")'/>
+      <div style="text-align: center;margin-top: 15px;">
+        <el-button type="primary" @click="submitFetch">{{ t("em.button.confirm") }}</el-button>
+        <el-button @click="fetchModalVisible = false">{{ t("em.button.cancel") }}</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -33,7 +57,7 @@
   import _ from 'lodash'
   import Locale from '../../mixins/locale'
   import request from '../../methods/request'
-  import {imageSplicing} from '../../methods'
+  import {imageSplicing, isValidVal} from '../../methods'
 
   export default {
     name: 'EmUpload',
@@ -51,6 +75,11 @@
         default() {
           return null
         }
+      },
+      /*是否抓取网络图片上传*/
+      uploadFetch: {
+        type: Boolean,
+        default: false
       },
       url: {
         /*文件上传的地址*/
@@ -124,7 +153,7 @@
     watch: {
       fileValue: {
         handler(after) {
-          if (this.autoUpload) {//自动上传才需要处理数据
+          if (this.autoUpload && !this.uploadFetch) {//自动上传且不是网络抓取才需要处理数据
             let fileList = []
             if (after) {
               if (Array.isArray(after)) {
@@ -151,7 +180,8 @@
             }
           }
         },
-        deep: true
+        deep: true,
+        immediate: true
       }
     },
     computed: {
@@ -170,6 +200,8 @@
       return {
         dialogVisible: false, //预览弹窗是否展示
         dialogImageUrl: null, //预览图片url
+        fetchModalVisible: false, //网络图片抓取弹窗是否展示
+        fetchUrl: null, //网络图片抓取弹窗是否展示
         fileData: [], //文件上传数据
         tempData: [] //临时上传数据
       }
@@ -262,9 +294,10 @@
        * @param file
        */
       handlePreview(file) {
-        if (/\.(gif|jpg|jpeg|png)$/i.test(file.url)) {//图片预览
+        let testRule = /\.(gif|jpg|jpeg|png|svg)$/i
+        if (testRule.test(file.url) || testRule.test(file)) {//图片预览
           this.dialogVisible = true
-          this.dialogImageUrl = file.url
+          this.dialogImageUrl = file.url || file
         }
         else { //其它文件下载
           const a = document.createElement('a')
@@ -300,7 +333,45 @@
             }
           }
         }
-      }
+      },
+      /**
+       * 打开网络抓取弹窗
+       */
+      openFetchModal(){
+        this.fetchModalVisible = true
+        this.fetchUrl = null
+      },
+      /**
+       * 提交网络资源地址
+       */
+      submitFetch(){
+        if(!isValidVal(this.fetchUrl)){
+          this.$message.warning('地址不能为空')
+          return
+        }
+        request.post(this.url, {url: this.fetchUrl}, {isShowLoading: true}).then(d => {
+          if(d && d.code === 0 && d.data){
+            this.fileData = [d.data]
+            this.emitFileChange(this.fileData.map(e => e.url))
+            this.$message.success('上传成功')
+            this.fetchModalVisible = false
+          }else {
+            this.$message.error(d.msg || '上传失败')
+          }
+        }).catch(e => {
+          console.warn(e)
+        })
+      },
+      /**
+       * 移除网络资源地址
+       * @param e
+       * @param index
+       */
+      removeFetchImg(e, index){
+        e.stopPropagation()
+        this.fileData.splice(index, 1)
+        this.emitFileChange(this.fileData.map(e => e.url))
+      },
     }
   }
 </script>

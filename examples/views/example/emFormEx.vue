@@ -121,6 +121,12 @@ export default {
           autoUpload:false
         },
         {
+          type: "colorPicker",
+          label: "颜色",
+          key: "color",
+          showAlpha: true,
+        },
+        {
           type: "selectIcon",
           label: "图标",
           key: "icon",

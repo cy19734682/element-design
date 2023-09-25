@@ -7,6 +7,7 @@ export default {
     dragExcel: '将excel文件拖到这里或',
     sysError: '系统出错',
     pInputIcon: '请输入图标名称',
+    pInputFetchUrl: '请输入网络地址',
     cSelectIcon: '点击选择图标',
     button: {
       search: '搜索',

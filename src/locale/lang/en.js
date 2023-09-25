@@ -7,6 +7,7 @@ export default {
     dragExcel: 'Drag the Excel file here or',
     sysError: 'system error',
     pInputIcon: 'Please enter an icon name',
+    pInputFetchUrl: 'Please enter an Fetch Url',
     cSelectIcon: 'Click on the selection icon',
     button: {
       search: 'Search',
