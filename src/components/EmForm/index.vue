@@ -206,6 +206,7 @@
             :list-type="item.listType"
             :disabled="item.disabled || disabled"
             :with-credentials="item.withCredentials"
+            :upload-fetch="item.uploadFetch"
             @on-file-change="reValidateAndChangeHandle($event,item)"
         />
         <!--行政区域级联-->
