@@ -39,6 +39,7 @@
     </el-dialog>
    <!--  网络图片抓取  -->
     <el-dialog
+        title="网络地址"
         width="520px"
         :visible.sync="fetchModalVisible"
         append-to-body
@@ -349,7 +350,7 @@
           this.$message.warning('地址不能为空')
           return
         }
-        request.post(this.url, {url: this.fetchUrl}, {isShowLoading: true}).then(d => {
+        request.post(this.url, {url: this.fetchUrl, ...this.paramData}, {isShowLoading: true}).then(d => {
           if(d && d.code === 0 && d.data){
             this.fileData = [d.data]
             this.emitFileChange(this.fileData.map(e => e.url))
