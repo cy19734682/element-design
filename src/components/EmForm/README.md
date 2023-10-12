@@ -302,6 +302,51 @@ methods: {
 |     controls     | 是否使用控制按钮 | Boolean |   —   | true |
 | controlsPosition |    控制按钮位置  | String  | right |  —   |
 
+#### Switch  开关
+
+|      参数       |        说明        |            类型             | 可选值 |   默认值   |
+|:-------------:|:----------------:|:-------------------------:|:---:|:-------:|
+|     width     |  switch 的宽度（像素）  |          Number           |  —  |   40    |
+|  activeText   | 	switch 打开时的文字描述 |          String           |  —  |    —    |
+| inactiveText  | switch 关闭时的文字描述  |          String           |  —  |    —    |
+|  activeValue  |   switch 打开时的值   | boolean / string / number |  —  |  true   |
+| inactiveValue |   switch 关闭时的值   | boolean / string / number |  —  |  false  |
+|  activeColor  |  switch 打开时的背景色  |          string           |  —  | #409EFF |
+| inactiveColor |  switch 关闭时的背景色  |          string           |  —  | #C0CCDA |
+|   disabled    |       是否禁用       |          Boolean          |  —  |  false  |
+
+#### Slider 滑块
+
+|      参数       |               说明               |        类型        | 可选值 |  默认值  |
+|:-------------:|:------------------------------:|:----------------:|:---:|:-----:|
+|      min      |              最小值               |      Number      |  —  |   0   |
+|      max      |              	最大值              |      Number      |  —  |  100  |
+|     step      |              	步长               |      Number      |  —  |   1   |
+|   showStops   |            	是否显示间断点            |     Boolean      |  —  | false |
+|  showTooltip  |         	是否显示 tooltip          |     Boolean      |  —  | true  |
+| formatTooltip |      	格式化 tooltip message      | 	function(value) |  —  |   —   |
+|     range     |            	是否为范围选择            |        	         |  —  | false |
+|   vertical    |            	是否竖向模式             |     	Boolean     |  —  | false |
+|    height     |       	Slider 高度，竖向模式时必填       |     	string      |  —  |   —   |
+|     marks     | 	标记， key 的类型必须为 number 且取值在闭区间 |     	object      |  —  |   —   |
+|   disabled    |              是否禁用              |     Boolean      |  —  | false |
+
+#### Rate 评分
+
+|        参数         |        说明        |      类型      |   可选值   |                默认值                |
+|:-----------------:|:----------------:|:------------:|:-------:|:---------------------------------:|
+|        max        |      	最大分值       |    Number    |    —    |                 5                 |
+|     allowHalf     |     	是否允许半选      |   Boolean    |    —    |               false               |
+|      colors       |      	颜色分段       | array/object |    —    | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |
+|     voidColor     |  	未选中 icon 的颜色   |    string    |    —    |              #C6D1DE              |
+| disabledVoidColor | 	只读时未选中 icon 的颜色 |   	string    |    —    |              #EFF2F7              |
+|     showText      |    	是否显示辅助文字     |   Boolean	   |    —    |               false               |
+|     showScore     |    	是否显示当前分数     |   Boolean	   |    —    |               false               |
+|     textColor     |     	辅助文字的颜色     |   	string    |    —    |              #1F2D3D              |
+|       texts       |     	辅助文字数组      |    	array    |    —    |  ['极差', '失望', '一般', '满意', '惊喜']   |
+|   scoreTemplate   |      分数显示模板      |   	string    | {value} |                 —                 |
+|     disabled      |       是否禁用       |   Boolean    |    —    |               false               |
+
 #### select 下拉选择器
 
 <table>

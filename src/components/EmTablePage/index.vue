@@ -1,7 +1,9 @@
 <template>
   <div class="em-table-page">
     <div class="table-container">
+      <!--  表格   -->
       <el-table
+          v-if="isTable"
           v-bind="$attrs"
           v-on="$listeners"
           v-loading="loading"
@@ -18,7 +20,7 @@
         <!--单选框-->
         <el-table-column v-if="radio" width="50" align="center">
           <template slot-scope="scope">
-            <el-radio :label="scope.row.id" v-model="onlyId"><span></span></el-radio>
+            <el-radio :label="scope.row[defaultId]" v-model="onlyId"><span></span></el-radio>
           </template>
         </el-table-column>
         <el-table-column
@@ -41,12 +43,35 @@
           <template slot-scope="scope">
             <render-dom
                 v-if="item.render" :render="item.render" :row="scope.row" :index="scope.$index" :column="item"
-            ></render-dom>
+            />
             <span v-else-if="tableEmptyTdHandle && (scope.row[item.key] === '' || scope.row[item.key] === null || scope.row[item.key] === undefined)">--</span>
             <span v-else>{{ scope.row[item.key] }}</span>
           </template>
         </el-table-column>
       </el-table>
+      <!--  栅格模式   -->
+      <el-row v-else :gutter="rowGutter" :type="rowType" :justify="rowJustify" :align="rowAlign">
+        <template v-if="dataS && dataS.length > 0">
+
+          <el-col v-for="(item, _index) in dataS" :key="item[defaultId]" :span="rowSpan"  @click.native="handleRowClick(item, _index)">
+            <div style="border: 2px solid transparent;"
+                 :style="[{'border-color': (radio && item[defaultId] === onlyId)?rowBorderColor:'transparent'},{cursor:radio || selection ?'pointer':'inherit'}]">
+              <el-checkbox v-model="item.check" v-if="selection" style="position: absolute;" @click.native.prevent="() => {}"/>
+              <div v-for="(c_item, index) in columnsT" :key="c_item.key + index">
+                <render-dom
+                    v-if="c_item.render" :render="c_item.render" :row="item" :index="index" :column="c_item"
+                />
+                <div class="row-sda" :class="'sl-' + index"  v-else >{{ item[c_item.key] }}</div>
+              </div>
+            </div>
+          </el-col>
+        </template>
+        <template v-else>
+          <el-col :span="24">
+            <el-empty :description="t('em.noData')"/>
+          </el-col>
+        </template>
+      </el-row>
     </div>
     <div class="pagination-container" v-if="showPage">
       <el-pagination
@@ -67,6 +92,7 @@
 <script>
   import {scrollTo} from '../../methods/scroll-to'
   import request from '../../methods/request'
+  import Locale from '../../mixins/locale'
 
   export default {
     name: 'EmTablePage',
@@ -95,9 +121,15 @@
         },
       }
     },
+    mixins: [Locale],
     props: {
       initData: {
         /*初始化数据，即组件创建后自动拉取第一次数据*/
+        type: Boolean,
+        default: true
+      },
+      isTable: {
+        /*是否是表格*/
         type: Boolean,
         default: true
       },
@@ -157,6 +189,11 @@
         type: Boolean,
         default: false
       },
+      defaultId: {
+        /*默认id的key*/
+        type: String,
+        default: "id"
+      },
       orderKey: {
         /*排序的key*/
         type: String,
@@ -204,6 +241,36 @@
         type: String,
         default: "total"
       },
+      rowGutter: {
+        /*栅格间隔（非表格）*/
+        type: Number,
+        default: 4
+      },
+      rowType: {
+        /*布局模式（非表格）*/
+        type: String,
+        default: ''
+      },
+      rowJustify: {
+        /*flex 布局下的水平排列方式（非表格）*/
+        type: String,
+        default: 'start'
+      },
+      rowAlign: {
+        /*flex 布局下的垂直排列方式（非表格）*/
+        type: String,
+        default: ''
+      },
+      rowSpan: {
+        /*栅格占据的列数（非表格）*/
+        type: Number,
+        default: 6
+      },
+      rowBorderColor: {
+        /*单选时表格边框颜色（非表格）*/
+        type: String,
+        default: '#409eff'
+      }
     },
     data() {
       return {
@@ -262,7 +329,7 @@
        * @returns {*[]}
        */
       selectedIds() {
-        return this.selected.map(e => e.id)
+        return this.selected.map(e => e[this.defaultId])
       },
     },
     watch: {
@@ -283,20 +350,36 @@
       /**
        * 列表单机事件
        * @param row
+       * @param index
        */
-      handleRowClick(row) {
+      handleRowClick(row, index) {
         if (this.radio) {
-          this.onlyId = row.id
+          this.onlyId = row[this.defaultId]
         }
         if (this.selection) {
-          this.$refs.elTableRef.toggleRowSelection(row)
+          if(this.isTable){
+            this.$refs.elTableRef.toggleRowSelection(row)
+          }else {
+            row.check = !Boolean(row.check)
+            this.$set(this.dataT, index, row)
+            let _index = this.selected.findIndex(e => e[this.defaultId] === row[this.defaultId])
+            if(_index > -1){
+              this.selected.splice(_index, 1)
+            }else {
+              this.selected.push(row)
+            }
+          }
         }
       },
       /**
        * 清空多选(公开)
        */
       handleClearSelection() {
-        this.$refs.elTableRef.clearSelection()
+        if(this.isTable) {
+          this.$refs.elTableRef.clearSelection()
+        }else {
+          this.selected = []
+        }
       },
       /**
        * 列表复选框选择事件,返回所有选中数据
@@ -312,7 +395,11 @@
           this.onlyId = null
         }
         if (this.selection) {
-          this.$refs.elTableRef.clearSelection()
+          if(this.isTable) {
+            this.$refs.elTableRef.clearSelection()
+          }else {
+            this.selected = []
+          }
         }
       },
       /**

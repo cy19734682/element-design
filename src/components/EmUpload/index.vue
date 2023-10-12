@@ -173,12 +173,25 @@
             this.fileData = fileList
           }
           else {
+            let fileList = []
             if (_.isArray(after)) {
-              this.fileData = after || []
+              fileList = after || []
             }
             else {
-              this.fileData = after && [after] || []
+              fileList = after && [after] || []
             }
+            this.fileData = fileList.map(e => {
+              if (e instanceof File){
+                let imageUrl = URL.createObjectURL(new Blob([e]));//赋值图片的url，用于图片回显功能
+                return {
+                  url: imageUrl
+                }
+              } else {
+                return {
+                  url: imageSplicing(e)
+                }
+              }
+            })
           }
         },
         deep: true,

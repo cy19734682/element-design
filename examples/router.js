@@ -49,6 +49,14 @@ const constantRoutes = [
         },
       },
       {
+        path: 'emStaticForm',
+        component: () => import('./views/example/emStaticFormEx'),
+        name: 'emStaticForm',
+        meta: {
+          title: 'emStaticForm表单'
+        },
+      },
+      {
         path: 'emSearchFormEx',
         component: () => import('./views/example/emSearchFormEx'),
         name: 'emSearchFormEx',
@@ -78,6 +86,14 @@ const constantRoutes = [
         name: 'emTablePageEx',
         meta: {
           title: 'emTablePageEx列表'
+        }
+      },
+      {
+        path: 'emRowPageEx',
+        component: () => import('./views/example/emRowPageEx'),
+        name: 'emRowPageEx',
+        meta: {
+          title: 'emRowPageEx列表'
         }
       },
       {

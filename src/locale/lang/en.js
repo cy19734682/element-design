@@ -9,6 +9,7 @@ export default {
     pInputIcon: 'Please enter an icon name',
     pInputFetchUrl: 'Please enter an Fetch Url',
     cSelectIcon: 'Click on the selection icon',
+    noData: 'No Data',
     button: {
       search: 'Search',
       reset: 'Reset',

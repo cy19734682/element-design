@@ -14,6 +14,7 @@ import EmIcons from './components/EmIcons'
 import EmIconSelect from './components/EmIconSelect'
 import EmTableSelect from './components/EmTableSelect'
 import EmSelectInput from './components/EmSelectInput'
+import EmStaticForm from './components/EmStaticForm'
 
 import {
   formatTime,
@@ -59,7 +60,8 @@ const components = {
   EmIcons,
   EmIconSelect,
   EmTableSelect,
-  EmSelectInput
+  EmSelectInput,
+  EmStaticForm
 }
 
 /*挂在Vue原型对象上的方法*/

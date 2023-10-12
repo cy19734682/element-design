@@ -45,14 +45,18 @@ export function initFormItems(f, t, d, w, $this) {
         break
       case 'input':
       case 'inputNumber':
+      case 'switch':
+      case 'slider':
+      case 'rate':
       case 'textarea':
         const tempKeyD = 'inputT' + Math.floor(Math.random() * 100000000)
         if (root.key) {
           root.tempKey = tempKeyD
-          if (root.type === 'inputNumber') {
+          if (root.type === 'inputNumber' || root.type === 'slider' || root.type === 'rate') {
             $this.$set(t, tempKeyD, root.defaultVal !== undefined ? root.defaultVal : undefined)
-          }
-          else {
+          }else if(root.type === 'switch'){
+            $this.$set(t, tempKeyD, root.defaultVal !== undefined ? root.defaultVal : false)
+          } else {
             $this.$set(t, tempKeyD, root.defaultVal !== undefined ? root.defaultVal : null)
           }
           w.push($this.$watch(() => t[tempKeyD], after => {
@@ -227,13 +231,18 @@ function tempKeysWatchHandle(d, a, root, f, t, $this) {
       break
     case 'input':
     case 'inputNumber':
+    case 'switch':
+    case 'slider':
+    case 'rate':
     case 'textarea':
       if (a || a === 0) {
         d[root.key] = a
       }
       else {
-        if (root.type === 'inputNumber') {
+        if (root.type === 'inputNumber' || root.type === 'slider' || root.type === 'rate') {
           d[root.key] = undefined
+        }else if (root.type === 'switch') {
+          d[root.key] = false
         }
         else {
           d[root.key] = null
@@ -244,7 +253,7 @@ function tempKeysWatchHandle(d, a, root, f, t, $this) {
     case 'radio':
     case 'checkbox':
       if (root.booleanVal && (!root.multiple)) {
-        d[root.key] = ((a === undefined || a === '' || a === null) ? null : Boolean(a))
+        d[root.key] = (isValidVal(a)? Boolean(a): null)
       }
       else if (root.multiple || root.type === 'checkbox') {
         d[root.key] = Object.assign([], a)
@@ -456,7 +465,10 @@ export function getTempKeyDefaultVal(root, a) {
       }
       break
     case 'input':
+    case 'switch':
     case 'inputNumber':
+    case 'slider':
+    case 'rate':
     case 'textarea':
       a[root.tempKey] = root.defaultVal
       break
@@ -529,13 +541,19 @@ export function updateTempKeys(f, t, d, notClearOthers = false) {
           break
         case 'input':
         case 'inputNumber':
+        case 'switch':
+        case 'slider':
+        case 'rate':
         case 'textarea':
           if (d[root.key] || d[root.key] === 0) {
             t[root.tempKey] = d[root.key]
           }
           else {
-            if (root.type === 'inputNumber') {
+            if (root.type === 'inputNumber' || root.type === 'slider' || root.type === 'rate') {
               t[root.tempKey] = undefined
+            }
+            else if (root.type === 'switch') {
+              t[root.tempKey] = false
             }
             else {
               t[root.tempKey] = null
@@ -606,8 +624,11 @@ export function initClearFormData(f, t, d, k) {
     if (formItem && (formItem.type === 'editor')) {
       d[k] = ''
     }
-    else if (formItem && (formItem.type === 'inputNumber')) {
+    else if (formItem && (formItem.type === 'inputNumber' || formItem.type === 'slider' || formItem.type === 'rate')) {
       d[k] = undefined
+    }
+    else if (formItem && (formItem.type === 'switch')) {
+      d[k] = false
     }
     else {
       d[k] = null

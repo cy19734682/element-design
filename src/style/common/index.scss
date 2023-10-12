@@ -96,11 +96,10 @@
 
     .pagination-container {
       position: absolute;
-      bottom: 20px;
+      bottom: 0;
       left: 0;
       width: 100%;
-      padding-top: 20px;
-      padding-right: 15px;
+      padding: 10px 20px;
       text-align: right;
       background: #fff;
       z-index: 9;

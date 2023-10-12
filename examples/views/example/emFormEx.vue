@@ -133,6 +133,21 @@ export default {
           defaultVal: 'lock'
         },
         {
+          type: "switch",
+          label: "开关",
+          key: "open",
+        },
+        {
+          type: "slider",
+          label: "滑动",
+          key: "step"
+        },
+        {
+          type: "rate",
+          label: "分数",
+          key: "fs"
+        },
+        {
           type: "area",
           label: "行政区域",
           key: "areaCode",
@@ -238,6 +253,18 @@ export default {
           required: true
         },
         sex: {
+          required: true
+        },
+        color: {
+          required: true
+        },
+        step: {
+          required: true
+        },
+        open: {
+          required: true
+        },
+        fs: {
           required: true
         },
         credential: {

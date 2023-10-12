@@ -9,6 +9,7 @@ export default {
     pInputIcon: '请输入图标名称',
     pInputFetchUrl: '请输入网络地址',
     cSelectIcon: '点击选择图标',
+    noData: '暂无数据',
     button: {
       search: '搜索',
       reset: '重置',

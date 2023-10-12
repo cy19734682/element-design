@@ -4,8 +4,8 @@
     <em-upload
         v-model="id"
         fileName="files"
-        upload-fetch
-        url="/v1/upload/fetchFileQn"
+        listType="picture-card"
+        :autoUpload="false"
         @on-file-change="onfileChange"
     />
   </div>
@@ -17,7 +17,7 @@
     name: 'EmUploadEx',
     data() {
       return {
-        id: 'http://cdn.cy1973.cn/screen-designer/image/1695624399509logo.svg'
+        id: '/bg/2023-09/651297382d5f001095be7c90.jpg'
       }
     },
     methods:{

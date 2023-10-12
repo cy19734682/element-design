@@ -15,9 +15,11 @@
       >
         <!--纯文本,也可以不传label和val,单纯用来布局占位-->
         <div v-if="item.type === 'txt'" style="display: inline-block;color: #606266;">{{ item.val }}</div>
-        <!-- inupt输入框 -->
+        <!-- Inupt输入框 -->
         <el-input
-            v-if="item.type === 'input'" v-model="tempKeys[item.tempKey]" :maxlength="item.maxLength || null"
+            v-if="item.type === 'input'"
+            v-model="tempKeys[item.tempKey]"
+            :maxlength="item.maxLength || null"
             :minlength="item.minLength || null"
             :placeholder="item.placeholder || t('em.pInput')"
             clearable
@@ -35,7 +37,8 @@
         </el-input>
         <!-- InputNumber 输入框 -->
         <el-input-number
-            v-else-if="item.type === 'inputNumber'" v-model="tempKeys[item.tempKey]"
+            v-else-if="item.type === 'inputNumber'"
+            v-model="tempKeys[item.tempKey]"
             :min="(item.min||item.min===0)?item.min:-Infinity"
             :max="(item.max||item.max===0)?item.max:Infinity"
             :step="item.step || 1"
@@ -47,9 +50,58 @@
             @blur="itemChange($event,item)"
             @input.native="clearValidateHandle"
         />
+        <!-- Switch  开关 -->
+        <el-switch
+            v-else-if="item.type === 'switch'"
+            v-model="tempKeys[item.tempKey]"
+            :disabled="item.disabled || disabled"
+            :width="item.width"
+            :active-text="item.activeText"
+            :inactive-text="item.inactiveText"
+            :active-value="item.activeValue"
+            :inactive-value="item.inactiveValue"
+            :active-color="item.activeColor || '#409EFF'"
+            :inactive-color="item.inactiveColor || '#C0CCDA'"
+            @change="itemChange($event,item)"
+        />
+        <!-- Slider 滑块 -->
+        <el-slider
+            v-else-if="item.type === 'slider'"
+            v-model="tempKeys[item.tempKey]"
+            :disabled="item.disabled || disabled"
+            :min="item.min || 0"
+            :max="item.min || 100"
+            :step="item.step || 1"
+            :show-stops="item.showStops"
+            :show-tooltip="item.showTooltip"
+            :format-tooltip="item.formatTooltip"
+            :range="item.range"
+            :vertical="item.vertical"
+            :height="item.height"
+            :marks="item.marks"
+            @change="itemChange($event,item)"
+        />
+        <!-- Rate 评分 -->
+        <el-rate
+            v-else-if="item.type === 'rate'"
+            v-model="tempKeys[item.tempKey]"
+            :disabled="item.disabled || disabled"
+            :max="item.min || 5"
+            :allow-half="item.allowHalf"
+            :colors="item.colors"
+            :void-color="item.voidColor"
+            :disabled-void-color="item.disabledVoidColor"
+            :show-text="item.showText"
+            :show-score="item.showScore"
+            :text-color="item.textColor"
+            :texts="item.texts"
+            :score-template="item.scoreTemplate"
+            @change="itemChange($event,item)"
+        />
         <!-- Select 下拉框 -->
         <el-select
-            v-else-if="item.type === 'select'" v-model="tempKeys[item.tempKey]"
+            v-else-if="item.type === 'select'"
+            v-model="tempKeys[item.tempKey]"
             :filterable="item.filterable || true"
             :multiple="item.multiple || false"
             clearable
@@ -274,7 +326,7 @@
             :color-format="item.colorFormat"
             :popper-class="item.popperClass"
             :predefine="item.predefine"
-            @on-val-change="itemChange($event,item)"
+            @change="itemChange($event,item)"
         />
         <!--图标选择-->
         <em-icon-select
@@ -507,9 +559,13 @@
               this.$set(this.dataGroup, root.key,
                   root.defaultVal !== undefined && root.show === undefined ? root.defaultVal : '')
             }
-            else if (root.type === 'inputNumber') {
+            else if (root.type === 'inputNumber' || root.type === 'slider') {
               this.$set(this.dataGroup, root.key,
                   root.defaultVal !== undefined && root.show === undefined ? root.defaultVal : undefined)
+            }
+            else if (root.type === 'switch') {
+              this.$set(this.dataGroup, root.key,
+                  root.defaultVal !== undefined && root.show === undefined ? root.defaultVal : false)
             }
             else {
               this.$set(this.dataGroup, root.key,
