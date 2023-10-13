@@ -14,10 +14,16 @@
       >
         <i slot="suffix" class="el-icon-search el-input__icon" />
       </el-input>
-      <div class="icon-list">
+      <div class="icon-list" :style="listStyle">
         <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
-          <em-icons :icon-class="item" style="height: 30px;width: 16px;" />
-          <span style="margin-left: 2px">{{ item }}</span>
+          <template v-if="data">
+            <img :src="item.icon" style="height: 30px;width: 16px;" />
+            <span style="margin-left: 2px">{{ item.name }}</span>
+          </template>
+          <template v-else>
+            <em-icons :icon-class="item" style="height: 30px;width: 16px;" />
+            <span style="margin-left: 2px">{{ item }}</span>
+          </template>
         </div>
       </div>
     </div>
@@ -25,8 +31,9 @@
         slot="reference" v-model="valueT" :placeholder="placeholder || t('em.cSelectIcon')" clearable
         :disabled="disabled"
     >
+      <img v-if="valueT && data" :src="curIcon" slot="prefix" style="height: 30px;width: 16px;" :style="listStyle" />
       <em-icons
-          v-if="valueT"
+          v-else-if="valueT"
           slot="prefix"
           :icon-class="valueT"
           class="el-input__icon"
@@ -58,6 +65,10 @@
         type: String,
         default: ""
       },
+      data: {
+        /*图标集合*/
+        type: Array
+      },
       width: {
         /*弹出层宽度*/
         type: String,
@@ -73,6 +84,14 @@
         type: String,
         default: ''
       },
+      background: {
+        type: String,
+        default: '#FFF'
+      },
+      color: {
+        type: String,
+        default: '#606266'
+      },
       disabled: {
         /*是否禁用*/
         type: Boolean,
@@ -87,12 +106,23 @@
         set(val) {
           this.$emit('on-val-change', val)
         }
+      },
+      curIcon() {
+        if (this.data) {
+          return this.iconList.find(e => e.name === this.valueT)?.icon
+        }
+      },
+      listStyle() {
+        return {
+          backgroundColor: this.background,
+          color: this.color
+        }
       }
     },
     data() {
       return {
         searchName: '',
-        iconList: iconList
+        iconList: this.data || iconList || []
       }
     },
     methods: {
@@ -100,17 +130,27 @@
        * 搜索过滤图标列表
        */
       filterIcons() {
-        this.iconList = iconList
+        this.iconList = this.data || iconList || []
         if (this.searchName) {
-          this.iconList = this.iconList.filter(item => item.includes(this.searchName))
+          if (this.data) {
+            this.iconList = this.iconList.filter(item => item.name.includes(this.searchName))
+          }
+          else {
+            this.iconList = this.iconList.filter(item => item.includes(this.searchName))
+          }
         }
       },
       /**
        * 选择图标
-       * @param name
+       * @param item
        */
-      selectedIcon(name) {
-        this.valueT = name
+      selectedIcon(item) {
+        if (this.data) {
+          this.valueT = item.name
+        }
+        else {
+          this.valueT = item
+        }
         document.body.click()
       },
       /**
@@ -118,7 +158,7 @@
        */
       reset() {
         this.searchName = ''
-        this.iconList = iconList
+        this.iconList = this.data || iconList || []
       }
     }
   }

@@ -332,6 +332,9 @@
         <em-icon-select
             v-else-if="item.type === 'selectIcon'"
             v-model="dataGroup[item.key]"
+            :data="item.data"
+            :background="item.background"
+            :color="item.color"
             :disabled="item.disabled || disabled"
             :width="item.width"
             :trigger="item.trigger"
