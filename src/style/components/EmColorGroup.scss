@@ -1,0 +1,38 @@
+.em-colors-box {
+  display: flex;
+  flex-flow: row wrap;
+  color: #fff;
+  .colors-item {
+    margin-right: 1px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    .colors-item-bar {
+      position: absolute;
+      width: 100%;
+      height: 10px;
+      top: -10px;
+      text-align: right;
+      line-height: 8px;
+      display: none;
+      .colors-item-tool {
+        display: inline-block;
+        width: 10px;
+        height: 100%;
+        margin-left: 2px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+      }
+    }
+    &:hover {
+      .colors-item-bar {
+        display: block;
+      }
+    }
+    i.el-icon-plus {
+      font-size: 24px;
+    }
+  }
+}
