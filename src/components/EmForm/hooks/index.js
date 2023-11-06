@@ -204,8 +204,13 @@ function tempKeysWatchHandle(d, a, root, f, t, $this) {
           delete d[a.beforeKey]
         }
         if(a.key){
-          d[a.key] = a.val
-          d[root.key] = a.key + ':' + a.val
+          if(root.selectKey){
+            d[root.selectKey] = a.key
+            d[root.key] = a.val
+          }else {
+            d[a.key] = a.val
+            d[root.key] = a.key + ':' + a.val
+          }
         }else {
           d[root.key] = null
         }
@@ -539,6 +544,7 @@ export function updateTempKeys(f, t, d, notClearOthers = false) {
             }
           }
           break
+        case 'selectInput':
         case 'input':
         case 'inputNumber':
         case 'switch':

@@ -868,10 +868,15 @@
         for (let e of this.formDataT) {
           if (e['showing'] === true && e.key) {
             if(e.type === 'selectInput'){ //selectInput单独处理
-              let si = this.dataGroup[e.key] || ''
-              let siArr = si.split(':') || []
-              if(siArr.length > 0){
-                keys.push(siArr[0])
+              if(e.selectKey){ //选择框存在key的情况下,需要返回两个字段
+                keys.push(e.selectKey)
+                keys.push(e.key)
+              }else {
+                let si = this.dataGroup[e.key] || ''
+                let siArr = si.split(':') || []
+                if(siArr.length > 0){
+                  keys.push(siArr[0])
+                }
               }
             }else {
               keys.push(e.key)

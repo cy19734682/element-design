@@ -390,6 +390,9 @@
           this.selected = selection
         }
       },
+      /**
+       * 清空选择
+       */
       clearSelect(){
         if (this.radio) {
           this.onlyId = null
@@ -419,10 +422,30 @@
         this.total = 0
       },
       /**
+       * 拉取表格数据并且点击行
+       */
+      getDataAndClickRow(val){
+        if(val){
+          this.getTableData().then(() => {
+            if (this.dataT.length > 0) {
+              setTimeout(() => {
+                let row = this.dataT.find((e) => e[this.defaultId] === val)
+                if (row) {
+                  this.handleRowClick(row)
+                  this.$refs.elTableRef.setCurrentRow(row)
+                }
+              }, 10)
+            }
+          })
+        }else {
+          this.getTableData()
+        }
+      },
+      /**
        * 拉取表格数据
        * @returns {Promise<unknown>}
        */
-      getTableData(keepSelect) {
+      getTableData(keepSelect = false) {
         return new Promise(resolve => {
           if (this.url && this.url !== '') {
             request.get(this.url, this.queryData, {isShowLoading: this.loading}).then(d => {

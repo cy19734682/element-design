@@ -160,12 +160,14 @@
               if (Array.isArray(after)) {
                 for (let i = 0; i < after.length; i++) {
                   fileList.push({
+                    name: after[i],
                     url: imageSplicing(after[i])
                   })
                 }
               }
               else {
                 fileList.push({
+                  name: after,
                   url: imageSplicing(after)
                 })
               }
@@ -184,10 +186,12 @@
               if (e instanceof File){
                 let imageUrl = URL.createObjectURL(new Blob([e]));//赋值图片的url，用于图片回显功能
                 return {
+                  name: e.name,
                   url: imageUrl
                 }
               } else {
                 return {
+                  name: e,
                   url: imageSplicing(e)
                 }
               }

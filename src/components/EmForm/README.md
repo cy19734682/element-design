@@ -555,6 +555,24 @@ methods: {
 |  endPlaceholder  |        范围选择时结束时间的占位符        | String  |          —          | 结束时间  |
 |  pickerOptions   | 当前时间日期选择器特有的选项(参考el-time组件) | Object  |          —          |  {}   |
 
+#### EmSelectInput 下拉选择输入框
+
+详情见[EmSelectInput](../EmSelectInput/README.md)
+
+|        参数         |              说明               |          类型           | 可选值 |  默认值  |
+|:-----------------:|:-----------------------------:|:---------------------:|:---:|:-----:|
+|        url        |           远程拉取数据的地址           |        string         |  —  |   —   |
+|       data        |             静态数据              |         Array         |  —  |  []   |
+|     selectKey     | select选择框的key，当这个值存在时，会返回2个字段 |        string         |  —  |   —   |
+|    selectWidth    |          select选择框宽度          |        string         |  —  | 120px |
+|     optionVal     |        v-model收集节点的字段         |        string         |  —  |  val  |
+|    optionLabel    |          选项的标签对应接口字段          |        string         |  —  | label |
+|   optionFilter    |           筛选待选项的方法            |       Function        |  —  |   —   |
+|    filterable     |             是否可搜索             |        Boolean        |  —  | true  |
+|     disabled      |             是否禁用              |        Boolean        |  —  | false |
+| selectPlaceholder |              占位符              |        string         |  —  |  请选择  |
+| inputPlaceholder  |              占位符              |        string         |  —  |  请输入  |
+
 #### upload 上传组件
 
 详情见[EmUpload](../EmUpload/README.md)
