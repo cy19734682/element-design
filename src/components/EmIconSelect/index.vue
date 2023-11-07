@@ -109,7 +109,8 @@
       },
       curIcon() {
         if (this.data) {
-          return this.iconList.find(e => e.name === this.valueT)?.icon
+          let data = this.iconList.find(e => e.name === this.valueT)
+          return data && data.icon
         }
       },
       listStyle() {
