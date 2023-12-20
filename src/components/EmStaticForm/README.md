@@ -1,6 +1,6 @@
-## EmForm
+## EmStaticForm
 
-表单聚合组件，融合了表单常用的功能组件
+静态响应式表单，只负责响应式展示表单数据
 
 ### 基本使用
 
@@ -220,43 +220,12 @@ methods: {
 |        参数         |        说明         |   类型    |          可选值          |  默认值   |
 |:-----------------:|:-----------------:|:-------:|:---------------------:|:------:|
 |     formData      |      表单结构数据       |  Array  |           —           |   []   |
-|     formRules     |      表单结构规则       |  Array  |           —           |   []   |
 |    showMessage    |     是否显示校验信息      | Boolean |           —           |  true  |
-|   inlineMessage   |   是否以行内形式展示校验信息   | Boolean |           —           | false  |
 |    labelWidth     |      表单项标签宽度      | String  |           —           | 120px  |
 |      inline       |     是否行内表单模式      | Boolean |           —           | false  |
 |   labelPosition   |     表单域标签的位置      | String  |    right/left/top     | right  |
 |       size        |   用于控制该表单内组件的尺寸   | String  | medium / small / mini | medium |
-|   showLongOkBt    |     是否展示长确定按钮     | Boolean |           —           | false  |
-|  showInlineOkBt   |    是否展示行内短确定按钮    | Boolean |           —           | false  |
-| showInlineClearBt |    是否展示行内短清空按钮    | Boolean |           —           | false  |
-|    longOkBtTxt    |      长确定按钮内容      | String  |           —           |   确认   |
-|   inlineOkBtTxt   |      短确定按钮内容      | String  |           —           |   确认   |
-| inlineClearBtTxt  |      短清空按钮内容      | String  |           —           |   清空   |
-|  inlineOkBtIcon   |     短确定按钮Icon     | String  |           —           |   —    |
-| inlineClearBtIcon |     短清空按钮Icon     | String  |           —           |   —    |
-|    btnLoading     |   提交按钮显示loading   | Boolean |           —           | false  |
-|       trim        | 是否去除提交数据中的字符串首尾空格 | Boolean |           —           |  true  |
 |     disabled      |    整表禁用，仅展示使用     | Boolean |           —           | false  |
-
-### 组件事件
-
-|      事件类型      |      说明       |  回调参数   |
-|:--------------:|:-------------:|:-------:|
-| on-item-change | 表单选项值发生变化回调函数 | 变化表单项的值 |
-|   on-submit    |    表单提交函数     | 整个表单的值  |
-
-### 组件方法
-
-|      事件类型       |        说明         |                                            参数                                             |
-|:---------------:|:-----------------:|:-----------------------------------------------------------------------------------------:|
-|    resetForm    |      清空表单的值       |                                             —                                             |
-|  reRenderForm   |      重新渲染表单       |                                             —                                             |
-| updateDataGroup |      更新表单项的值      |                          data：更新数据；notClearOthers：是否清空其他表单项，默认清空                          |
-| updateFormDataT |      更新表单结构       | {index:1,key:XXX,val:XXX}<br/>或<br/>[{index:1,key:XXX,val:XXX},{index:2,key:XXX,val:XXX}] |
-|  changeLoading  | 主动改变表单按钮loading状态 |                                        true/false                                         |
-|  getDataGroup   | 获取表单填写的数据，不会触发校验  |                                             —                                             |
-|     submit      | 表单提交触发事件，会触发表单校验  |                                             —                                             |
 
 ### 表单子选项属性
 
@@ -267,11 +236,8 @@ methods: {
 |    type     |                                                                                表单项类型                                                                                |        String         | txt，input，inputNumber，select，radio，checkbox，textarea，date，time，upload，area，cascader，bdMap，editor，selectIcon，tableSelect，custom |   —   |
 |     key     |                                                                               表单收集的字段                                                                               |        String         |                                                               —                                                                |   —   |
 |    label    |                                                                               表单标签文本                                                                                |        String         |                                                               —                                                                |   —   |
-|    show     | 是否显示该选项，若为false，不收集该字段的值；<br/>基本格式：{key:'test',val:['zh','li']}，表示只有当test是zh或li时才展示；<br/>也可以设置多个字段，并用数组包装，所有条件满足才展示；<br/>也可以传一个回调函数，回调参数是表单所有选项的值，需要返回一个布尔值来确定是否展示； | Object/Array/Function |                                                               —                                                                |   —   |
-|   showOr    |                                                             当show为数组时，showOr设置为true表示只要满足数组中的任意一个条件即可展示                                                             |        Boolean        |                                                               —                                                                | false |
 | labelWidth  |                                                                    标签宽度，默认使用form组件的labelWidth属性                                                                     |        String         |                                                               —                                                                |   —   |
 |  disabled   |                                                                               是否禁用该选项                                                                               |        Boolean        |                                                               —                                                                | false |
-| showMessage |                                                                             是否显示校验错误信息                                                                              |        Boolean        |                                                               —                                                                | true  |
 
 #### txt 文本
 
@@ -556,46 +522,12 @@ methods: {
 |  endPlaceholder  |        范围选择时结束时间的占位符        | String  |          —          | 结束时间  |
 |  pickerOptions   | 当前时间日期选择器特有的选项(参考el-time组件) | Object  |          —          |  {}   |
 
-#### upload 上传组件
-
-详情见[EmUpload](../EmUpload/README.md)
-
-|         参数          |     说明     |             类型              |            可选值            |   默认值   |
-|:-------------------:|:----------:|:---------------------------:|:-------------------------:|:-------:|
-|     autoUpload      |   是否自动上传   |           Boolean           |             —             |  true   |
-|         url         |  自动上传的url  |           String            |             —             | /upload |
-|      paramData      | 文件上传接口其他参数 |           Object            |             —             |   {}    |
-|       headers       |  请求头额外参数   |           Object            |             —             |   {}    |
-|      fileName       |  上传文件的字段名  |           String            |             —             |  file   |
-|      multiple       |   是否支持多选   |           Boolean           |             —             |  true   |
-|       format        |  限制文件上传类型  |            Array            |             —             |   []    |
-|       maxSize       |  单个文件大小限制  |           Number            |             —             |    0    |
-|       length        |  文件上传数量限制  |           Number            |             —             |    1    |
-|      listType       |  文件列表的类型   |           String            | text，picture，picture-card |  text   |
-|   withCredentials   |   是否支持跨域   |           Boolean           |             —             |  true   |
-|      disabled       |    是否禁用    |           Boolean           |             —             |  false  |
-
-#### area 行政区域级联
-
-详情见[EmCascaderArea](../EmCascaderArea/README.md)
-
-|      参数       |    说明     |       类型       |          可选值          |  默认值   |
-|:-------------:|:---------:|:--------------:|:---------------------:|:------:|
-|     level     | 精确至几级行政区域 | Number, String |      1：省市，2：省市区       |   2    |
-| showAllLevels | 是否显示完整路径  |    Boolean     |           —           |  true  |
-|   separator   |  地址名称分隔符  |     string     |           —           |   /    |
-|     size      |   组件大小    |     string     | medium / small / mini | medium |
-|  filterable   |   是否可搜索   |    Boolean     |           —           |  true  |
-|   disabled    |   是否禁用    |    Boolean     |           —           | false  |
-|  placeholder  |    占位符    |     string     |           —           |  请输入   |
-
 #### cascader 自定义级联
 
 详情见[EmCascader](../EmCascader/README.md)
 
 |      参数       |       说明       |    类型    |          可选值          |  默认值   |
 |:-------------:|:--------------:|:--------:|:---------------------:|:------:|
-|      url      |   远程拉取数据的地址    |  string  |           —           |   —    |
 |     data      |      静态数据      |  Array   |           —           |   []   |
 |   optionVal   | v-model收集节点的字段 |  string  |           —           |   id   |
 |  optionLabel  |  选项的标签对应接口字段   |  string  |           —           |  name  |
@@ -608,60 +540,6 @@ methods: {
 |   multiple    |      是否多选      | Boolean  |           —           | false  |
 |   disabled    |      是否禁用      | Boolean  |           —           | false  |
 |  placeholder  |      占位符       |  string  |           —           |  请输入   |
-
-#### bdMap 百度地图
-
-详情见[EmBaiduMap](../EmBaiduMap/README.md)
-
-|     参数      |   说明    |   类型    | 可选值 |                    默认值                    |
-|:-----------:|:-------:|:-------:|:---:|:-----------------------------------------:|
-|    width    |  地图宽度   | string  |  —  |                   100%                    |
-|   height    |  地图高度   | string  |  —  |                   300px                   |
-| placeholder | 搜索栏占位符  | string  |  —  |                    搜索                     |
-|  disabled   |  是否禁用   | boolean |  -  |                   false                   |
-|     ak      | 百度地图ak码 | string  |  —  | ak+Math.floor(Math.random() * 1000000000) |
-
-#### editor 富文本框
-
-详情见[EmEditor](../EmEditor/README.md)
-
-|      参数       |    说明     |   类型    |      可选值       |   默认值   |
-|:-------------:|:---------:|:-------:|:--------------:|:-------:|
-| toolbarConfig | toolbar配置 | Object  |       —        |    —    |
-| editorConfig  |   编辑框配置   | Object  |       —        |    -    |
-|     mode      |    模式     | string  | default/simple | default |
-|    height     |   编辑框高度   | string  |       —        |  300px  |
-|   disabled    |   是否禁用    | Boolean |       —        |  false  |
-|  placeholder  |    占位符    | string  |       —        |    —    |
-
-#### selectIcon 图标选择
-
-详情见[EmIconSelect](../EmIconSelect/README.md)
-
-|     参数      |   说明    |       类型       |           可选值            |  默认值  |
-|:-----------:|:-------:|:--------------:|:------------------------:|:-----:|
-|    width    |  弹出层宽度  | String, Number |            —             |  450  |
-|   trigger   | 弹出层触发方式 |     string     | click/focus/hover/manual | click |
-| placeholder | 输入框占位符  |     string     |            —             |  请选择  |
-|  disabled   |  是否禁用   |    boolean     |            -             | false |
-
-#### tableSelect 表格选择
-
-详情见[EmTableSelect](../EmTableSelect/README.md)
-
-|     参数      |          说明          |   类型    |            可选值             |  默认值   |
-|:-----------:|:--------------------:|:-------:|:--------------------------:|:------:|
-|     url     |     表格拉取数据的接口地址      | String  |             —              |   —    |
-| searchForm  |        表格搜索条件        |  Array  |             —              |   []   |
-|   columns   | 表格表头结构数据，同Element-ui |  Array  |             —              |   []   |
-|  pageSize   |        表格查询数量        | Number  |             —              |   -1   |
-|    width    |        弹出窗宽度         | Number  |             —              |  500   |
-|  multiple   |         是否多选         | Boolean |             —              | false  |
-|   valKey    |       绑定值的key        | String  |             —              |   id   |
-|  labelKey   |       展示值的key        | String  |             —              |  name  |
-| placeholder |        输入框占位符        | String  |             —              |  请选择   |
-|  placement  |       弹窗从哪里弹出        | String  | [同el-popover中的placement属性] | bottom |
-|  disabled   |         是否禁用         | Boolean |             —              | false  |
 
 #### custom 自定义选项
 

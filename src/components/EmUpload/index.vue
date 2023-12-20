@@ -292,7 +292,7 @@
           this.emitFileChange(this.tempData.map(e => e.url))
         }
         else {
-          this.$message.error(res.msg || '上传失败')
+          this.$message.error(res.msg || res.message || '上传失败')
         }
       },
       /**
@@ -374,7 +374,7 @@
             this.$message.success('上传成功')
             this.fetchModalVisible = false
           }else {
-            this.$message.error(d.msg || '上传失败')
+            this.$message.error(d.msg || d.message || '上传失败')
           }
         }).catch(e => {
           console.warn(e)

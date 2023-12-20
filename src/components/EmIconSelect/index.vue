@@ -37,7 +37,7 @@
           slot="prefix"
           :icon-class="valueT"
           class="el-input__icon"
-          style="height: 40px;width: 16px; "
+          style="height: 30px;width: 16px; "
       />
       <i v-else slot="prefix" class="el-icon-search el-input__icon" />
     </el-input>

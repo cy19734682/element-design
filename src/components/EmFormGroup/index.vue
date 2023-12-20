@@ -38,11 +38,6 @@
         return this.formData.filter(e => e.type === 'custom')
       }
     },
-    data() {
-      return {
-        showLoading: false
-      }
-    },
     methods: {
       /**
        * 重置表单

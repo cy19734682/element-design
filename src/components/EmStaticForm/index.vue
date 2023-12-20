@@ -183,7 +183,6 @@
             :placeholder="item.placeholder || t('em.pInput')"
             clearable
             :disabled="item.disabled || disabled"
-            @blur="itemChange($event,item)"
         />
         <!--日期组件-->
         <el-date-picker

@@ -365,6 +365,27 @@ methods: {
 	    <td>true</td>
 	</tr>
 	<tr>
+	    <td>asyncOption</td>
+	    <td>是否远程拉取数据</td>
+	    <td>Boolean</td>
+	    <td>—</td>
+	    <td>false</td>
+	</tr>
+	<tr>
+	    <td>optionUrl</td>
+	    <td>远程拉取数据接口地址</td>
+	    <td>String</td>
+	    <td>—</td>
+	    <td>—</td>
+	</tr>
+	<tr>
+	    <td>changeOption</td>
+	    <td>需要根据其它选项的值作为条件来查询</td>
+	    <td>Object/Array</td>
+	    <td>—</td>
+	    <td>—</td>
+	</tr>
+	<tr>
 	    <td>multiple</td>
 	    <td>是否多选</td>
 	    <td>Boolean</td>

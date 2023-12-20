@@ -14,7 +14,7 @@
 <script>
 
 export default {
-  name: 'EmFormEx',
+  name: 'emStaticFormEx',
   data() {
     return {
       value: {
@@ -166,48 +166,6 @@ export default {
           slotName: "sgInput"
         },
       ],
-      formRules: {
-        name: {
-          required: true
-        },
-        price: {
-          required: true
-        },
-        education: {
-          required: true
-        },
-        sex: {
-          required: true
-        },
-        credential: {
-          required: true
-        },
-        imgUrl: {
-          required: true
-        },
-        areaCode: {
-          required: true
-        },
-        deptId: {
-          required: true
-        },
-        lng: {
-          required: true
-        },
-        content: {
-          required: true
-        },
-        icon: {
-          required: true
-        },
-        mimeType: {
-          required: true,
-          trigger: "blur",
-        },
-        school: {
-          required: true,
-        }
-      }
     }
   },
   mounted() {

@@ -8,7 +8,7 @@
     </div>
     <baidu-map
         class="map" :center="valueT" :zoom="zoom" @ready="readyHandler"
-        :scroll-wheel-zoom="true"
+        scroll-wheel-zoom
         @click="clickEvent"
         :ak="ak"
         @zoomend="syncCenterAndZoom"
@@ -69,7 +69,7 @@
       },
       ak: {
         type: String,
-        default: 'ak' + Math.floor(Math.random() * 1000000000)
+        default: window.global && window.global.bdAk || ('ak' + Math.floor(Math.random() * 1000000000))
       }
     },
     data() {

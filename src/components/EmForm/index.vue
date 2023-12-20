@@ -11,7 +11,7 @@
       <el-form-item
           v-for="(item,index) in formDataT" :key="item.key + index" v-if="getFormItemIfVal(item)"
           :prop="item.key" :label="item.label" :label-width="item.labelWidth || labelWidth"
-          :show-message="item.showMessage || showMessage"
+          :show-message="item.showMessage || showMessage" :style="itemStyle"
       >
         <!--纯文本,也可以不传label和val,单纯用来布局占位-->
         <div v-if="item.type === 'txt'" style="display: inline-block;color: #606266;">{{ item.val }}</div>
@@ -397,6 +397,7 @@
   import EmUpload from "../EmUpload"
   import EmIconSelect from "../EmIconSelect"
   import EmTableSelect from "../EmTableSelect"
+  import EmSelectInput from "../EmSelectInput"
 
   export default {
     name: "EmForm",
@@ -408,7 +409,8 @@
       EmEditor,
       EmUpload,
       EmIconSelect,
-      EmTableSelect
+      EmTableSelect,
+      EmSelectInput
     },
     props: {
       formData: {
@@ -438,7 +440,12 @@
       labelWidth: {
         /*表单项标签宽度*/
         type: String,
-        default: '120px'
+        default: '85px'
+      },
+      itemWidth: {
+        /*表单项标签宽度*/
+        type: String,
+        default: '260px'
       },
       inline: {
         /*行内表单模式*/
@@ -539,6 +546,9 @@
         }
         return t
       },
+      itemStyle(){
+        return this.inline? { width: this.itemWidth } : { width: '100%' }
+      }
     },
     created() {
       this.initDataGroup()

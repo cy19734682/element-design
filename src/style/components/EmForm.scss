@@ -1,6 +1,13 @@
 .em-form {
   overflow: hidden;
-
+  .el-form.el-form--inline{
+    .el-form-item{
+      margin-right: 24px;
+      .el-form-item__content{
+        width: 100%;
+      }
+    }
+  }
   .el-form-item {
     .el-input-number {
       .el-input__inner {

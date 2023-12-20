@@ -388,7 +388,7 @@ function initOption(url, root, itemVal, t) {
         }
       }
       else {
-        console.warn(root.label + '：' + r.msg)
+        console.warn(root.label + '：' + r.msg || r.message)
       }
     }).catch(e => {
       console.warn(root.label + '选项请求错误：' + e.message)
@@ -456,7 +456,7 @@ export function getTempKeyDefaultVal(root, a) {
   switch (root.type) {
     case 'selectInput':
       a[root.tempKey] = {
-        key: root.key,
+        key: root.defaultKey,
         val: root.defaultVal
       }
       break

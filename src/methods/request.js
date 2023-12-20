@@ -3,9 +3,9 @@ import {MessageBox, Message, Loading} from 'element-ui'
 import {t} from '../locale'
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-let loading = null
-let message = null
-let messageBox = null
+let LoadingEl = null
+let MessageEl = null
+let MessageBoxEl = null
 /**
  * axios接口请求设置公共参数
  */
@@ -29,18 +29,19 @@ service.interceptors.request.use(config => {
  * axios接口响应处理，增加未登录判断
  */
 service.interceptors.response.use(({data}) => {
-  loading && loading.close()
-  message && message.close()
-  messageBox && MessageBox.close()
+  LoadingEl && LoadingEl.close()
+  MessageEl && MessageEl.close()
+  MessageBoxEl && MessageBox.close()
   const {
     code,
-    msg
+    msg,
+    message
   } = data
   if (code === 0) {
     return data
   }
   else if (code === -999) {
-    messageBox = MessageBox.confirm(t('em.loginTips.content'), t("em.loginTips.title"), {
+    MessageBoxEl = MessageBox.confirm(t('em.loginTips.content'), t("em.loginTips.title"), {
       confirmButtonText: t("em.loginTips.okTxt"),
       cancelButtonText: t("em.button.cancel"),
       type: 'warning'
@@ -49,24 +50,24 @@ service.interceptors.response.use(({data}) => {
     }).catch(e => {
       console.log(e)
     })
-    return Promise.reject(new Error(msg || 'Error'))
+    return Promise.reject(new Error(msg || message || 'Error'))
   }
   else {
-    message = Message({
-      message: msg || t("em.sysError"),
+    MessageEl = Message({
+      message: msg || message || t("em.sysError"),
       type: 'error'
     })
-    return Promise.reject(new Error(msg || 'Error'))
+    return Promise.reject(new Error(msg || message || 'Error'))
   }
 }, error => {
-  loading && loading.close()
-  message && message.close()
-  const {msg} = error.response.data
-  message = Message({
-    message: msg || t("em.sysError"),
+  LoadingEl && LoadingEl.close()
+  MessageEl && MessageEl.close()
+  const {msg , message} = error.response.data
+  MessageEl = Message({
+    message: msg || message || t("em.sysError"),
     type: 'error'
   })
-  return Promise.reject(new Error(msg || 'Error'))
+  return Promise.reject(new Error(msg || message || 'Error'))
 })
 
 
@@ -108,7 +109,7 @@ function checkRequest(method, url, data, config) {
   return new Promise((s, j) => {
     if (url) {
       if (config["isShowLoading"]) {
-        loading = Loading.service({
+        LoadingEl = Loading.service({
           lock: true,
           background: 'rgba(0, 0, 0, 0.3)'
         })

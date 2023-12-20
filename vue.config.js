@@ -16,7 +16,7 @@ module.exports = {
     },
     proxy: {
       "/admin": {
-        target: `http://localhost:8360`,
+        target: `http://localhost:8361`,
         changeOrigin: true,
         pathRewrite: {
           ['^/admin']: [""]
