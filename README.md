@@ -7,7 +7,7 @@
 
 ### 安装
 ````
-npm i @yuechan/element-design@vue2
+npm i @yuechan/element-design
 ````
 ### 使用
 在mian.js中配置增加下列配置
