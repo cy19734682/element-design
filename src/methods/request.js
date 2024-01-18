@@ -6,6 +6,11 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 let LoadingEl = null
 let MessageEl = null
 let MessageBoxEl = null
+let optionConfig = {
+  isShowLoading: false,
+  isTransformResponse: false,
+  isShowMessage: true
+}
 /**
  * axios接口请求设置公共参数
  */
@@ -35,15 +40,25 @@ service.interceptors.response.use(({data}) => {
   const {
     code,
     msg,
-    message
+    message,
+    data: dataT
   } = data
-  if (code === 0) {
+  const {
+    isTransformResponse = false,
+    isShowMessage = true
+  } = optionConfig
+  //不需要处理，直接返回响应数据
+  if (isTransformResponse) {
     return data
+  }
+  if (code === 0) {
+    return dataT
   }
   else if (code === -999) {
     MessageBoxEl = MessageBox.confirm(t('em.loginTips.content'), t("em.loginTips.title"), {
       confirmButtonText: t("em.loginTips.okTxt"),
       cancelButtonText: t("em.button.cancel"),
+      closeOnClickModal: false,
       type: 'warning'
     }).then(() => {
       logoutHandle()
@@ -53,16 +68,24 @@ service.interceptors.response.use(({data}) => {
     return Promise.reject(new Error(msg || message || 'Error'))
   }
   else {
-    MessageEl = Message({
-      message: msg || message || t("em.sysError"),
-      type: 'error'
-    })
+    if (isShowMessage) {
+      MessageEl = Message({
+        message: msg || message || t("em.sysError"),
+        type: 'error'
+      })
+    }
+    else {
+      console.warn(msg || message || t("em.sysError"))
+    }
     return Promise.reject(new Error(msg || message || 'Error'))
   }
 }, error => {
   LoadingEl && LoadingEl.close()
   MessageEl && MessageEl.close()
-  const {msg , message} = error.response.data
+  const {
+    msg,
+    message
+  } = error.response.data
   MessageEl = Message({
     message: msg || message || t("em.sysError"),
     type: 'error'
@@ -79,22 +102,34 @@ function logoutHandle() {
     if (typeof service.store === "function") {
       const store = service.store()
       if (store.logout) {
-        store.logout()
+        store.logout().then((router) => {
+          loginToRouter(router)
+        })
       }
     }
     else {
-      service.store.dispatch("user/logout").then(() => {
-        if (service.router) {
-          service.router.push(`/login?redirect=${service.router.history.current.path}`)
-        }
-        else {
-          console.warn('router为空，请在安装插件时传入router实例：Vue.use(elmDesign,{router:router})')
-        }
+      service.store.dispatch("user/logout").then((router) => {
+        loginToRouter(router)
       })
     }
   }
   else {
     console.warn('store为空，请在安装插件时传入store实例：Vue.use(elmDesign,{store:store})')
+  }
+}
+
+/**
+ * 通过路由跳转登录页面
+ */
+function loginToRouter(router) {
+  if (service.router) {
+    service.router.push({
+      path: router || '/login',
+      query: {redirect: service.router.history.current.path}
+    })
+  }
+  else {
+    console.warn('router为空，请在安装插件时传入router实例：Vue.use(elmDesign,{router:router})')
   }
 }
 
@@ -107,6 +142,7 @@ function logoutHandle() {
  */
 function checkRequest(method, url, data, config) {
   return new Promise((s, j) => {
+    optionConfig = config || {}
     if (url) {
       if (config["isShowLoading"]) {
         LoadingEl = Loading.service({
@@ -121,7 +157,7 @@ function checkRequest(method, url, data, config) {
       else if (method === 'delete') {
         reqData = {data: data}
       }
-      service[method](url, reqData).then(r => {
+      service[method](url, reqData, config).then(r => {
         s(r)
       }).catch(e => {
         j(e)

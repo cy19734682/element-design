@@ -219,13 +219,9 @@
           ids = this.selectIds.join()
         }
         this.$msgbox.confirm('是否确认删除','提示').then(() => {
-          this.$request.delete('/bt-table',{ids}).then(e=>{
-            if(e.code === 0){
-              this.$message.success('删除成功')
-              this.$refs.tableRef.getTableData()
-            }else {
-              this.$message.error(e.msg || '删除失败')
-            }
+          this.$request.delete('/bt-table',{ids}).then(()=>{
+            this.$message.success('删除成功')
+            this.$refs.tableRef.getTableData()
           }).catch()
         }).catch(e => {
           console.log(e)

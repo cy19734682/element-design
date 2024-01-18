@@ -42,7 +42,7 @@ const actions = {
         validateCode: validateCode
       }
       $request.post('/login',loginData).then(response => {
-        const {token,userInfo} = response.data
+        const {token,userInfo} = response
         commit('SET_TOKEN', token)
         commit('SET_NICKNAME', userInfo.username)
         setToken(token)
@@ -56,11 +56,10 @@ const actions = {
   getUserInfo({commit, state}) {
     return new Promise((resolve, reject) => {
       $request.get('/index').then(response => {
-        const {data} = response
-        if (!data) {
+        if (!response) {
           reject('Verification failed, please Login again.')
         }else {
-          const {roles, nickname, avatar, perms} = data
+          const {roles, nickname, avatar, perms} = response
           // roles must be a non-empty array
           if (!roles || roles.length <= 0) {
             reject('getUserInfo: roles must be a non-null array!')
@@ -70,7 +69,7 @@ const actions = {
           commit('SET_ROLES', roles)
           commit('SET_PERMS', perms)
         }
-        resolve(data)
+        resolve(response)
       }).catch(error => {
         reject(error)
       })

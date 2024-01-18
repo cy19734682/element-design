@@ -130,7 +130,9 @@ export default {
           type: "selectIcon",
           label: "图标",
           key: "icon",
-          defaultVal: 'lock'
+          defaultVal: 'lock',
+          info: '选择图标选标选择图标选择图标选择图标选择图标',
+          infoColor: '#333'
         },
         {
           type: "switch",

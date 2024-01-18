@@ -368,14 +368,10 @@
           return
         }
         request.post(this.url, {url: this.fetchUrl, ...this.paramData}, {isShowLoading: true}).then(d => {
-          if(d && d.code === 0 && d.data){
-            this.fileData = [d.data]
-            this.emitFileChange(this.fileData.map(e => e.url))
-            this.$message.success('上传成功')
-            this.fetchModalVisible = false
-          }else {
-            this.$message.error(d.msg || d.message || '上传失败')
-          }
+          this.fileData = [d]
+          this.emitFileChange(this.fileData.map(e => e.url))
+          this.$message.success('上传成功')
+          this.fetchModalVisible = false
         }).catch(e => {
           console.warn(e)
         })

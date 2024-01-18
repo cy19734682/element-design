@@ -91,6 +91,7 @@
 | inlineClearBtTxt  |      短清空按钮内容      | String  |           —           |       重置        |
 |  inlineOkBtIcon   |     短确定按钮Icon     | String  |           —           | el-icon-search  |
 | inlineClearBtIcon |     短清空按钮Icon     | String  |           —           | el-icon-refresh |
+|   showBeginBtn    |     是否展示开头标签      | Boolean |          —          |      true       |
 |    btnLoading     |   提交按钮显示loading   | Boolean |           —           |      false      |
 |       trim        | 是否去除提交数据中的字符串首尾空格 | Boolean |           —           |      true       |
 |     disabled      |    整表禁用，仅展示使用     | Boolean |           —           |      false      |
