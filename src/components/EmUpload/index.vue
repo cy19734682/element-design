@@ -283,13 +283,10 @@
        */
       handleUploadSuccess(res, file) {
         if (res.code === 0) {
-          let url = res.data
-          this.tempData.push({
-            uid: file.uid,
-            name: file.name,
-            url: url
-          })
-          this.emitFileChange(this.tempData.map(e => e.url))
+          let _f = this.fileData
+          file.url = res.data.url || res.data || ''
+          _f.push(file)
+          this.emitFileChange(_f.map(e => e.url))
         }
         else {
           this.$message.error(res.msg || res.message || '上传失败')
@@ -336,11 +333,11 @@
       handleRemove(file, fileList) {
         if (file) {
           if (this.autoUpload) {
-            //tempData中的uid和fileData中的不一致，所以这里使用fileData查询下标
-            let _index = this.fileData.findIndex(e => e.uid === file.uid)
+            const _fileData = _.cloneDeep(this.fileData)
+            let _index = _fileData.findIndex(e => e.uid === file.uid)
             if (_index > -1) {
-              this.tempData.splice(_index, 1)
-              this.emitFileChange(this.tempData.map(e => e.url))
+              _fileData.splice(_index, 1)
+              this.emitFileChange(_fileData.map(e => e.url))
             }
           }
           else {
