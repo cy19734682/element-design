@@ -153,13 +153,11 @@
       getData() {
         if (this.url && this.url !== '') {
           request.get(this.url).then(d => {
-            if (d && d.code === 0) {
-              let data = d.data || []
-              if (myTypeof(this.optionFilter) === 'Function') {
-                data = this.optionFilter(data)
-              }
-              this.options = this.dataFilter(data)
+            let data = d || []
+            if (myTypeof(this.optionFilter) === 'Function') {
+              data = this.optionFilter(data)
             }
+            this.options = this.dataFilter(data)
           }).catch(e => {
             console.warn(e)
           })

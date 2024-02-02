@@ -70,7 +70,7 @@
             v-model="tempKeys[item.tempKey]"
             :disabled="item.disabled || disabled"
             :min="item.min || 0"
-            :max="item.min || 100"
+            :max="item.max || 100"
             :step="item.step || 1"
             :show-stops="item.showStops"
             :show-tooltip="item.showTooltip"
@@ -86,7 +86,7 @@
             v-else-if="item.type === 'rate'"
             v-model="tempKeys[item.tempKey]"
             :disabled="item.disabled || disabled"
-            :max="item.min || 5"
+            :max="item.max || 5"
             :allow-half="item.allowHalf"
             :colors="item.colors"
             :void-color="item.voidColor"
@@ -362,6 +362,8 @@
         <div v-else-if="item.type === 'custom'" class="inlineBlock">
           <slot :name="item.slotName" :data-group="dataGroup" />
         </div>
+        <!--表单项提示文字-->
+        <div v-if="Boolean(item.info)" class="em-item-info" :style="{color: item.infoColor || '#409eff'}">{{ item.info }}</div>
       </el-form-item>
       <!--长提交按钮-->
       <el-form-item v-if="showLongOkBt">

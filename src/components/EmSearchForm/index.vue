@@ -58,14 +58,21 @@
         type: String,
         default: 'el-icon-refresh'
       },
+      showBeginBtn: {
+        /*是否展示开头标签*/
+        type: Boolean,
+        default: true
+      },
     },
     computed: {
       formDataC() {
-        let startCustom = {
-          type: "custom",
-          slotName: "beginBtnGroup"
+        if(this.showBeginBtn){
+          let startCustom = {
+            type: "custom",
+            slotName: "beginBtnGroup"
+          }
+          this.formDataT.unshift(startCustom)
         }
-        this.formDataT.unshift(startCustom)
         return this.formDataT.filter(e => e.type === 'custom')
       }
     },

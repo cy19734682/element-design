@@ -17,15 +17,11 @@ const {_save, _get} = require('./fileBase')
 
 router.post('/upload', upload.array('files'), function (req, res) {
   if (req.files) {
-    let t = []
+    let t = ''
     for (let e of req.files) {
       const id = _save(e)
       if (id) {
-        t.push({
-          id: id,
-          mimeType: e.mimetype,
-          name: e.originalname
-        })
+        t = e.originalname
       }
     }
     res.send({

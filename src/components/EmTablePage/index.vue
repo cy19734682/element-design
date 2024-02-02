@@ -452,8 +452,8 @@
               if (!keepSelect) {
                 this.clearSelect()
               }
-              if (d && d.code === 0 && d.data) {
-                this.dataT = (d.data && d.data.data) || d.data || []
+              if (d) {
+                this.dataT = d.data || d || []
                 this.total = d.data[this.totalKey] || 0
               }
               else {

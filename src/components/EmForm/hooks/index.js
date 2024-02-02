@@ -371,24 +371,19 @@ function tempKeysWatchHandle(d, a, root, f, t, $this) {
 function initOption(url, root, itemVal, t) {
   if (url) {
     request.get(url).then(r => {
-      if (r && r.code === 0) {
-        let tOption = (r.data && r.data.data) || r.data || []
-        root.options.length = 0
-        if (root.localOption) {
-          tOption.unshift(...root.localOption)
-        }
-        if (myTypeof(root.optionFilter) === 'Function') {
-          tOption = root.optionFilter(tOption)
-        }
-        if (root.optionLabel && root.optionVal) {
-          root.options = optionAssign(tOption, root)
-        }
-        if (isValidVal(itemVal)) {
-          recoverVal(itemVal, root, t)
-        }
+      let tOption =  r.data || r || []
+      root.options.length = 0
+      if (root.localOption) {
+        tOption.unshift(...root.localOption)
       }
-      else {
-        console.warn(root.label + '：' + r.msg || r.message)
+      if (myTypeof(root.optionFilter) === 'Function') {
+        tOption = root.optionFilter(tOption)
+      }
+      if (root.optionLabel && root.optionVal) {
+        root.options = optionAssign(tOption, root)
+      }
+      if (isValidVal(itemVal)) {
+        recoverVal(itemVal, root, t)
       }
     }).catch(e => {
       console.warn(root.label + '选项请求错误：' + e.message)
