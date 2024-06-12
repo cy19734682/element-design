@@ -454,7 +454,7 @@
               }
               if (d) {
                 this.dataT = d.data || d || []
-                this.total = d.data[this.totalKey] || 0
+                this.total = d[this.totalKey] || 0
               }
               else {
                 this.clearTableData()
