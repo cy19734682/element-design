@@ -608,7 +608,9 @@
       resetForm() {
         return new Promise(r => {
           this.clearForm()
-          this.$refs['elFormRef'].resetFields()
+          this.$nextTick(() => {
+            this.$refs['elFormRef'].resetFields()
+          })
           r()
         })
       },
