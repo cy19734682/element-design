@@ -129,7 +129,14 @@ export function initFormItems(f, t, d, w, $this) {
             }
           }
           else {
-            initOption(root.optionUrl, root)
+            $this.$nextTick(() => {
+              let tV = _.cloneDeep(t[root.tempKey])
+              if (root.tempKey) {
+                //当触发changeOption时，将选项清空
+                t[root.tempKey] = null
+              }
+              initOption(root.optionUrl, root, tV)
+            })
           }
         }
         else if (myTypeof(root.borrowOption) === 'String') {/*借用待选项（只能使用静态数据）*/

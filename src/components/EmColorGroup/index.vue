@@ -6,7 +6,7 @@
           <div class="colors-item-tool" @click="removeColor(index)">-</div>
           <div class="colors-item-tool" @click="addColor(index)">+</div>
         </div>
-        <el-color-picker size="small" v-model="colorObj['val' + index]" @change="changeHandle($event, index)" :show-alpha="showAlpha"/>
+        <el-color-picker :size="size" v-model="colorObj['val' + index]" @change="changeHandle($event, index)" :show-alpha="showAlpha"/>
       </div>
     </template>
 		<div class="colors-item" v-if="isAddDel"><i class="el-icon-plus" @click="addColor()"></i></div>
@@ -40,6 +40,10 @@
       isAddDel: {
         type: Boolean,
         default: true
+      },
+      size: {
+        type: String,
+        default: 'small'
       }
 		},
     computed: {
