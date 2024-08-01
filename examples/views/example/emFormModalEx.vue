@@ -18,11 +18,14 @@
 
 <script>
 
+  import {mapGetters} from "vuex"
+
   export default {
     name: 'EmFormModalEx',
-    data() {
-      return {
-        formData: [
+    computed: {
+      ...mapGetters(["serverUrl"]),
+      formData(){
+        return  [
           {
             type: "input",
             key: "name",
@@ -70,7 +73,7 @@
             label: "远程数据",
             key: "devId",
             asyncOption: true,
-            optionUrl: "/bt-table",
+            optionUrl: this.serverUrl + "/bt-table",
             optionLabel: "name",
             optionVal: "id",
             collectLabel: {
@@ -146,7 +149,11 @@
             startPlaceholder: "开始时间",
             endPlaceholder: "结束时间"
           },
-        ],
+        ]
+      }
+    },
+    data() {
+      return {
         formRules: {
           name: {
             required: true

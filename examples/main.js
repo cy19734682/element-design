@@ -12,6 +12,9 @@ import i18n from './lang' //国际化
 import elmDesign from '../src'
 import '../src/style/index.scss'
 
+const { mockXHR } = require('../mock')
+mockXHR()
+
 Vue.use(Element,{
   size: Cookies.get('size') || 'medium', // 设置element-ui默认大小
   i18n: (key, value) => i18n.t(key, value)

@@ -4,7 +4,7 @@
     <div class="form-box">
       <em-select-input
           v-model="value"
-          url="/brand"
+          :url="serverUrl + '/brand'"
           optionVal="label"
           optionLabel="name"
           @on-val-change="onValChange"
@@ -16,8 +16,13 @@
 
 <script>
 
+import {mapGetters} from "vuex"
+
 export default {
   name: 'emSelectInputEx',
+  computed:{
+    ...mapGetters(["serverUrl"]),
+  },
   data() {
     return {
       value:{},

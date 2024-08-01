@@ -24,7 +24,7 @@
           id="tablePage"
           ref="tableRef"
           radio
-          url="/bt-table-page"
+          :url="serverUrl + '/bt-table-page'"
           :columns="columns"
           :searchData="searchData"
           orderKey=""
@@ -49,8 +49,12 @@
 <script>
   import {exportTableToExcel,exportJsonToExcel} from '../../../src/methods/export2Excel'
   import {exportTxtToZip} from '../../../src/methods/export2Zip'
+  import {mapGetters} from "vuex"
   export default {
     name: "EmTablePageEx",
+    computed: {
+      ...mapGetters(["serverUrl"]),
+    },
     data() {
       return {
         activeRow:{},
@@ -219,7 +223,7 @@
           ids = this.selectIds.join()
         }
         this.$msgbox.confirm('是否确认删除','提示').then(() => {
-          this.$request.delete('/bt-table',{ids}).then(()=>{
+          this.$request.delete(this.serverUrl + '/bt-table',{ids}).then(()=>{
             this.$message.success('删除成功')
             this.$refs.tableRef.getTableData()
           }).catch()
@@ -245,17 +249,12 @@
           method = 'put'
           data['id'] = this.activeRow.id
         }
-        this.$request[method]('/bt-table',data , {isShowLoading: true}).then(e=>{
-          if(e.code === 0){
-            this.$message.success(method === 'post' ?'新增成功': '编辑成功')
-            this.$refs.tableRef.getTableData()
-            this.$refs.formModalRef.changeLoading(false)
-            this.$refs.formModalRef.close()
-            this.onClose()
-          }else {
-            this.$refs.formModalRef.changeLoading(false)
-            this.$message.error(e.msg || method === 'post' ?'新增失败': '编辑失败')
-          }
+        this.$request[method](this.serverUrl + '/bt-table',data , {isShowLoading: true}).then(e=>{
+          this.$message.success(method === 'post' ?'新增成功': '编辑成功')
+          this.$refs.tableRef.getTableData()
+          this.$refs.formModalRef.changeLoading(false)
+          this.$refs.formModalRef.close()
+          this.onClose()
         }).catch(e => {
           this.$refs.formModalRef.changeLoading(false)
         })

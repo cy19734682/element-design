@@ -13,11 +13,14 @@
 
 <script>
 
+import {mapGetters} from "vuex"
+
 export default {
   name: 'EmFormEx',
-  data() {
-    return {
-      formData: [
+  computed: {
+    ...mapGetters(["serverUrl"]),
+    formData(){
+      return [
         {
           type: "txt",
           label: "信息",
@@ -158,7 +161,7 @@ export default {
         {
           type: "cascader",
           label: "部门",
-          url: '/dept',
+          url: this.serverUrl + '/dept',
           key: "deptId",
           key2: "deptName"
         },
@@ -167,7 +170,7 @@ export default {
           label: "品牌",
           key: "brandId",
           asyncOption: true,
-          optionUrl: "/brand",
+          optionUrl: this.serverUrl + "/brand",
           optionLabel: "name",
           optionVal: "id",
         },
@@ -176,7 +179,7 @@ export default {
           label: "文档类型",
           key: "mimeType",
           multiple: true,
-          url: "/bt-table-page",
+          url: this.serverUrl + "/bt-table-page",
           searchForm: [
             {
               type: 'input',
@@ -243,7 +246,11 @@ export default {
           key: "sgInput",
           slotName: "sgInput"
         },
-      ],
+      ]
+    }
+  },
+  data() {
+    return {
       formRules: {
         name: {
           required: true

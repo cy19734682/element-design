@@ -4,6 +4,8 @@
       <div class="back">
         <el-button @click="back" size="mini" icon="el-icon-arrow-left" v-if="curPath !== '/index'">返回</el-button>
       </div>
+      <setServer />
+      <setLange />
       <div class="user-info">
         <div v-if="token">
           {{nickname}}
@@ -11,7 +13,6 @@
         </div>
         <el-button v-else type="primary" @click="login"> {{ $t('login.logIn') }}</el-button>
       </div>
-      <setLange />
     </div>
   </div>
 </template>
@@ -19,10 +20,12 @@
 <script>
   import {mapGetters} from 'vuex'
   import setLange from '../components/setLange'
+  import setServer from '../components/setServer.vue'
   export default {
     name: 'appHeader',
     components: {
-      setLange
+      setLange,
+      setServer
     },
     computed:{
       ...mapGetters([

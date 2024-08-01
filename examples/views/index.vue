@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <h1>{{ $t('route.dashboard') }}</h1>
     <appHeader />
     <el-row :gutter="12" v-for="(item,index) of routeArr" :key="'f_'+index">
       <el-col :span="8" v-for="(c,index1) of item.children" :key="'c'+index1">
