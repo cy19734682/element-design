@@ -1,37 +1,37 @@
 .em-form {
-  overflow: hidden;
-  .el-form.el-form--inline{
-    .el-form-item{
-      margin-right: 24px;
-      .el-form-item__content{
-        width: 100%;
-      }
-    }
-  }
-  .el-form-item {
-    .el-input-number {
-      .el-input__inner {
-        text-align: left;
-      }
-    }
+	overflow: hidden;
+	.el-form.el-form--inline {
+		.el-form-item {
+			margin-right: 24px;
+			.el-form-item__content {
+				width: 100%;
+			}
+		}
+	}
+	.el-form-item {
+		.el-input-number {
+			.el-input__inner {
+				text-align: left;
+			}
+		}
 
-    .el-input-number,
-    .el-select,
-    .el-cascader,
-    .el-date-editor.el-input,
-    .el-range-editor.el-input__inner {
-      width: 100% !important;
-    }
-    .el-color-picker{
-      display: block;
-    }
-    .el-rate{
-      display: inline-flex;
-    }
-    .em-item-info{
-      margin-top: 10px;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-  }
+		.el-input-number,
+		.el-select,
+		.el-cascader,
+		.el-date-editor.el-input,
+		.el-range-editor.el-input__inner {
+			width: 100% !important;
+		}
+		.el-color-picker {
+			display: block;
+		}
+		.el-rate {
+			display: inline-flex;
+		}
+		.em-item-info {
+			margin-top: 10px;
+			font-size: 12px;
+			line-height: 1.5;
+		}
+	}
 }

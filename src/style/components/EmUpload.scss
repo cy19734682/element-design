@@ -1,40 +1,40 @@
 .em-upload {
-  .el-upload-list__item {
-    transition: none !important;
-    -webkit-transition: nonne !important;
-  }
+	.el-upload-list__item {
+		transition: none !important;
+		-webkit-transition: nonne !important;
+	}
 
-  .el-upload-list__item-name {
-    transition: none !important;
-    -webkit-transition: nonne !important;
-  }
+	.el-upload-list__item-name {
+		transition: none !important;
+		-webkit-transition: nonne !important;
+	}
 
-  .fetch-box {
-    margin-top: 10px;
-    .fetch-img {
-      position: relative;
-      margin: 10px 10px 0 0;
-      display: inline-block;
+	.fetch-box {
+		margin-top: 10px;
+		.fetch-img {
+			position: relative;
+			margin: 10px 10px 0 0;
+			display: inline-block;
 
-      img {
-        width: 80px;
-        height: auto;
-      }
+			img {
+				width: 80px;
+				height: auto;
+			}
 
-      .el-icon-close{
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        cursor: pointer;
-        display: none;
-      }
-      &:hover{
-        opacity: .8;
-        cursor: pointer;
-        .el-icon-close{
-          display: inline-block;
-        }
-      }
-    }
-  }
+			.el-icon-close {
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				cursor: pointer;
+				display: none;
+			}
+			&:hover {
+				opacity: 0.8;
+				cursor: pointer;
+				.el-icon-close {
+					display: inline-block;
+				}
+			}
+		}
+	}
 }

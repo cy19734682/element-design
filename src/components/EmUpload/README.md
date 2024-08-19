@@ -2,72 +2,13 @@
 
 文件上传组件
 
-### 基本使用
-
-自动上传
-
-````javascript
-<em-upload
-  v-model="url"
-  multiple
-  :length = "1"
-:
-format = "['jpg','xlsx']"
-listType = "picture-card"
-@on
--file - change = "onfileChange" / >
-  
-  data()
-{
-  return {
-    url: '',
-  }
-}
-
-methods: {
-  onfileChange(data)
-  {
-    console.log(data)
-  }
-}
-````
-
-手动上传
-
-````javascript
-<em-upload
-  v-model="files"
-  :autoUpload = 'false'
-fileName = "files"
-multiple
-  :length = "5"
-:
-format = "['jpg','xlsx']"
-listType = "picture-card"
-@on
--file - change = "onfileChange" / >
-  
-  data()
-{
-  return {
-    files: [],
-  }
-}
-
-methods: {
-  onfileChange(data)
-  {
-    console.log(data)
-  }
-}
-````
-
 ### 组件属性
 
 |         参数          |     说明     |             类型              |            可选值            |   默认值   |
 |:-------------------:|:----------:|:---------------------------:|:-------------------------:|:-------:|
 | fileValue / v-model |    绑定值     | Array, Number, String, File |             —             |    —    |
 |     autoUpload      |   是否自动上传   |           Boolean           |             —             |  true   |
+|     uploadFetch     |  是否网络地址上传  |           Boolean           |             —             |  false  |
 |         url         |  自动上传的url  |           String            |             —             | /upload |
 |      paramData      | 文件上传接口其他参数 |           Object            |             —             |   {}    |
 |       headers       |  请求头额外参数   |           Object            |             —             |   {}    |

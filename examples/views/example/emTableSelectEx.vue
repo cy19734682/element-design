@@ -1,83 +1,88 @@
 <template>
-  <div class="container">
-    <h2>表格选择器</h2>
-    <div class="form-box">
-      <em-table-select
-          ref="tableSelectRef"
-          v-model="deptId"
-          :searchForm="searchForm"
-          :columns="columns"
-          multiple
-          url="/bt-table-page"
-          @on-data-change="onDataChange"
-          @changeRow="changeRow"
-      />
-    </div>
-  </div>
+	<div class="container">
+		<el-card :body-style="{ padding: '0px' }">
+			<template #header>
+				<div>表格选择器</div>
+			</template>
+			<div class="card-body">
+				<em-table-select
+					ref="tableSelectRef"
+					v-model="deptId"
+					:searchForm="searchForm"
+					:columns="columns"
+					multiple
+					:url="serverUrl + '/bt-table-page'"
+					@on-data-change="onDataChange"
+					@changeRow="changeRow"
+				/>
+				<div class="json-title">绑定数据:</div>
+				<json-viewer :value="cloneVal" theme="my-awesome-json-theme" expanded copyable />
+			</div>
+			<div class="card-footer">
+				<source-code-view :code="code1" />
+			</div>
+		</el-card>
+	</div>
 </template>
 
 <script>
+	import sourceCodeView from '../../components/sourceCodeView.vue'
+  import { code1 } from '../../codeJson/emTableSelectEx'
+  import {mapGetters} from "vuex"
 
-export default {
-  name: 'emTableSelectEx',
-  data() {
-    return {
-      deptId: [82],
-     /* deptId: [
-        {
-          id:82,
-          name:"foot_nav3.png"
-        },
-        {
-          id:81,
-          name:"head_back.png"
-        }
-      ],*/
-      name: "name",
-      searchForm:[
-        {
-          type: 'input',
-          key: 'name',
-          label: '商品名称',
-        }
-      ],
-      columns: [
-        {
-          key: "id",
-          label: "ID"
-        },{
-          key: "name",
-          label: "名称"
-        },{
-          key: "mimeType",
-          label: "类型"
-        },{
-          key: "extension",
-          label: "后缀"
-        }
-      ],
-      props: {
-        key: 'id',
-        label: 'name'
+	export default {
+		name: 'emTableSelectEx',
+		components: { sourceCodeView },
+    computed: {
+      ...mapGetters(['serverUrl']),
+      cloneVal(){
+        return _.cloneDeep(this.deptId)
       }
-    }
-  },
-  mounted() {
-  },
-  methods:{
-    onDataChange(d){
-      console.log(d)
     },
-    changeRow(d){
-      console.log(d)
-    }
-  }
-}
+		data() {
+			return {
+        code1,
+				deptId: [82],
+				name: 'name',
+				searchForm: [
+					{
+						type: 'input',
+						key: 'name',
+						label: '商品名称'
+					}
+				],
+				columns: [
+					{
+						key: 'id',
+						label: 'ID'
+					},
+					{
+						key: 'name',
+						label: '名称'
+					},
+					{
+						key: 'mimeType',
+						label: '类型'
+					},
+					{
+						key: 'extension',
+						label: '后缀'
+					}
+				],
+				props: {
+					key: 'id',
+					label: 'name'
+				}
+			}
+		},
+		mounted() {},
+		methods: {
+			onDataChange(d) {
+				console.log(d)
+			},
+			changeRow(d) {
+				console.log(d)
+			}
+		}
+	}
 </script>
-<style lang="scss" scoped>
-.container {
-  padding: 40px;
-  overflow-y: auto;
-  height: 100%;
-}
-</style>

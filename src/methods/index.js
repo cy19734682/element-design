@@ -9,36 +9,31 @@ import _ from 'lodash'
  * @returns {string}
  */
 export function formatTime(time, option) {
-  if (('' + time).length === 10) {
-    time = parseInt(time) * 1000
-  }
-  else {
-    time = +time
-  }
-  const d = new Date(time)
-  const now = Date.now()
-  
-  const diff = (now - d) / 1000
-  
-  if (diff < 30) {
-    return '刚刚'
-  }
-  else if (diff < 3600) {
-    // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
-  }
-  else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
-  }
-  else if (diff < 3600 * 24 * 2) {
-    return '1天前'
-  }
-  if (option) {
-    return parseTime(time, option)
-  }
-  else {
-    return (d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分')
-  }
+	if (('' + time).length === 10) {
+		time = parseInt(time) * 1000
+	} else {
+		time = +time
+	}
+	const d = new Date(time)
+	const now = Date.now()
+
+	const diff = (now - d) / 1000
+
+	if (diff < 30) {
+		return '刚刚'
+	} else if (diff < 3600) {
+		// less 1 hour
+		return Math.ceil(diff / 60) + '分钟前'
+	} else if (diff < 3600 * 24) {
+		return Math.ceil(diff / 3600) + '小时前'
+	} else if (diff < 3600 * 24 * 2) {
+		return '1天前'
+	}
+	if (option) {
+		return parseTime(time, option)
+	} else {
+		return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
+	}
 }
 
 /**
@@ -46,21 +41,20 @@ export function formatTime(time, option) {
  * @returns {number} output value
  */
 export function byteLength(str) {
-  // returns the byte length of an utf8 string
-  let s = str.length
-  for (var i = str.length - 1; i >= 0; i--) {
-    const code = str.charCodeAt(i)
-    if (code > 0x7f && code <= 0x7ff) {
-      s++
-    }
-    else if (code > 0x7ff && code <= 0xffff) {
-      s += 2
-    }
-    if (code >= 0xDC00 && code <= 0xDFFF) {
-      i--
-    }
-  }
-  return s
+	// returns the byte length of an utf8 string
+	let s = str.length
+	for (var i = str.length - 1; i >= 0; i--) {
+		const code = str.charCodeAt(i)
+		if (code > 0x7f && code <= 0x7ff) {
+			s++
+		} else if (code > 0x7ff && code <= 0xffff) {
+			s += 2
+		}
+		if (code >= 0xdc00 && code <= 0xdfff) {
+			i--
+		}
+	}
+	return s
 }
 
 /**
@@ -68,13 +62,13 @@ export function byteLength(str) {
  * @returns {Array}
  */
 export function cleanArray(actual) {
-  const newArray = []
-  for (let i = 0; i < actual.length; i++) {
-    if (actual[i]) {
-      newArray.push(actual[i])
-    }
-  }
-  return newArray
+	const newArray = []
+	for (let i = 0; i < actual.length; i++) {
+		if (actual[i]) {
+			newArray.push(actual[i])
+		}
+	}
+	return newArray
 }
 
 /**
@@ -83,21 +77,21 @@ export function cleanArray(actual) {
  * @returns {Object}
  */
 export function param2Obj(url) {
-  const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
-  if (!search) {
-    return {}
-  }
-  const obj = {}
-  const searchArr = search.split('&')
-  searchArr.forEach(v => {
-    const index = v.indexOf('=')
-    if (index !== -1) {
-      const name = v.substring(0, index)
-      const val = v.substring(index + 1, v.length)
-      obj[name] = val
-    }
-  })
-  return obj
+	const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
+	if (!search) {
+		return {}
+	}
+	const obj = {}
+	const searchArr = search.split('&')
+	searchArr.forEach((v) => {
+		const index = v.indexOf('=')
+		if (index !== -1) {
+			const name = v.substring(0, index)
+			const val = v.substring(index + 1, v.length)
+			obj[name] = val
+		}
+	})
+	return obj
 }
 
 /**
@@ -105,9 +99,9 @@ export function param2Obj(url) {
  * @returns {string}
  */
 export function html2Text(val) {
-  const div = document.createElement('div')
-  div.innerHTML = val
-  return div.textContent || div.innerText
+	const div = document.createElement('div')
+	div.innerHTML = val
+	return div.textContent || div.innerText
 }
 
 /**
@@ -117,22 +111,21 @@ export function html2Text(val) {
  * @returns {Object}
  */
 export function objectMerge(target, source) {
-  if (typeof target !== 'object') {
-    target = {}
-  }
-  if (Array.isArray(source)) {
-    return source.slice()
-  }
-  Object.keys(source).forEach(property => {
-    const sourceProperty = source[property]
-    if (typeof sourceProperty === 'object') {
-      target[property] = objectMerge(target[property], sourceProperty)
-    }
-    else {
-      target[property] = sourceProperty
-    }
-  })
-  return target
+	if (typeof target !== 'object') {
+		target = {}
+	}
+	if (Array.isArray(source)) {
+		return source.slice()
+	}
+	Object.keys(source).forEach((property) => {
+		const sourceProperty = source[property]
+		if (typeof sourceProperty === 'object') {
+			target[property] = objectMerge(target[property], sourceProperty)
+		} else {
+			target[property] = sourceProperty
+		}
+	})
+	return target
 }
 
 /**
@@ -140,18 +133,17 @@ export function objectMerge(target, source) {
  * @param {string} className
  */
 export function toggleClass(element, className) {
-  if (!element || !className) {
-    return
-  }
-  let classString = element.className
-  const nameIndex = classString.indexOf(className)
-  if (nameIndex === -1) {
-    classString += '' + className
-  }
-  else {
-    classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length)
-  }
-  element.className = classString
+	if (!element || !className) {
+		return
+	}
+	let classString = element.className
+	const nameIndex = classString.indexOf(className)
+	if (nameIndex === -1) {
+		classString += '' + className
+	} else {
+		classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length)
+	}
+	element.className = classString
 }
 
 /**
@@ -161,43 +153,42 @@ export function toggleClass(element, className) {
  * @return {*}
  */
 export function debounce(func, wait, immediate = false) {
-  let timeout, args, context, timestamp, result
-  
-  const later = function () {
-    // 据上一次触发时间间隔
-    const last = +new Date() - timestamp
-    
-    // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
-    if (last < wait && last > 0) {
-      timeout = setTimeout(later, wait - last)
-    }
-    else {
-      timeout = null
-      // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
-      if (!immediate) {
-        result = func.apply(context, args)
-        if (!timeout) {
-          context = args = null
-        }
-      }
-    }
-  }
-  
-  return function (...args) {
-    context = this
-    timestamp = +new Date()
-    const callNow = immediate && !timeout
-    // 如果延时不存在，重新设定延时
-    if (!timeout) {
-      timeout = setTimeout(later, wait)
-    }
-    if (callNow) {
-      result = func.apply(context, args)
-      context = args = null
-    }
-    
-    return result
-  }
+	let timeout, args, context, timestamp, result
+
+	const later = function () {
+		// 据上一次触发时间间隔
+		const last = +new Date() - timestamp
+
+		// 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
+		if (last < wait && last > 0) {
+			timeout = setTimeout(later, wait - last)
+		} else {
+			timeout = null
+			// 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
+			if (!immediate) {
+				result = func.apply(context, args)
+				if (!timeout) {
+					context = args = null
+				}
+			}
+		}
+	}
+
+	return function (...args) {
+		context = this
+		timestamp = +new Date()
+		const callNow = immediate && !timeout
+		// 如果延时不存在，重新设定延时
+		if (!timeout) {
+			timeout = setTimeout(later, wait)
+		}
+		if (callNow) {
+			result = func.apply(context, args)
+			context = args = null
+		}
+
+		return result
+	}
 }
 
 /**
@@ -208,19 +199,18 @@ export function debounce(func, wait, immediate = false) {
  * @returns {Object}
  */
 export function deepClone(source) {
-  if (!source && typeof source !== 'object') {
-    throw new Error('error arguments', 'deepClone')
-  }
-  const targetObj = source.constructor === Array ? [] : {}
-  Object.keys(source).forEach(keys => {
-    if (source[keys] && typeof source[keys] === 'object') {
-      targetObj[keys] = deepClone(source[keys])
-    }
-    else {
-      targetObj[keys] = source[keys]
-    }
-  })
-  return targetObj
+	if (!source && typeof source !== 'object') {
+		throw new Error('error arguments', 'deepClone')
+	}
+	const targetObj = source.constructor === Array ? [] : {}
+	Object.keys(source).forEach((keys) => {
+		if (source[keys] && typeof source[keys] === 'object') {
+			targetObj[keys] = deepClone(source[keys])
+		} else {
+			targetObj[keys] = source[keys]
+		}
+	})
+	return targetObj
 }
 
 /**
@@ -228,7 +218,7 @@ export function deepClone(source) {
  * @returns {Array}
  */
 export function uniqueArr(arr) {
-  return Array.from(new Set(arr))
+	return Array.from(new Set(arr))
 }
 
 /**
@@ -237,8 +227,8 @@ export function uniqueArr(arr) {
  * @returns {string}
  */
 export function myTypeof(v) {
-  let str = Object.prototype.toString.call(v)
-  return str.replace(/\[object |]/g, "")
+	let str = Object.prototype.toString.call(v)
+	return str.replace(/\[object |]/g, '')
 }
 
 /**
@@ -247,42 +237,37 @@ export function myTypeof(v) {
  * @returns {boolean}
  */
 export function isValidVal(val) {
-  return val !== undefined && val !== null && val !== ''
+	return val !== undefined && val !== null && val !== ''
 }
-
 
 /**
  * 去掉对象属性前后空格
  */
 export function trimObj(obj) {
-  let p = myTypeof(obj)
-  if (p === 'Object') {
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        let o = myTypeof(obj[key])
-        if (o === 'String') {
-          obj[key] = obj[key].trim()
-        }
-        else if (o === 'Object' || o === 'Array') {
-          trimObj(obj[key])
-        }
-      }
-    }
-  }
-  else if (p === 'Array') {
-    for (let i = 0, l = obj.length; i < l; i++) {
-      let t = myTypeof(obj[i])
-      if (t === 'String') {
-        obj[i] = obj[i].trim()
-      }
-      else if (t === 'Array' || t === 'Object') {
-        trimObj(obj[i])
-      }
-    }
-  }
-  return obj
+	let p = myTypeof(obj)
+	if (p === 'Object') {
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				let o = myTypeof(obj[key])
+				if (o === 'String') {
+					obj[key] = obj[key].trim()
+				} else if (o === 'Object' || o === 'Array') {
+					trimObj(obj[key])
+				}
+			}
+		}
+	} else if (p === 'Array') {
+		for (let i = 0, l = obj.length; i < l; i++) {
+			let t = myTypeof(obj[i])
+			if (t === 'String') {
+				obj[i] = obj[i].trim()
+			} else if (t === 'Array' || t === 'Object') {
+				trimObj(obj[i])
+			}
+		}
+	}
+	return obj
 }
-
 
 /**
  * 按条件查找一个元素在集合中的位置（路径），返回找到的第一个符合条件的位置
@@ -300,95 +285,82 @@ export function trimObj(obj) {
  *
  *          返回：['爸爸','二儿子']
  */
-export function findPath({
-  group,
-  condition,
-  pathKey,
-  childKey = 'children',
-  path = []
-}) {
-  if (group && _.isObject(group)) {
-    if (_.isFunction(condition)) {
-      if (_.isPlainObject(group)) {
-        let item = group
-        let temp = _.cloneDeep(path)
-        if (condition(item)) {
-          if (pathKey && item[pathKey]) {
-            temp.push(item[pathKey])
-          }
-          return temp
-        }
-        else if (item[childKey] && (!_.isEmpty(item[childKey]))) {
-          if (pathKey && item[pathKey]) {
-            temp.push(item[pathKey])
-          }
-          let rr = findPath({
-            group: item[childKey],
-            condition: condition,
-            pathKey: pathKey,
-            childKey: childKey,
-            path: temp
-          })
-          if (!_.isEmpty(rr)) {
-            return rr
-          }
-        }
-      }
-      else if (Array.isArray(group)) {
-        for (let item of group) {
-          let temp = _.cloneDeep(path)
-          if (condition(item)) {
-            if (pathKey && item[pathKey]) {
-              temp.push(item[pathKey])
-            }
-            else {
-              temp.push(group.indexOf(item))
-            }
-            return temp
-          }
-          else if (item[childKey] && item[childKey].length > 0) {
-            if (pathKey && item[pathKey]) {
-              temp.push(item[pathKey])
-            }
-            else {
-              temp.push(group.indexOf(item))
-            }
-            let rr = findPath({
-              group: item[childKey],
-              condition: condition,
-              pathKey: pathKey,
-              childKey: childKey,
-              path: temp
-            })
-            if (!_.isEmpty(rr)) {
-              return rr
-            }
-          }
-        }
-      }
-    }
-    else if (Array.isArray(group)) {
-      //条件为常量，集合为数组，这种情况只会有一种业务场景：在一维数组中查找某个常量在数组中第一次出现的index
-      for (let item of group) {
-        let temp = _.cloneDeep(path)
-        if (item === condition) {
-          temp.push(group.indexOf(item))
-          return temp
-        }
-      }
-    }
-  }
-  return []
+export function findPath({ group, condition, pathKey, childKey = 'children', path = [] }) {
+	if (group && _.isObject(group)) {
+		if (_.isFunction(condition)) {
+			if (_.isPlainObject(group)) {
+				let item = group
+				let temp = _.cloneDeep(path)
+				if (condition(item)) {
+					if (pathKey && item[pathKey]) {
+						temp.push(item[pathKey])
+					}
+					return temp
+				} else if (item[childKey] && !_.isEmpty(item[childKey])) {
+					if (pathKey && item[pathKey]) {
+						temp.push(item[pathKey])
+					}
+					let rr = findPath({
+						group: item[childKey],
+						condition: condition,
+						pathKey: pathKey,
+						childKey: childKey,
+						path: temp
+					})
+					if (!_.isEmpty(rr)) {
+						return rr
+					}
+				}
+			} else if (Array.isArray(group)) {
+				for (let item of group) {
+					let temp = _.cloneDeep(path)
+					if (condition(item)) {
+						if (pathKey && item[pathKey]) {
+							temp.push(item[pathKey])
+						} else {
+							temp.push(group.indexOf(item))
+						}
+						return temp
+					} else if (item[childKey] && item[childKey].length > 0) {
+						if (pathKey && item[pathKey]) {
+							temp.push(item[pathKey])
+						} else {
+							temp.push(group.indexOf(item))
+						}
+						let rr = findPath({
+							group: item[childKey],
+							condition: condition,
+							pathKey: pathKey,
+							childKey: childKey,
+							path: temp
+						})
+						if (!_.isEmpty(rr)) {
+							return rr
+						}
+					}
+				}
+			}
+		} else if (Array.isArray(group)) {
+			//条件为常量，集合为数组，这种情况只会有一种业务场景：在一维数组中查找某个常量在数组中第一次出现的index
+			for (let item of group) {
+				let temp = _.cloneDeep(path)
+				if (item === condition) {
+					temp.push(group.indexOf(item))
+					return temp
+				}
+			}
+		}
+	}
+	return []
 }
 
 /**
  * 图片拼接
  */
 export function imageSplicing(path) {
-  if (path && path.indexOf("http") < 0) {
+  if (path && path.indexOf('http') < 0) {
     return (window.global && window.global.serverImg + path) || path
-  }
-  else {
-    return path || ""
-  }
+	} else {
+		return path || ''
+	}
 }

@@ -8,27 +8,25 @@
  * @returns
  */
 export function parseFloatFormat(str, dftVal, num, actNum, endStr) {
-  dftVal = dftVal || 0
-  num = num || 2
-  let result = dftVal
-  if (str || str == 0) {
-    result = parseFloat(str) // 使用十进制进行转换
-    if (!isNaN(result)) {
-      if (!isNaN(actNum)) {
-        result = (result * actNum).toFixed(num)
-      }
-      else {
-        result = result.toFixed(num)
-      }
-      if (endStr && endStr.length > 0) {
-        result = result + endStr
-      }
-    }
-    else {
-      result = dftVal
-    }
-  }
-  return result
+	dftVal = dftVal || 0
+	num = num || 2
+	let result = dftVal
+	if (str || str == 0) {
+		result = parseFloat(str) // 使用十进制进行转换
+		if (!isNaN(result)) {
+			if (!isNaN(actNum)) {
+				result = (result * actNum).toFixed(num)
+			} else {
+				result = result.toFixed(num)
+			}
+			if (endStr && endStr.length > 0) {
+				result = result + endStr
+			}
+		} else {
+			result = dftVal
+		}
+	}
+	return result
 }
 
 /**
@@ -37,10 +35,9 @@ export function parseFloatFormat(str, dftVal, num, actNum, endStr) {
  * @returns {string|*}
  */
 export function imageSplicing(path) {
-  if (path && path.indexOf("http") < 0) {
-    return (window.global && window.global.serverImg + path) || path
-  }
-  else {
-    return path || ""
-  }
+	if (path && path.indexOf('http') < 0) {
+		return (window.global && window.global.serverImg + path) || path
+	} else {
+		return path || ''
+	}
 }
