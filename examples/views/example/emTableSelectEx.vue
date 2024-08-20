@@ -27,21 +27,21 @@
 
 <script>
 	import sourceCodeView from '../../components/sourceCodeView.vue'
-  import { code1 } from '../../codeJson/emTableSelectEx'
-  import {mapGetters} from "vuex"
+	import { code1 } from '../../codeJson/emTableSelectEx'
+	import { mapGetters } from 'vuex'
 
 	export default {
 		name: 'emTableSelectEx',
 		components: { sourceCodeView },
-    computed: {
-      ...mapGetters(['serverUrl']),
-      cloneVal(){
-        return _.cloneDeep(this.deptId)
-      }
-    },
+		computed: {
+			...mapGetters(['serverUrl']),
+			cloneVal() {
+				return _.cloneDeep(this.deptId)
+			}
+		},
 		data() {
 			return {
-        code1,
+				code1,
 				deptId: [82],
 				name: 'name',
 				searchForm: [

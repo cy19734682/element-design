@@ -5,7 +5,7 @@
 				<div>颜色组</div>
 			</template>
 			<div class="card-body">
-        <em-color-group v-model="colors" is-add-del />
+				<em-color-group v-model="colors" is-add-del />
 				<div class="json-title">绑定数据:</div>
 				<json-viewer :value="cloneVal" theme="my-awesome-json-theme" expanded copyable />
 			</div>
@@ -18,19 +18,19 @@
 
 <script>
 	import sourceCodeView from '../../components/sourceCodeView.vue'
-  import { code1 } from '../../codeJson/emColorGroupEx'
+	import { code1 } from '../../codeJson/emColorGroupEx'
 
 	export default {
 		name: 'EmColorGroupEx',
 		components: { sourceCodeView },
-    computed: {
-      cloneVal(){
-        return _.cloneDeep(this.colors)
-      }
-    },
+		computed: {
+			cloneVal() {
+				return _.cloneDeep(this.colors)
+			}
+		},
 		data() {
 			return {
-        code1,
+				code1,
 				colors: ['#ccc']
 			}
 		}

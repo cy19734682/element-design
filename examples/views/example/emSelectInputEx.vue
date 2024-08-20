@@ -31,7 +31,7 @@
 					:data="data"
 					optionVal="label"
 					optionLabel="name"
-          @on-val-change="onValChange"
+					@on-val-change="onValChange"
 					@on-change="onChange"
 				/>
 				<div class="json-title">绑定数据:</div>
@@ -47,20 +47,20 @@
 <script>
 	import { mapGetters } from 'vuex'
 	import sourceCodeView from '../../components/sourceCodeView.vue'
-  import { code1, code2 } from '../../codeJson/emCascaderEx'
+	import { code1, code2 } from '../../codeJson/emCascaderEx'
 
 	export default {
 		name: 'emSelectInputEx',
 		components: {
-      sourceCodeView
-    },
+			sourceCodeView
+		},
 		computed: {
 			...mapGetters(['serverUrl'])
 		},
 		data() {
 			return {
-        code1,
-        code2,
+				code1,
+				code2,
 				value1: {},
 				value2: {},
 				data: [

@@ -27,7 +27,7 @@ const constantRoutes = [
 		component: appMain,
 		name: 'upload',
 		meta: {
-			title: '上传组件'
+			title: 'uploadC'
 		},
 		children: [
 			{
@@ -35,7 +35,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emUploadExcelEx.vue'),
 				name: 'EmUploadExcel',
 				meta: {
-					title: 'excel上传解析',
+					title: 'excelUpload',
 					mdName: 'EmUploadExcel'
 				}
 			},
@@ -44,7 +44,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emUploadEx.vue'),
 				name: 'EmUpload',
 				meta: {
-					title: '文件上传',
+					title: 'fileUpload',
 					mdName: 'EmUpload'
 				}
 			}
@@ -55,7 +55,7 @@ const constantRoutes = [
 		component: appMain,
 		name: 'form',
 		meta: {
-			title: '表单组件'
+			title: 'formC'
 		},
 		children: [
 			{
@@ -63,7 +63,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emFormEx.vue'),
 				name: 'EmForm',
 				meta: {
-					title: '综合表单',
+					title: 'synForm',
 					mdName: 'EmForm'
 				}
 			},
@@ -72,7 +72,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emStaticFormEx.vue'),
 				name: 'EmStaticForm',
 				meta: {
-					title: '静态表单',
+					title: 'staticForm',
 					mdName: 'EmStaticForm'
 				}
 			},
@@ -81,7 +81,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emSearchFormEx.vue'),
 				name: 'EmSearchForm',
 				meta: {
-					title: '搜索表单',
+					title: 'searchForm',
 					mdName: 'EmSearchForm'
 				}
 			},
@@ -90,7 +90,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emFormGroupEx.vue'),
 				name: 'EmFormGroup',
 				meta: {
-					title: '分组表单',
+					title: 'groupForm',
 					mdName: 'EmFormGroup'
 				}
 			},
@@ -99,7 +99,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emFormModalEx.vue'),
 				name: 'EmFormModal',
 				meta: {
-					title: '弹窗表单',
+					title: 'modalForm',
 					mdName: 'EmFormModal'
 				}
 			}
@@ -110,7 +110,7 @@ const constantRoutes = [
 		component: appMain,
 		name: 'table',
 		meta: {
-			title: '分页表格组件'
+			title: 'tableC'
 		},
 		children: [
 			{
@@ -118,7 +118,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emTablePageEx.vue'),
 				name: 'EmTablePage',
 				meta: {
-					title: '表格分页',
+					title: 'tablePage',
 					mdName: 'EmTablePage'
 				}
 			},
@@ -127,7 +127,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emRowPageEx.vue'),
 				name: 'emRowPage',
 				meta: {
-					title: '栅栏分页',
+					title: 'tableRow',
 					mdName: 'EmTablePage'
 				}
 			}
@@ -138,7 +138,7 @@ const constantRoutes = [
 		component: appMain,
 		name: 'home',
 		meta: {
-			title: '其它组件'
+			title: 'otherC'
 		},
 		children: [
 			{
@@ -146,7 +146,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emCascaderAreaEx.vue'),
 				name: 'EmCascaderArea',
 				meta: {
-					title: '省市区选择',
+					title: 'area',
 					mdName: 'EmCascaderArea'
 				}
 			},
@@ -155,7 +155,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emCascaderEx.vue'),
 				name: 'EmCascader',
 				meta: {
-					title: '自定义级联',
+					title: 'cascader',
 					mdName: 'EmCascader'
 				}
 			},
@@ -164,7 +164,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emMapEx.vue'),
 				name: 'EmMap',
 				meta: {
-					title: '地图组件',
+					title: 'mapC',
 					mdName: 'EmBaiduMap'
 				}
 			},
@@ -173,7 +173,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emChartsEx.vue'),
 				name: 'EmCharts',
 				meta: {
-					title: '图表',
+					title: 'chart',
 					mdName: 'EmCharts'
 				}
 			},
@@ -182,7 +182,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emIconEx.vue'),
 				name: 'EmIcon',
 				meta: {
-					title: '图标',
+					title: 'icon',
 					mdName: 'EmIcons'
 				}
 			},
@@ -191,7 +191,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emIconSelectEx.vue'),
 				name: 'EmIconSelect',
 				meta: {
-					title: '图标选择',
+					title: 'iconSelect',
 					mdName: 'EmIconSelect'
 				}
 			},
@@ -200,7 +200,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emTableSelectEx.vue'),
 				name: 'EmTableSelect',
 				meta: {
-					title: '表格选择',
+					title: 'tableSelect',
 					mdName: 'EmTableSelect'
 				}
 			},
@@ -209,7 +209,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emSelectInputEx.vue'),
 				name: 'EmSelectInput',
 				meta: {
-					title: '下拉选择输入',
+					title: 'selectInput',
 					mdName: 'EmSelectInput'
 				}
 			},
@@ -218,7 +218,7 @@ const constantRoutes = [
 				component: () => import('./views/example/emColorGroupEx.vue'),
 				name: 'EmColorGroup',
 				meta: {
-					title: '颜色组',
+					title: 'colorGroup',
 					mdName: 'EmColorGroup'
 				}
 			}

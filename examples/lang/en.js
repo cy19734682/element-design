@@ -5,20 +5,33 @@ export default {
 		documentation: 'Documentation',
 		guide: 'Guide',
 		system: 'System',
-		localServer: 'Local Server',
-		nodeServer: 'Node Server'
-	},
-	navbar: {
-		dashboard: 'Dashboard',
-		github: 'Github',
-		logOut: 'Log Out',
-		profile: 'Profile',
-		theme: 'Theme',
-		size: 'Global Size'
+		uploadC: 'Upload',
+		excelUpload: 'Excel Upload',
+		fileUpload: 'File Upload',
+		formC: 'Form',
+		synForm: 'Default Form',
+		staticForm: 'Static Form',
+		searchForm: 'Search Form',
+		groupForm: 'GroupForm',
+		modalForm: 'Modal Form',
+		tableC: 'Table',
+		tablePage: 'Table Page',
+		tableRow: 'Table Row',
+		otherC: 'Other',
+		area: 'Area',
+		cascader: 'Cascader',
+		mapC: 'Map',
+		chart: 'Chart',
+		icon: 'Icon',
+		iconSelect: 'Icon Select',
+		tableSelect: 'Table Select',
+		selectInput: 'Select Input',
+		colorGroup: 'Color Group'
 	},
 	login: {
 		title: 'Login Form',
 		logIn: 'Login',
+		logOut: 'Log Out',
 		username: 'Username',
 		password: 'Password',
 		any: 'any'
@@ -39,28 +52,9 @@ export default {
 		cancel: 'Cancel',
 		confirm: 'Confirm',
 		save: 'Save',
-		deliver: 'Immediate Delivery',
-		refund: 'Immediate Refund',
-		addRemark: 'Add Remark',
-		comment: 'Comment',
-		reply: 'Reply'
-	},
-	theme: {
-		change: 'Change Theme',
-		documentation: 'Theme documentation',
-		tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
-	},
-	tagsView: {
-		refresh: 'Refresh',
-		close: 'Close',
-		closeOthers: 'Close Others',
-		closeAll: 'Close All'
-	},
-	settings: {
-		title: 'Page style setting',
-		theme: 'Theme Color',
-		tagsView: 'Open Tags-View',
-		fixedHeader: 'Fixed Header',
-		sidebarLogo: 'Sidebar Logo'
+		localServer: 'Local Server',
+		nodeServer: 'Node Server',
+		viewSourceCode: 'View Source Code',
+		hideSourceCode: 'Hide Source Code'
 	}
 }

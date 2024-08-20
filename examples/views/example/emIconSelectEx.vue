@@ -5,7 +5,7 @@
 				<div>图标选择</div>
 			</template>
 			<div class="card-body">
-        <em-icon-select v-model="icon" />
+				<em-icon-select v-model="icon" />
 			</div>
 			<div class="card-footer">
 				<source-code-view :code="code1" />
@@ -16,16 +16,16 @@
 
 <script>
 	import sourceCodeView from '../../components/sourceCodeView.vue'
-  import { code1 } from '../../codeJson/emIconSelectEx'
+	import { code1 } from '../../codeJson/emIconSelectEx'
 
 	export default {
 		name: 'EmIconSelectEx',
 		components: { sourceCodeView },
 		data() {
 			return {
-        code1,
+				code1,
 				icon: null
 			}
-		},
+		}
 	}
 </script>

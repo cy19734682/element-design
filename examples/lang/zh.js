@@ -5,20 +5,33 @@ export default {
 		documentation: '文档',
 		guide: '引导页',
 		system: '系统管理',
-		localServer: '本地服务',
-		nodeServer: 'node服务'
-	},
-	navbar: {
-		dashboard: '首页',
-		github: '项目地址',
-		logOut: '退出登录',
-		profile: '个人中心',
-		theme: '换肤',
-		size: '布局大小'
+		uploadC: '上传组件',
+		excelUpload: 'excel上传解析',
+		fileUpload: '文件上传',
+		formC: '表单组件',
+		synForm: '综合表单',
+		staticForm: '静态表单',
+		searchForm: '搜索表单',
+		groupForm: '分组表单',
+		modalForm: '弹窗表单',
+		tableC: '分页表格组件',
+		tablePage: '表格分页',
+		tableRow: '栅栏分页',
+		otherC: '其它组件',
+		area: '省市区选择',
+		cascader: '自定义级联',
+		mapC: '地图组件',
+		chart: '图表',
+		icon: '图标',
+		iconSelect: '图标选择',
+		tableSelect: '表格选择',
+		selectInput: '下拉选择输入',
+		colorGroup: '颜色组'
 	},
 	login: {
 		title: '系统登录',
 		logIn: '登录',
+		logOut: '注销',
 		username: '账号',
 		password: '密码',
 		any: '随便填'
@@ -39,28 +52,9 @@ export default {
 		cancel: '取 消',
 		confirm: '确 定',
 		save: '保存',
-		deliver: '立即发货',
-		refund: '立即退款',
-		addRemark: '添加备注',
-		comment: '用户评价',
-		reply: '回复'
-	},
-	theme: {
-		change: '换肤',
-		documentation: '换肤文档',
-		tips: 'Tips: 它区别于 navbar 上的 theme-pick, 是两种不同的换肤方法，各自有不同的应用场景，具体请参考文档。'
-	},
-	tagsView: {
-		refresh: '刷新',
-		close: '关闭',
-		closeOthers: '关闭其它',
-		closeAll: '关闭所有'
-	},
-	settings: {
-		title: '系统布局配置',
-		theme: '主题色',
-		tagsView: '开启 Tags-View',
-		fixedHeader: '固定 Header',
-		sidebarLogo: '侧边栏 Logo'
+		localServer: '本地服务',
+		nodeServer: 'node服务',
+		viewSourceCode: '查看源代码',
+		hideSourceCode: '隐藏源代码'
 	}
 }

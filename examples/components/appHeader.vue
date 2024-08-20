@@ -4,14 +4,50 @@
 			<span class="text">Element-Design</span>
 		</div>
 		<div class="right">
-			<setServer class="line-item" />
-			<setLange class="line-item" />
-			<div class="user-info">
+			<div class="line-item">
+				<el-tooltip :content="$t('button.localServer') + ' / ' + $t('button.nodeServer')">
+					<el-switch
+						v-model="serverUrl"
+						class="ml-2"
+						inline-prompt
+						active-value="/mock"
+						inactive-value=""
+						active-text="Local"
+						inactive-text="Node"
+					/>
+				</el-tooltip>
+			</div>
+			<div class="line-item">
+				<el-tooltip content="中文 / English">
+					<div class="lang-box" @click="changeLang">
+						<span class="lang-item" :class="{ act: language === 'zh-cn', acn: language !== 'zh-cn' }">中</span>
+						<span class="lang-item" :class="{ act: language === 'en', acn: language !== 'en' }">En</span>
+					</div>
+				</el-tooltip>
+			</div>
+			<div class="line-item">
+				<el-tooltip content="Github">
+					<a :href="homepage" target="_blank">
+						<em-icons style="font-size: 20px" icon-class="github" />
+					</a>
+				</el-tooltip>
+			</div>
+			<div class="line-item">
 				<div v-if="token">
-					{{ nickname }}
-					<el-button size="small" @click="logout">注销</el-button>
+					<el-dropdown>
+						<el-avatar :size="32">
+							<span style="font-size: 12px">{{ nickname }}</span>
+						</el-avatar>
+						<template #dropdown>
+							<el-dropdown-menu>
+								<el-dropdown-item @click="logout">{{ $t('login.logOut') }}</el-dropdown-item>
+							</el-dropdown-menu>
+						</template>
+					</el-dropdown>
 				</div>
-				<el-button v-else size="small" type="primary" @click="login"> {{ $t('login.logIn') }}</el-button>
+				<el-avatar v-else :size="32" @click="login">
+					<span style="font-size: 12px">{{ $t('login.logIn') }}</span>
+				</el-avatar>
 			</div>
 		</div>
 	</div>
@@ -19,16 +55,34 @@
 
 <script>
 	import { mapGetters } from 'vuex'
-	import setLange from './setLange'
-	import setServer from './setServer.vue'
+	import PackageJson from '../../package.json'
+
 	export default {
 		name: 'appHeader',
-		components: {
-			setLange,
-			setServer
+		data() {
+			return {
+				homepage: PackageJson.homepage
+			}
 		},
 		computed: {
-			...mapGetters(['nickname', 'token'])
+			...mapGetters(['nickname', 'token']),
+			serverUrl: {
+				get() {
+					return this.$store.getters.serverUrl
+				},
+				set(v) {
+					this.$store.dispatch('app/setServerUrl', v)
+				}
+			},
+			language: {
+				get() {
+					return this.$store.getters.language
+				},
+				set(v) {
+					this.$i18n.locale = v
+					this.$store.dispatch('app/setLanguage', v)
+				}
+			}
 		},
 		methods: {
 			login() {
@@ -38,6 +92,9 @@
 			},
 			logout() {
 				this.$store.dispatch('user/logout')
+			},
+			changeLang() {
+				this.language = this.language === 'zh-cn' ? 'en' : 'zh-cn'
 			}
 		}
 	}
@@ -55,19 +112,42 @@
 			font-weight: bold;
 		}
 		.right {
+			font-size: 14px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			.line-item {
-				margin-right: 40px;
 				position: relative;
-				&::after {
-					content: '';
-					height: 20px;
-					border-left: 1px #999 solid;
-					position: absolute;
-					top: 0;
-					right: -20px;
+				cursor: pointer;
+				margin-left: 40px;
+
+				.lang-box {
+					position: relative;
+					width: 1.2em;
+					height: 1.2em;
+					.lang-item {
+						position: absolute;
+						font-size: 1.2em;
+						line-height: 1;
+						border: 1px solid rgba(0, 0, 0, 0.88);
+						color: rgba(0, 0, 0, 0.88);
+						&.act {
+							inset-inline-start: -5%;
+							top: 0;
+							z-index: 1;
+							background-color: rgba(0, 0, 0, 0.88);
+							color: #ffffff;
+							transform: scale(0.7);
+							transform-origin: 0 0;
+						}
+						&.acn {
+							inset-inline-end: -5%;
+							bottom: 0;
+							z-index: 0;
+							transform: scale(0.5);
+							transform-origin: 100% 100%;
+						}
+					}
 				}
 			}
 		}

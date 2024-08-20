@@ -33,7 +33,7 @@ module.exports = defineConfig({
     extract: true, //是否将组件中的样式提取到独立的css文件中
   },
   configureWebpack: (config) => {
-    config.name = "element-design组件";
+    config.name = "element-design";
     if (process.env.NODE_ENV === "production") {
       config.plugins.push(
         new compressionPlugin({
