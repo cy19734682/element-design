@@ -29,9 +29,9 @@ jobs:
             # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
             fetch-depth: 0
       - name: Set up Node.js Version
-        uses: actions/setup-node@v2  # 设置Node.js版本为18
+        uses: actions/setup-node@v4  # 设置Node.js版本为20
         with:
-          node-version: '14.21.2'  # 指定Node.js版本号
+          node-version: 20  # 指定Node.js版本号
       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
           npm install
