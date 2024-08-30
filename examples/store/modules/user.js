@@ -1,18 +1,20 @@
-import { getToken, setToken, removeToken } from '../../utils/auth'
+import { getStore, setStore } from '../../utils/auth'
 import { $request } from '../../../src'
 import app from './app'
 
 const state = {
-	token: getToken(),
-	nickname: localStorage.getItem('NICKNAME')
+	token: getStore('token'),
+	nickname: getStore('nickname')
 }
 
 const mutations = {
 	SET_TOKEN: (state, token) => {
 		state.token = token
+    setStore('token', token)
 	},
 	SET_NICKNAME: (state, nickname) => {
 		state.nickname = nickname
+    setStore('nickname', nickname)
 	}
 }
 
@@ -30,8 +32,6 @@ const actions = {
 					const { token, userInfo } = response
 					commit('SET_TOKEN', token)
 					commit('SET_NICKNAME', userInfo.username)
-					setToken(token)
-					localStorage.setItem('NICKNAME', userInfo.username)
 					resolve()
 				})
 				.catch((error) => {
@@ -47,8 +47,7 @@ const actions = {
 				.get(app.state.serverUrl + '/logout')
 				.then(() => {
 					commit('SET_TOKEN', '')
-					removeToken()
-					localStorage.removeItem('NICKNAME')
+          commit('SET_NICKNAME', '')
 					resolve()
 				})
 				.catch((error) => {

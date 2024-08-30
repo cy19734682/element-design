@@ -29,7 +29,7 @@
 			return {
 				code1,
 				value: ['150000', '150100', '150104'],
-				name: null
+				name: ''
 			}
 		},
 		methods: {

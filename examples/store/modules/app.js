@@ -1,29 +1,26 @@
-import Cookies from 'js-cookie'
+import { getStore, setStore } from '../../utils/auth'
 import { getLanguage } from '../../lang/index'
 
 const state = {
 	language: getLanguage(),
-	serverUrl: localStorage.getItem('serverUrl') || ''
+	serverUrl: getStore('serverUrl') || '',
+  isDark: getStore('isDark') || false,
+  theme: getStore('theme')
 }
 
 const mutations = {
-	SET_LANGUAGE: (state, language) => {
-		state.language = language
-		Cookies.set('language', language)
-	},
-	SET_SERVER_URL: (state, url) => {
-		state.serverUrl = url
-		localStorage.setItem('serverUrl', url)
-	}
+  CHANGE_SETTING: (state, { key, value }) => {
+    if (state.hasOwnProperty(key)) {
+      state[key] = value
+      setStore(key, value)
+    }
+  }
 }
 
 const actions = {
-	setLanguage({ commit }, language) {
-		commit('SET_LANGUAGE', language)
-	},
-	setServerUrl({ commit }, url) {
-		commit('SET_SERVER_URL', url)
-	}
+  changeSetting({ commit }, data) {
+    commit('CHANGE_SETTING', data)
+  }
 }
 
 export default {

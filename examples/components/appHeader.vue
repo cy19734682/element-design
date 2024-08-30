@@ -18,50 +18,133 @@
 				</el-tooltip>
 			</div>
 			<div class="line-item">
-				<el-tooltip content="中文 / English">
-					<div class="lang-box" @click="changeLang">
-						<span class="lang-item" :class="{ act: language === 'zh-cn', acn: language !== 'zh-cn' }">中</span>
-						<span class="lang-item" :class="{ act: language === 'en', acn: language !== 'en' }">En</span>
-					</div>
+				<el-tooltip content="暗黑模式 / 亮白模式">
+					<el-button
+						size="mini"
+						plain
+						circle
+						:icon="isDark ? 'el-icon-moon' : 'el-icon-sunny'"
+						@click="switchMode($event)"
+					/>
 				</el-tooltip>
+			</div>
+			<div class="line-item">
+				<el-dropdown
+					placement="bottom"
+					trigger="click"
+					@command="
+						(e) => {
+							theme = e
+						}
+					"
+				>
+					<el-tooltip content="主题切换">
+						<el-button size="mini" plain circle>
+							<em-icons icon-class="color" />
+						</el-button>
+					</el-tooltip>
+					<template #dropdown>
+						<el-dropdown-menu>
+							<el-dropdown-item
+								v-for="(item, index) in themes"
+								:command="item.val"
+								:key="'themes' + index"
+								style="display: flex; align-items: center"
+								:disabled="item.val === theme"
+							>
+								<span style="margin-right: 10px">
+									{{ item.label }}
+								</span>
+								<span
+									class="theme-c"
+									v-for="(i, _i) in item.val.split(',')"
+									:key="i + _i"
+									style="display: inline-block; width: 20px; height: 20px; margin: 0 2px; border-radius: 50%"
+									:style="{ backgroundColor: i }"
+								></span>
+							</el-dropdown-item>
+						</el-dropdown-menu>
+					</template>
+				</el-dropdown>
+			</div>
+			<div class="line-item">
+				<el-dropdown
+					placement="bottom"
+					trigger="click"
+					@command="
+						(e) => {
+							language = e
+						}
+					"
+				>
+					<el-tooltip content="中英文切换">
+						<el-button size="mini" plain circle>
+							<em-icons icon-class="international" />
+						</el-button>
+					</el-tooltip>
+					<template #dropdown>
+						<el-dropdown-menu>
+							<el-dropdown-item
+								v-for="(item, index) in languages"
+								:command="item.val"
+								:key="'lang' + index"
+								:disabled="item.val === language"
+							>
+								{{ item.label }}
+							</el-dropdown-item>
+						</el-dropdown-menu>
+					</template>
+				</el-dropdown>
 			</div>
 			<div class="line-item">
 				<el-tooltip content="Github">
 					<a :href="homepage" target="_blank">
-						<em-icons style="font-size: 20px" icon-class="github" />
+						<el-button size="mini" plain circle>
+							<em-icons icon-class="github" />
+						</el-button>
 					</a>
 				</el-tooltip>
 			</div>
 			<div class="line-item">
 				<div v-if="token">
-					<el-dropdown>
-						<el-avatar :size="32">
+					<el-dropdown @command="logout">
+						<el-avatar :size="28">
 							<span style="font-size: 12px">{{ nickname }}</span>
 						</el-avatar>
 						<template #dropdown>
 							<el-dropdown-menu>
-								<el-dropdown-item @click="logout">{{ $t('login.logOut') }}</el-dropdown-item>
+								<el-dropdown-item>{{ $t('login.logOut') }}</el-dropdown-item>
 							</el-dropdown-menu>
 						</template>
 					</el-dropdown>
 				</div>
-				<el-avatar v-else :size="32" @click="login">
-					<span style="font-size: 12px">{{ $t('login.logIn') }}</span>
-				</el-avatar>
+				<div v-else @click="login">
+					<el-avatar :size="28">
+						<span style="font-size: 12px">{{ $t('login.logIn') }}</span>
+					</el-avatar>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import Cookies from 'js-cookie'
 	import { mapGetters } from 'vuex'
 	import PackageJson from '../../package.json'
+	import { themes } from '../utils/constant'
+	import { switchDark } from '../utils/themeChange'
 
 	export default {
 		name: 'appHeader',
 		data() {
 			return {
-				homepage: PackageJson.homepage
+				homepage: PackageJson.homepage,
+				languages: [
+					{ label: '中文', val: 'zh-cn' },
+					{ label: 'English', val: 'en' }
+				],
+				themes
 			}
 		},
 		computed: {
@@ -71,7 +154,7 @@
 					return this.$store.getters.serverUrl
 				},
 				set(v) {
-					this.$store.dispatch('app/setServerUrl', v)
+					this.changeSetting('serverUrl', v)
 				}
 			},
 			language: {
@@ -80,7 +163,24 @@
 				},
 				set(v) {
 					this.$i18n.locale = v
-					this.$store.dispatch('app/setLanguage', v)
+					Cookies.set('language', v)
+					this.changeSetting('language', v)
+				}
+			},
+			isDark: {
+				get() {
+					return this.$store.getters.isDark
+				},
+				set(v) {
+					this.changeSetting('isDark', v)
+				}
+			},
+			theme: {
+				get() {
+					return this.$store.getters.theme
+				},
+				set(v) {
+					this.changeSetting('theme', v)
 				}
 			}
 		},
@@ -93,8 +193,11 @@
 			logout() {
 				this.$store.dispatch('user/logout')
 			},
-			changeLang() {
-				this.language = this.language === 'zh-cn' ? 'en' : 'zh-cn'
+			changeSetting(k, v) {
+				this.$store.dispatch('app/changeSetting', { key: k, value: v })
+			},
+      switchMode(e) {
+				switchDark(e, this, 'isDark')
 			}
 		}
 	}
@@ -105,9 +208,9 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 1px solid #dcdfe6;
+		border-bottom: 1px solid var(--el-border-color-light);
 		.left {
-			color: #409eff;
+			color: var(--el-color-primary);
 			font-size: 20px;
 			font-weight: bold;
 		}
@@ -125,29 +228,6 @@
 					position: relative;
 					width: 1.2em;
 					height: 1.2em;
-					.lang-item {
-						position: absolute;
-						font-size: 1.2em;
-						line-height: 1;
-						border: 1px solid rgba(0, 0, 0, 0.88);
-						color: rgba(0, 0, 0, 0.88);
-						&.act {
-							inset-inline-start: -5%;
-							top: 0;
-							z-index: 1;
-							background-color: rgba(0, 0, 0, 0.88);
-							color: #ffffff;
-							transform: scale(0.7);
-							transform-origin: 0 0;
-						}
-						&.acn {
-							inset-inline-end: -5%;
-							bottom: 0;
-							z-index: 0;
-							transform: scale(0.5);
-							transform-origin: 100% 100%;
-						}
-					}
 				}
 			}
 		}

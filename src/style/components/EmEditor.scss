@@ -1,8 +1,8 @@
 .em-editor {
-	border: 1px solid #ccc;
+	border: 1px solid var(--el-border-color-light);
 
 	.editor-pro-toolbar {
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid var(--el-border-color-light);
 	}
 }
 
@@ -13,20 +13,20 @@
 /*wangeditor组件样式 start*/
 :root,
 :host {
-	--w-e-textarea-bg-color: #fff;
-	--w-e-textarea-color: #333;
-	--w-e-textarea-border-color: #ccc;
+	--w-e-textarea-bg-color: var(--el-bg-color-overlay);
+	--w-e-textarea-color: var(--el-text-color-primary);
+	--w-e-textarea-border-color: var(--el-border-color-light);
 	--w-e-textarea-slight-border-color: #e8e8e8;
 	--w-e-textarea-slight-color: #d4d4d4;
-	--w-e-textarea-slight-bg-color: #f5f2f0;
+	--w-e-textarea-slight-bg-color: var(--el-bg-color-overlay);
 	--w-e-textarea-selected-border-color: #b4d5ff;
 	--w-e-textarea-handler-bg-color: #4290f7;
 	--w-e-toolbar-color: #595959;
-	--w-e-toolbar-bg-color: #fff;
+	--w-e-toolbar-bg-color: var(--el-bg-color-overlay);;
 	--w-e-toolbar-active-color: #333;
 	--w-e-toolbar-active-bg-color: #f1f1f1;
 	--w-e-toolbar-disabled-color: #999;
-	--w-e-toolbar-border-color: #e8e8e8;
+	--w-e-toolbar-border-color: var(--el-border-color-light);;
 	--w-e-modal-button-bg-color: #fafafa;
 	--w-e-modal-button-border-color: #d9d9d9;
 }

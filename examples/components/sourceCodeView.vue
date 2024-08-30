@@ -30,6 +30,16 @@
 		}
 	}
 </script>
+<style lang="scss">
+  .source-container {
+    .source-box {
+      .hljs{
+        background-color: var(--el-fill-color-light);
+        color: #909399;
+      }
+    }
+  }
+</style>
 <style lang="scss" scoped>
 	.source-container {
 		.source-box {
@@ -43,19 +53,19 @@
 			align-items: center;
 			cursor: pointer;
 			color: #909399;
-			background-color: #ffffff;
+      background-color: var(--el-bg-color-overlay);
 			box-sizing: border-box;
 			position: sticky;
 			left: 0;
 			right: 0;
 			/*上层元素有个有padding会影响*/
-			bottom: -30px;
+			bottom: -20px;
 			z-index: 10;
 			&.show {
-				border-top: 1px solid #e4e7ed;
+				border-top: 1px solid var(--el-border-color-light);
 			}
 			&:hover {
-				color: #409eff;
+				color: var(--el-color-primary);
 			}
 			span {
 				font-size: 14px;

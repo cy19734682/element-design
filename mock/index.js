@@ -1,5 +1,6 @@
 const Mock = require('mockjs')
 const { param2Obj } = require('./utils')
+const { getStore } = require('../examples/utils/auth')
 
 const user = require('./handler/user')
 const table = require('./handler/table')
@@ -8,7 +9,6 @@ const brand = require('./handler/brand')
 
 const mocks = [...user, ...table, ...dept, ...brand]
 
-const accessTokenKey = 'YL_ACCESS_TOKEN'
 const whiteList = ['/mock/login', '/mock/logout']
 
 // for front mock
@@ -47,8 +47,8 @@ function mockXHR() {
 
 	function XHR2ExpressReqWrap(respond) {
 		return function (options) {
-			let result = null
-			if (whiteList.indexOf(options.url) === -1 && !localStorage.getItem(accessTokenKey)) {
+			let result
+			if (whiteList.indexOf(options.url) === -1 && !getStore('token')) {
 				result = { code: -999 }
 			} else if (respond instanceof Function) {
 				const { body, type, url } = options

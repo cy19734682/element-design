@@ -43,7 +43,7 @@
 	@import '~github-markdown-css';
 	@import '~highlight.js/styles/github.css';
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
 	.app-markdown {
 		width: 0;
 		height: 100%;
@@ -59,9 +59,15 @@
 			width: 600px;
 			height: 100%;
 			position: relative;
-			border-left: 1px solid #dcdfe6;
+			border-left: 1px solid var(--el-border-color-light);
+      color: var(--el-text-color-primary);
 			overflow-y: auto;
 			font-size: 14px;
+      table{
+        tr{
+          background-color: transparent;
+        }
+      }
 		}
 		.markdown-btn {
 			position: absolute;
@@ -74,8 +80,8 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background-color: #fff;
-			border: 1px solid #dcdfe6;
+      background-color: var(--el-bg-color-overlay);
+      border: 1px solid var(--el-border-color-light);
 			box-shadow: 0 4px 10px #0000001a;
 			transition: all 0.15s;
 			border-radius: 50%;

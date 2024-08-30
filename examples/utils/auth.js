@@ -1,13 +1,30 @@
-const accessTokenKey = 'YL_ACCESS_TOKEN'
+const PackageJson = require('../../package.json')
+const storeKey = PackageJson.name + '-' + PackageJson.version
 
-export function getToken() {
-	return window.localStorage.getItem(accessTokenKey)
+/**
+ * 获取缓存数据
+ * @param key
+ * @returns {*}
+ */
+module.exports.getStore = (key) => {
+	const data = JSON.parse(localStorage.getItem(storeKey) || '{}')
+	if (key) {
+		return data[key]
+	} else {
+		return data
+	}
 }
 
-export function setToken(token) {
-	window.localStorage.setItem(accessTokenKey, token)
-}
-
-export function removeToken() {
-	return window.localStorage.removeItem(accessTokenKey)
+/**
+ * 缓存数据操作
+ * @param key
+ * @param val
+ * @returns {*}
+ */
+module.exports.setStore = (key, val) => {
+	if (key) {
+		const data = module.exports.getStore()
+		data[key] = val
+		localStorage.setItem(storeKey, JSON.stringify(data))
+	}
 }

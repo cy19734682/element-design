@@ -1,0 +1,114 @@
+// element-ui 组件样式重写，兼容暗黑模式
+body {
+	// 菜单
+	.el-menu {
+		background-color: transparent;
+		border-right-color: var(--el-border-color-light);
+		.el-menu-item,
+		.el-submenu__title {
+			color: var(--el-text-color-primary);
+			&.is-active {
+				color: var(--el-color-primary);
+			}
+			&:not(.is-active):hover {
+				color: #2c3e50;
+			}
+		}
+	}
+	// 卡片
+	.el-card {
+		background-color: var(--el-bg-color-overlay);
+		border-color: var(--el-border-color-light);
+		color: var(--el-text-color-primary);
+		.el-card__header {
+			border-color: var(--el-border-color-light);
+		}
+	}
+	// 分割线
+	.el-divider {
+		background-color: var(--el-border-color-light);
+	}
+	//上传组件
+	.el-upload {
+		background-color: transparent;
+	}
+	.el-upload-list {
+		.el-upload-list__item {
+			background-color: transparent;
+			border-color: var(--el-border-color-light);
+		}
+	}
+	//按钮
+	.el-button.is-plain {
+		border-color: var(--el-border-color-light);
+		i,
+		.em-icon {
+			color: var(--el-text-color-primary);
+		}
+	}
+	.el-button.is-plain,
+	.el-button.is-plain:focus,
+	.el-button.is-plain:hover {
+		background-color: transparent;
+	}
+	// switch组件
+	.el-switch__label {
+		color: var(--el-text-color-primary);
+	}
+	//表单label
+	.el-form-item__label {
+		color: var(--el-text-color-primary);
+	}
+	//输入框
+	.el-input__inner,
+	.el-textarea__inner {
+		background: none;
+		border-color: var(--el-border-color-light);
+		color: var(--el-text-color-primary);
+	}
+	//数字输入框上下箭头
+	.el-input-number.is-controls-right {
+		.el-input-number__decrease,
+		.el-input-number__increase {
+			background-color: var(--el-fill-color-light);
+			border-color: var(--el-border-color-light);
+		}
+	}
+	//输入框前后添加元素
+	.el-input-group__append,
+	.el-input-group__prepend {
+		border-color: var(--el-border-color-light);
+	}
+	//滑条
+	.el-slider__runway {
+		background-color: var(--el-border-color-light);
+	}
+	//复选框
+	.el-checkbox__inner {
+		background-color: var(--el-bg-color-overlay);
+		border-color: var(--el-border-color-light);
+	}
+	// 日期选择输入框
+	.el-date-editor .el-range-input {
+		background-color: transparent;
+		color: var(--el-text-color-primary);
+	}
+	// 日期选择面板
+	.el-picker-panel {
+		background: var(--el-bg-color-overlay);
+		color: var(--el-text-color-primary);
+		border-color: var(--el-border-color-light);
+		.el-date-range-picker__content.is-left {
+			border-color: var(--el-border-color-light);
+		}
+		.el-date-table th {
+			border-color: var(--el-border-color-light);
+		}
+		.el-date-table td.in-range div,
+		.el-date-table td.in-range div:hover,
+		.el-date-table.is-week-mode .el-date-table__row.current div,
+		.el-date-table.is-week-mode .el-date-table__row:hover div {
+      background: var(--el-fill-color-light);
+		}
+	}
+}
