@@ -73,6 +73,10 @@
 				/*改变弹框loading状态，私有*/
 				this.$refs.formGroupRef.changeLoading(val === undefined ? false : val)
 			},
+			getDataGroup() {
+				/*获取用户已填数据*/
+				return this.$refs.formGroupRef.getDataGroup()
+			},
 			onSubmit(data) {
 				/*响应提交事件提交数据，私有*/
 				this.$emit('on-search', data)
